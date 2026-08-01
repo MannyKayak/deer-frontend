@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<title>Deer — Landing (desktop, 1280px)</title>
+<style>
+/* Governs: EXPERIENCE.md Information Architecture (Landing surface), Responsive & Platform (desktop
+   two-column comparison, sticky header). DESIGN.md components: button-primary, quiz-card,
+   category-tag, answer-option/-correct, mnemo-box, comparison-traditional/comparison-deer, footer.
+   Traces to imports/Deer Landing - Hero Quiz Exploration.dc.html variant 3a (confirmed direction). */
+:root{
+  --primary:#24C5AB; --primary-dark:#006670; --on-primary:#FFFFFF; --gold:#E0AF3B;
+  --correct:#43A84C; --correct-bg:#D0F3D0; --surface-base:#FAF5E6; --surface-raised:#FFFFFF;
+  --surface-muted:#EAE8E0; --surface-muted-line:#DAD7D0; --qtag-bg:#C3E7DE; --mnemo-bg:#F4EAD5;
+  --ink:#221812; --ink2:#5F5651; --border:#E7DBD5; --footer-bg:#221812; --footer-text:#D3CDBF;
+}
+*{box-sizing:border-box}
+body{margin:0;background:#e9e4d8;font-family:system-ui,sans-serif;padding:32px;display:flex;justify-content:center}
+.frame{width:1280px;background:var(--surface-base);border-radius:16px;overflow:hidden;box-shadow:0 12px 32px rgba(0,0,0,.18)}
+.wordmark{font:600 20px Lexend,sans-serif;color:var(--ink)}
+.logo-mark{width:26px;height:26px;border-radius:50%;background:var(--primary);border:2px solid var(--ink)}
+.qtag{font:600 11px Inter,sans-serif;letter-spacing:.03em;text-transform:uppercase;color:var(--primary-dark);background:var(--qtag-bg);border:2px solid var(--primary-dark);border-radius:100px;padding:4px 10px;display:inline-block;width:fit-content}
+.btn-cta{font:600 17px Lexend,sans-serif;color:var(--on-primary);background:var(--primary-dark);border:none;border-radius:100px;padding:18px 30px;box-shadow:5px 5px 0 var(--ink);display:inline-flex;align-items:center;gap:8px;cursor:pointer}
+.btn-cta.compact{padding:12px 22px;font-size:14px;box-shadow:4px 4px 0 var(--ink)}
+.qcard{background:var(--surface-raised);border:3px solid var(--ink);border-radius:20px;box-shadow:7px 7px 0 var(--ink);padding:20px}
+.qtext{font:600 17px/1.4 Lexend,sans-serif;color:var(--ink);margin:12px 0 14px}
+.opt-btn{width:100%;text-align:left;font:500 15px Inter,sans-serif;color:var(--ink);background:#fff;border:2px solid var(--border);border-radius:10px;padding:13px 14px}
+.opt-correct{border-color:var(--correct);background:var(--correct-bg);box-shadow:5px 5px 0 var(--correct);font-weight:700}
+.mnemo{margin-top:14px;background:var(--mnemo-bg);border:2px solid var(--gold);border-radius:10px;padding:14px}
+.mnemo-tag{font:700 11px Inter,sans-serif;letter-spacing:.03em;text-transform:uppercase;color:#6a5522;display:flex;align-items:center;gap:6px;margin-bottom:6px}
+</style>
+</head>
+<body>
+<div class="frame">
+  <div style="position:sticky;top:0;background:var(--surface-base);border-bottom:2px solid var(--ink);padding:16px 56px;display:flex;align-items:center;justify-content:space-between">
+    <div style="display:flex;align-items:center;gap:8px"><div class="logo-mark"></div><span class="wordmark">Deer</span></div>
+    <button class="btn-cta compact">Prova 10 domande gratis</button>
+  </div>
+
+  <div style="padding:64px 56px 56px;display:grid;grid-template-columns:1.05fr 1fr;gap:56px;align-items:center">
+    <div style="display:flex;flex-direction:column;gap:22px">
+      <span class="qtag">Concorso pubblico farmacie</span>
+      <h1 style="margin:0;font:700 50px/1.14 Lexend,sans-serif;color:var(--ink)">La strada più veloce per vincere la farmacia.</h1>
+      <p style="margin:0;font:400 18px/1.55 Inter,sans-serif;color:var(--ink2);max-width:480px">3000 domande ufficiali. Le ricordi con la mnemotecnica, non le rileggi all'infinito.</p>
+      <div style="display:flex;align-items:center;gap:16px;margin-top:6px">
+        <button class="btn-cta">Prova 10 domande gratis →</button>
+        <span style="font:500 13px Inter,sans-serif;color:var(--ink2)">Nessuna registrazione richiesta</span>
+      </div>
+      <div style="display:flex;gap:28px;margin-top:18px;padding-top:22px;border-top:2px solid var(--border)">
+        <div><div style="font:700 26px Lexend,sans-serif;color:var(--primary-dark)">3000</div><div style="font:500 12.5px Inter,sans-serif;color:var(--ink2)">domande ufficiali</div></div>
+        <div><div style="font:700 26px Lexend,sans-serif;color:var(--primary-dark)">2 min</div><div style="font:500 12.5px Inter,sans-serif;color:var(--ink2)">per il quiz gratuito</div></div>
+        <div><div style="font:700 26px Lexend,sans-serif;color:var(--primary-dark)">0</div><div style="font:500 12.5px Inter,sans-serif;color:var(--ink2)">login richiesti</div></div>
+      </div>
+    </div>
+
+    <!-- Static, non-interactive preview card (FR-4) -->
+    <div class="qcard" style="max-width:420px;justify-self:end;position:relative">
+      <span style="position:absolute;top:-14px;right:16px;background:var(--gold);border:2px solid var(--ink);border-radius:100px;padding:5px 11px;font:700 12px Lexend,sans-serif;color:var(--ink);box-shadow:4px 4px 0 var(--ink);transform:rotate(4deg)">Domanda 4/10</span>
+      <span class="qtag">Farmacologia</span>
+      <p class="qtext">Qual è il termine medico per l'infiammazione del fegato?</p>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <div class="opt-btn opt-correct">A · Epatite ✓</div>
+        <div class="opt-btn">B · Nefrite</div>
+        <div class="opt-btn">C · Gastrite</div>
+      </div>
+      <div class="mnemo">
+        <div class="mnemo-tag">🔑 Mnemotecnica</div>
+        <p style="margin:0;font:500 13.5px/1.5 Inter,sans-serif;color:var(--ink)">EPA-tite → gli ePAtociti sono le cellule del fegato: quando "scoppiano", si infiammano.</p>
+      </div>
+    </div>
+  </div>
+
+  <div style="padding:12px 56px 64px">
+    <h2 style="margin:0 0 8px;font:700 30px Lexend,sans-serif;color:var(--ink)">Perché non è l'ennesimo quiz</h2>
+    <p style="margin:0 0 28px;font:400 16px Inter,sans-serif;color:var(--ink2)">La differenza non è quante domande vedi, ma se te le ricordi il giorno dell'esame.</p>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px">
+      <div style="background:var(--surface-muted);border:2px solid var(--border);border-radius:20px;padding:26px;opacity:.85">
+        <div style="font:600 11px Inter,sans-serif;letter-spacing:.03em;text-transform:uppercase;color:var(--ink2);margin-bottom:12px">Metodo tradizionale</div>
+        <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:16px">
+          <div style="height:14px;background:var(--surface-muted-line);border-radius:4px;width:100%"></div>
+          <div style="height:14px;background:var(--surface-muted-line);border-radius:4px;width:92%"></div>
+          <div style="height:14px;background:var(--surface-muted-line);border-radius:4px;width:96%"></div>
+          <div style="height:14px;background:var(--surface-muted-line);border-radius:4px;width:80%"></div>
+        </div>
+        <p style="margin:0;font:400 15px/1.5 Inter,sans-serif;color:var(--ink2)">Un muro di 3000 domande uguali, da rileggere all'infinito sperando che restino in testa.</p>
+      </div>
+      <div class="qcard" style="padding:26px">
+        <div style="font:700 11px Inter,sans-serif;letter-spacing:.03em;text-transform:uppercase;color:var(--primary-dark);margin-bottom:12px">Con Deer</div>
+        <div class="mnemo" style="margin-top:0;margin-bottom:16px">
+          <div class="mnemo-tag">🔑 Mnemotecnica dedicata</div>
+          <p style="margin:0;font:500 13.5px/1.5 Inter,sans-serif;color:var(--ink)">Ogni domanda diventa un'immagine o un'associazione che si fissa in pochi secondi.</p>
+        </div>
+        <p style="margin:0;font:400 15px/1.5 Inter,sans-serif;color:var(--ink2)">Non studi di più: ricordi meglio.</p>
+      </div>
+    </div>
+  </div>
+
+  <div style="background:var(--footer-bg);padding:16px 56px;display:flex;align-items:center;justify-content:space-between">
+    <span style="font:500 13px Inter,sans-serif;color:var(--footer-text)">Deer — mnemotecniche per il concorso farmacie</span>
+    <div style="display:flex;gap:20px">
+      <span style="font:500 13px Inter,sans-serif;color:var(--footer-text)">Privacy</span>
+      <span style="font:500 13px Inter,sans-serif;color:var(--footer-text)">Termini</span>
+    </div>
+  </div>
+</div>
+</body>
+</html>

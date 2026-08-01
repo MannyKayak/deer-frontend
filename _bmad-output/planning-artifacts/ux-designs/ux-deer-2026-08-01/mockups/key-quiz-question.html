@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<title>Deer — Quiz, domanda singola (before / after answer)</title>
+<style>
+/* Governs: EXPERIENCE.md Component Patterns (quiz-card, answer-option/-correct, mnemo-box,
+   Advance control rows), State Patterns ("Answer tapped" row), Key Flows step 5-6 (both flows).
+   DESIGN.md components: quiz-card, category-tag, answer-option/-correct, mnemo-box, button-primary.
+   Full-screen quiz surface composed from FR-5/FR-6 decided component list; no new pattern introduced. */
+:root{
+  --primary-dark:#006670; --on-primary:#FFFFFF; --gold:#E0AF3B;
+  --correct:#43A84C; --correct-bg:#D0F3D0; --surface-base:#FAF5E6; --surface-raised:#FFFFFF;
+  --qtag-bg:#C3E7DE; --mnemo-bg:#F4EAD5;
+  --ink:#221812; --ink2:#5F5651; --border:#E7DBD5;
+}
+*{box-sizing:border-box}
+body{margin:0;background:#e9e4d8;font-family:system-ui,sans-serif;padding:32px;display:flex;gap:32px;justify-content:center;flex-wrap:wrap}
+.frame{width:390px;background:var(--surface-base);border-radius:28px;overflow:hidden;box-shadow:0 12px 32px rgba(0,0,0,.18)}
+.label{font:600 12px system-ui,sans-serif;color:#66604f;text-align:center;padding:10px 0 0}
+.wordmark{font:600 18px Lexend,sans-serif;color:var(--ink)}
+.logo-mark{width:22px;height:22px;border-radius:50%;background:#24C5AB;border:2px solid var(--ink)}
+.qtag{font:600 11px Inter,sans-serif;letter-spacing:.03em;text-transform:uppercase;color:var(--primary-dark);background:var(--qtag-bg);border:2px solid var(--primary-dark);border-radius:100px;padding:4px 10px;display:inline-block}
+.qcard{background:var(--surface-raised);border:3px solid var(--ink);border-radius:20px;box-shadow:7px 7px 0 var(--ink);padding:20px}
+.qtext{font:600 18px/1.4 Lexend,sans-serif;color:var(--ink);margin:14px 0 16px}
+.opt-btn{width:100%;text-align:left;font:500 15px Inter,sans-serif;color:var(--ink);background:#fff;border:2px solid var(--border);border-radius:10px;padding:14px}
+.opt-correct{border-color:var(--correct);background:var(--correct-bg);box-shadow:5px 5px 0 var(--correct);font-weight:700}
+.mnemo{margin-top:16px;background:var(--mnemo-bg);border:2px solid var(--gold);border-radius:10px;padding:14px}
+.mnemo-tag{font:700 11px Inter,sans-serif;letter-spacing:.03em;text-transform:uppercase;color:#6a5522;display:flex;align-items:center;gap:6px;margin-bottom:6px}
+.btn-cta{font:600 17px Lexend,sans-serif;color:var(--on-primary);background:var(--primary-dark);border:none;border-radius:100px;padding:15px 26px;box-shadow:5px 5px 0 var(--ink);width:100%;margin-top:16px}
+</style>
+</head>
+<body>
+<div>
+  <div class="label">Prima di rispondere</div>
+  <div class="frame">
+    <div style="padding:22px;display:flex;flex-direction:column;gap:14px">
+      <div style="display:flex;align-items:center;gap:8px"><div class="logo-mark"></div><span class="wordmark">Deer</span></div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <span class="qtag">Farmacologia</span>
+        <span class="qtag">Domanda 4 di 10</span>
+      </div>
+      <div class="qcard">
+        <p class="qtext">Qual è il termine medico per l'infiammazione del fegato?</p>
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <div class="opt-btn">A · Epatite</div>
+          <div class="opt-btn">B · Nefrite</div>
+          <div class="opt-btn">C · Gastrite</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div>
+  <div class="label">Dopo la risposta — corretta evidenziata + mnemotecnica + Conferma</div>
+  <div class="frame">
+    <div style="padding:22px;display:flex;flex-direction:column;gap:14px">
+      <div style="display:flex;align-items:center;gap:8px"><div class="logo-mark"></div><span class="wordmark">Deer</span></div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <span class="qtag">Farmacologia</span>
+        <span class="qtag">Domanda 4 di 10</span>
+      </div>
+      <div class="qcard">
+        <p class="qtext">Qual è il termine medico per l'infiammazione del fegato?</p>
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <div class="opt-btn opt-correct">A · Epatite ✓</div>
+          <div class="opt-btn">B · Nefrite</div>
+          <div class="opt-btn">C · Gastrite</div>
+        </div>
+        <div class="mnemo">
+          <div class="mnemo-tag">🔑 Mnemotecnica</div>
+          <p style="margin:0;font:500 14px/1.5 Inter,sans-serif;color:var(--ink)">EPA-tite → gli ePAtociti sono le cellule del fegato: quando "scoppiano", si infiammano.</p>
+        </div>
+        <button class="btn-cta">Conferma</button>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

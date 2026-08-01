@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<title>Deer — Schermata finale (rest / write-error)</title>
+<style>
+/* Governs: EXPERIENCE.md Information Architecture (Final screen), Component Patterns (star rating,
+   email field + consent checkbox rows), State Patterns ("Quiz-completion write fails" row,
+   "Empty/default" row), Key Flow 1 step 7-8 (climax + resolution).
+   DESIGN.md components: quiz-card (mnemonic recap entries reuse mnemo-box), button-primary. */
+:root{
+  --primary-dark:#006670; --on-primary:#FFFFFF; --gold:#E0AF3B; --error:#E54151;
+  --surface-base:#FAF5E6; --surface-raised:#FFFFFF; --mnemo-bg:#F4EAD5;
+  --ink:#221812; --ink2:#5F5651; --border:#E7DBD5;
+}
+*{box-sizing:border-box}
+body{margin:0;background:#e9e4d8;font-family:system-ui,sans-serif;padding:32px;display:flex;gap:32px;justify-content:center;flex-wrap:wrap}
+.frame{width:390px;background:var(--surface-base);border-radius:28px;overflow:hidden;box-shadow:0 12px 32px rgba(0,0,0,.18)}
+.label{font:600 12px system-ui,sans-serif;color:#66604f;text-align:center;padding:10px 0 0}
+.wordmark{font:600 18px Lexend,sans-serif;color:var(--ink)}
+.logo-mark{width:22px;height:22px;border-radius:50%;background:#24C5AB;border:2px solid var(--ink)}
+.qcard{background:var(--surface-raised);border:3px solid var(--ink);border-radius:20px;box-shadow:7px 7px 0 var(--ink);padding:20px}
+.mnemo{background:var(--mnemo-bg);border:2px solid var(--gold);border-radius:10px;padding:12px}
+.mnemo-tag{font:700 10px Inter,sans-serif;letter-spacing:.03em;text-transform:uppercase;color:#6a5522;margin-bottom:4px}
+.star{font-size:26px;color:#d8d2c4}
+.star.on{color:var(--gold)}
+input[type=email]{width:100%;font:400 15px Inter,sans-serif;color:var(--ink);border:2px solid var(--border);border-radius:10px;padding:12px 14px}
+.btn-cta{font:600 15px Lexend,sans-serif;color:var(--on-primary);background:var(--primary-dark);border:none;border-radius:100px;padding:13px 22px;box-shadow:4px 4px 0 var(--ink);width:100%;margin-top:12px}
+.err{font:500 12.5px Inter,sans-serif;color:var(--error);display:flex;align-items:center;gap:6px;margin-top:8px}
+.err-btn{font:600 12.5px Inter,sans-serif;color:var(--primary-dark);text-decoration:underline;background:none;border:none;padding:0;cursor:pointer}
+</style>
+</head>
+<body>
+<div>
+  <div class="label">Schermata finale — stato a riposo</div>
+  <div class="frame">
+    <div style="padding:22px;display:flex;flex-direction:column;gap:16px">
+      <div style="display:flex;align-items:center;gap:8px"><div class="logo-mark"></div><span class="wordmark">Deer</span></div>
+      <div class="qcard" style="text-align:center;padding:24px">
+        <div style="font:600 12px Inter,sans-serif;letter-spacing:.03em;text-transform:uppercase;color:var(--ink2);margin-bottom:6px">Risultato</div>
+        <div style="font:700 36px Lexend,sans-serif;color:var(--primary-dark)">7/10 corrette</div>
+      </div>
+
+      <div>
+        <div style="font:700 15px Lexend,sans-serif;color:var(--ink);margin-bottom:10px">Le mnemotecniche che hai visto</div>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <div class="mnemo"><div class="mnemo-tag">🔑 Farmacologia</div><p style="margin:0;font:500 13px/1.4 Inter,sans-serif;color:var(--ink)">EPA-tite → gli ePAtociti sono le cellule del fegato.</p></div>
+          <div class="mnemo"><div class="mnemo-tag">🔑 Legislazione</div><p style="margin:0;font:500 13px/1.4 Inter,sans-serif;color:var(--ink)">... (10 mnemotecniche in totale, tutte mostrate)</p></div>
+        </div>
+      </div>
+
+      <div class="qcard" style="padding:18px">
+        <div style="font:600 13px Inter,sans-serif;color:var(--ink);margin-bottom:10px">Com'è andata?</div>
+        <div style="display:flex;gap:4px;margin-bottom:16px">
+          <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
+        </div>
+        <div style="font:600 13px Inter,sans-serif;color:var(--ink);margin-bottom:8px">Vuoi sapere quando lanciamo?</div>
+        <input type="email" placeholder="la-tua-email@esempio.it">
+        <label style="display:flex;gap:8px;align-items:flex-start;margin-top:10px;font:400 11.5px/1.4 Inter,sans-serif;color:var(--ink2)">
+          <input type="checkbox" style="margin-top:2px">
+          <span>Acconsento al trattamento della mia email per essere avvisato/a al lancio (Privacy).</span>
+        </label>
+        <button class="btn-cta">Invia</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div>
+  <div class="label">Invio completamento fallito — retry inline, non bloccante</div>
+  <div class="frame">
+    <div style="padding:22px;display:flex;flex-direction:column;gap:16px">
+      <div style="display:flex;align-items:center;gap:8px"><div class="logo-mark"></div><span class="wordmark">Deer</span></div>
+      <div class="qcard" style="text-align:center;padding:24px">
+        <div style="font:600 12px Inter,sans-serif;letter-spacing:.03em;text-transform:uppercase;color:var(--ink2);margin-bottom:6px">Risultato</div>
+        <div style="font:700 36px Lexend,sans-serif;color:var(--primary-dark)">7/10 corrette</div>
+      </div>
+      <div>
+        <div style="font:700 15px Lexend,sans-serif;color:var(--ink);margin-bottom:10px">Le mnemotecniche che hai visto</div>
+        <div class="mnemo"><div class="mnemo-tag">🔑 Farmacologia</div><p style="margin:0;font:500 13px/1.4 Inter,sans-serif;color:var(--ink)">EPA-tite → gli ePAtociti sono le cellule del fegato.</p></div>
+      </div>
+      <div class="qcard" style="padding:18px">
+        <div style="font:600 13px Inter,sans-serif;color:var(--ink);margin-bottom:10px">Com'è andata?</div>
+        <div style="display:flex;gap:4px;margin-bottom:8px">
+          <span class="star on">★</span><span class="star on">★</span><span class="star on">★</span><span class="star on">★</span><span class="star">★</span>
+        </div>
+        <div class="err">⚠ Non siamo riusciti a salvare il tuo feedback. <button class="err-btn">Riprova</button></div>
+        <div style="font:600 13px Inter,sans-serif;color:var(--ink);margin:16px 0 8px">Vuoi sapere quando lanciamo?</div>
+        <input type="email" value="marta.rossi@esempio.it">
+        <label style="display:flex;gap:8px;align-items:flex-start;margin-top:10px;font:400 11.5px/1.4 Inter,sans-serif;color:var(--ink2)">
+          <input type="checkbox" checked style="margin-top:2px">
+          <span>Acconsento al trattamento della mia email per essere avvisato/a al lancio (Privacy).</span>
+        </label>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

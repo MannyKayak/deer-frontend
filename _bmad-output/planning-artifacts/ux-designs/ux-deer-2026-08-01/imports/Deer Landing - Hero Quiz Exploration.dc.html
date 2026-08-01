@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics>
+<meta name="design_doc_mode" content="canvas">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --aqua:oklch(74% .13 178); --aqua-d:oklch(46% .09 205); --gold:oklch(78% .14 85);
+  --ok:oklch(65% .16 145); --bad:oklch(62% .20 20); --bg:oklch(97% .02 90);
+  --ink:oklch(22% .02 50); --ink2:oklch(46% .015 50); --border:oklch(90% .015 50);
+}
+body{margin:0;background:#eee9df;font-family:system-ui,sans-serif}
+.dv-turn{padding:40px 44px 32px;border-bottom:1px solid rgba(0,0,0,.08);scroll-margin-top:16px}
+.dv-thd{display:flex;align-items:baseline;gap:10px;margin:0 0 20px}
+.dv-tid{font:600 10px ui-monospace,Menlo,monospace;padding:3px 7px;background:#1a1a1a;color:#fff;border-radius:4px;text-decoration:none}
+.dv-tname{font:600 13px/1.2 system-ui,sans-serif;color:#1a1a1a}
+.dv-opts{display:flex;flex-wrap:wrap;gap:28px;align-items:flex-start}
+.dv-opt{flex:none;display:flex;flex-direction:column;gap:9px;scroll-margin-top:16px}
+.dv-oid{font:600 10.5px ui-monospace,Menlo,monospace;padding:3px 7px;background:rgba(0,0,0,.08);color:#1a1a1a;border-radius:5px;text-decoration:none}
+.dv-olabel{display:flex;align-items:baseline;gap:8px;font:400 11px/1.3 system-ui,sans-serif;color:rgba(0,0,0,.55)}
+.dv-card{max-width:100%;background:var(--bg);border:1px solid rgba(0,0,0,.08);border-radius:8px;box-shadow:0 1px 3px rgba(0,0,0,.06);overflow:hidden}
+.dv-opt:target .dv-oid{background:var(--aqua-d);color:#fff}
+.dv-next{margin:22px 0 0;font:12px/1.5 system-ui,sans-serif;color:rgba(0,0,0,.5)}
+.logo-mark{width:26px;height:26px;border-radius:50%;background:var(--aqua);border:2px solid var(--ink);position:relative;flex:none}
+.logo-mark::before,.logo-mark::after{content:"";position:absolute;width:9px;height:9px;background:var(--ink);top:-4px;border-radius:2px}
+.logo-mark::before{left:2px;transform:rotate(-25deg)}
+.logo-mark::after{right:2px;transform:rotate(25deg)}
+.wordmark{font:600 20px Lexend,sans-serif;color:var(--ink)}
+.btn-cta{font:600 17px Lexend,sans-serif;color:#fff;background:var(--aqua-d);border:none;border-radius:100px;padding:16px 28px;box-shadow:5px 5px 0 var(--ink);display:inline-flex;align-items:center;gap:8px;cursor:pointer;text-align:center;justify-content:center}
+.chip{font:600 12px Inter,sans-serif;color:var(--ink);background:#fff;border:2px solid var(--ink);border-radius:100px;padding:6px 12px;display:inline-flex;align-items:center;gap:6px;box-shadow:3px 3px 0 var(--ink)}
+.qcard{background:#fff;border:3px solid var(--ink);border-radius:20px;box-shadow:7px 7px 0 var(--ink);padding:20px}
+.qtag{font:600 11px Inter,sans-serif;letter-spacing:.03em;text-transform:uppercase;color:var(--aqua-d);background:oklch(90% .04 178);border:2px solid var(--aqua-d);border-radius:100px;padding:4px 10px;display:inline-block}
+.qtext{font:600 17px/1.4 Lexend,sans-serif;color:var(--ink);margin:12px 0 14px}
+.opt-btn{width:100%;text-align:left;font:500 15px Inter,sans-serif;color:var(--ink);background:#fff;border:2px solid var(--border);border-radius:10px;padding:13px 14px;box-sizing:border-box}
+.opt-correct{border-color:var(--ok);background:oklch(93% .06 145);box-shadow:5px 5px 0 var(--ok);font-weight:700}
+.mnemo{margin-top:14px;background:oklch(94% .03 85);border:2px solid var(--gold);border-radius:10px;padding:14px}
+.mnemo-tag{font:700 11px Inter,sans-serif;letter-spacing:.03em;text-transform:uppercase;color:oklch(38% .10 85);display:flex;align-items:center;gap:6px;margin-bottom:6px}
+</style>
+</helmet>
+
+<section class="dv-turn" id="t3">
+<div class="dv-thd"><a class="dv-tid" href="#t3">3</a><span class="dv-tname">Landing completa — markup ispirato a brumpatenti.it, design system Deer</span></div>
+<div class="dv-opts">
+
+<div class="dv-opt" id="3a">
+<div class="dv-olabel"><a class="dv-oid" href="#3a">3a</a>Desktop — header sticky, hero con trust bar, comparativa, quiz preview, footer a colonne</div>
+<div class="dv-card" style="width:1280px">
+
+  <div style="position:sticky;top:0;background:#eee9df00;background:var(--bg);border-bottom:2px solid var(--ink);padding:16px 56px;display:flex;align-items:center;justify-content:space-between">
+    <div style="display:flex;align-items:center;gap:8px"><div class="logo-mark"></div><span class="wordmark">Deer</span></div>
+    <button class="btn-cta" style="padding:12px 22px;font-size:14px;box-shadow:4px 4px 0 var(--ink)">Prova 10 domande gratis</button>
+  </div>
+
+  <div style="padding:64px 56px 56px;display:grid;grid-template-columns:1.05fr 1fr;gap:56px;align-items:center">
+    <div style="display:flex;flex-direction:column;gap:22px">
+      <span class="qtag" style="width:fit-content">Concorso pubblico farmacie</span>
+      <h1 style="margin:0;font:700 50px/1.14 Lexend,sans-serif;color:var(--ink)">La strada più veloce per vincere la farmacia.</h1>
+      <p style="margin:0;font:400 18px/1.55 Inter,sans-serif;color:var(--ink2);max-width:480px">3000 domande ufficiali. Le ricordi con la mnemotecnica, non le rileggi all'infinito.</p>
+      <div style="display:flex;align-items:center;gap:16px;margin-top:6px">
+        <button class="btn-cta" style="padding:18px 30px;font-size:17px">Prova 10 domande gratis →</button>
+        <span style="font:500 13px Inter,sans-serif;color:var(--ink2)">Nessuna registrazione richiesta</span>
+      </div>
+      <div style="display:flex;gap:28px;margin-top:18px;padding-top:22px;border-top:2px solid var(--border)">
+        <div><div style="font:700 26px Lexend,sans-serif;color:var(--aqua-d)">3000</div><div style="font:500 12.5px Inter,sans-serif;color:var(--ink2)">domande ufficiali</div></div>
+        <div><div style="font:700 26px Lexend,sans-serif;color:var(--aqua-d)">2 min</div><div style="font:500 12.5px Inter,sans-serif;color:var(--ink2)">per il quiz gratuito</div></div>
+        <div><div style="font:700 26px Lexend,sans-serif;color:var(--aqua-d)">0</div><div style="font:500 12.5px Inter,sans-serif;color:var(--ink2)">login richiesti</div></div>
+      </div>
+    </div>
+    <div class="qcard" style="max-width:420px;justify-self:end;position:relative">
+      <span style="position:absolute;top:-14px;right:16px;background:var(--gold);border:2px solid var(--ink);border-radius:100px;padding:5px 11px;font:700 12px Lexend,sans-serif;color:var(--ink);box-shadow:4px 4px 0 var(--ink);transform:rotate(4deg)">Domanda 4/10</span>
+      <span class="qtag">Farmacologia</span>
+      <p class="qtext">Qual è il termine medico per l'infiammazione del fegato?</p>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <div class="opt-btn opt-correct">A · Epatite ✓</div>
+        <div class="opt-btn">B · Nefrite</div>
+        <div class="opt-btn">C · Gastrite</div>
+      </div>
+      <div class="mnemo">
+        <div class="mnemo-tag">🔑 Mnemotecnica</div>
+        <p style="margin:0;font:500 13.5px/1.5 Inter,sans-serif;color:var(--ink)">EPA-tite → gli ePAtociti sono le cellule del fegato: quando "scoppiano", si infiammano.</p>
+      </div>
+    </div>
+  </div>
+
+  <div style="padding:12px 56px 64px">
+    <h2 style="margin:0 0 8px;font:700 30px Lexend,sans-serif;color:var(--ink)">Perché non è l'ennesimo quiz</h2>
+    <p style="margin:0 0 28px;font:400 16px Inter,sans-serif;color:var(--ink2)">La differenza non è quante domande vedi, ma se te le ricordi il giorno dell'esame.</p>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px">
+      <div style="background:oklch(93% .01 90);border:2px solid var(--border);border-radius:20px;padding:26px;opacity:.85">
+        <div style="font:600 11px Inter,sans-serif;letter-spacing:.03em;text-transform:uppercase;color:var(--ink2);margin-bottom:12px">Metodo tradizionale</div>
+        <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:16px">
+          <div style="height:14px;background:oklch(88% .01 90);border-radius:4px;width:100%"></div>
+          <div style="height:14px;background:oklch(88% .01 90);border-radius:4px;width:92%"></div>
+          <div style="height:14px;background:oklch(88% .01 90);border-radius:4px;width:96%"></div>
+          <div style="height:14px;background:oklch(88% .01 90);border-radius:4px;width:80%"></div>
+        </div>
+        <p style="margin:0;font:400 15px/1.5 Inter,sans-serif;color:var(--ink2)">Un muro di 3000 domande uguali, da rileggere all'infinito sperando che restino in testa.</p>
+      </div>
+      <div class="qcard" style="padding:26px">
+        <div style="font:700 11px Inter,sans-serif;letter-spacing:.03em;text-transform:uppercase;color:var(--aqua-d);margin-bottom:12px">Con Deer</div>
+        <div class="mnemo" style="margin-top:0;margin-bottom:16px">
+          <div class="mnemo-tag">🔑 Mnemotecnica dedicata</div>
+          <p style="margin:0;font:500 13.5px/1.5 Inter,sans-serif;color:var(--ink)">Ogni domanda diventa un'immagine o un'associazione che si fissa in pochi secondi.</p>
+        </div>
+        <p style="margin:0;font:400 15px/1.5 Inter,sans-serif;color:var(--ink2)">Non studi di più: ricordi meglio.</p>
+      </div>
+    </div>
+  </div>
+
+  <div style="background:var(--ink);padding:16px 56px;display:flex;align-items:center;justify-content:space-between">
+    <span style="font:500 13px Inter,sans-serif;color:oklch(85% .02 90)">Deer — mnemotecniche per il concorso farmacie</span>
+    <div style="display:flex;gap:20px">
+      <span style="font:500 13px Inter,sans-serif;color:oklch(85% .02 90)">Privacy</span>
+      <span style="font:500 13px Inter,sans-serif;color:oklch(85% .02 90)">Termini</span>
+    </div>
+  </div>
+</div>
+</div>
+
+<div class="dv-opt" id="3b">
+<div class="dv-olabel"><a class="dv-oid" href="#3b">3b</a>Mobile — stessa struttura, stack verticale</div>
+<div class="dv-card" style="width:390px">
+  <div style="padding:14px 20px;border-bottom:2px solid var(--ink);display:flex;align-items:center;justify-content:space-between">
+    <div style="display:flex;align-items:center;gap:8px"><div class="logo-mark"></div><span class="wordmark">Deer</span></div>
+    <span class="qtag" style="padding:5px 10px;font-size:9.5px">Farmacie</span>
+  </div>
+  <div style="padding:26px 22px;display:flex;flex-direction:column;gap:16px">
+    <span class="qtag" style="width:fit-content">Concorso pubblico farmacie</span>
+    <h1 style="margin:0;font:700 28px/1.16 Lexend,sans-serif;color:var(--ink)">La strada più veloce per vincere la farmacia.</h1>
+    <p style="margin:0;font:400 15px/1.5 Inter,sans-serif;color:var(--ink2)">3000 domande ufficiali. Le ricordi con la mnemotecnica, non le rileggi all'infinito.</p>
+    <button class="btn-cta" style="width:100%">Prova 10 domande gratis →</button>
+    <span style="font:500 12px Inter,sans-serif;color:var(--ink2);text-align:center">Nessuna registrazione richiesta</span>
+    <div style="display:flex;justify-content:space-between;margin-top:6px;padding-top:16px;border-top:2px solid var(--border)">
+      <div><div style="font:700 20px Lexend,sans-serif;color:var(--aqua-d)">3000</div><div style="font:500 11px Inter,sans-serif;color:var(--ink2)">domande</div></div>
+      <div><div style="font:700 20px Lexend,sans-serif;color:var(--aqua-d)">2 min</div><div style="font:500 11px Inter,sans-serif;color:var(--ink2)">quiz gratis</div></div>
+      <div><div style="font:700 20px Lexend,sans-serif;color:var(--aqua-d)">0</div><div style="font:500 11px Inter,sans-serif;color:var(--ink2)">login</div></div>
+    </div>
+    <div class="qcard" style="margin-top:8px">
+      <span class="qtag">Domanda 4 di 10</span>
+      <p class="qtext">Qual è il termine medico per l'infiammazione del fegato?</p>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <div class="opt-btn opt-correct">A · Epatite ✓</div>
+        <div class="opt-btn">B · Nefrite</div>
+        <div class="opt-btn">C · Gastrite</div>
+      </div>
+      <div class="mnemo">
+        <div class="mnemo-tag">🔑 Mnemotecnica</div>
+        <p style="margin:0;font:500 13.5px/1.5 Inter,sans-serif;color:var(--ink)">EPA-tite → gli ePAtociti sono le cellule del fegato: quando "scoppiano", si infiammano.</p>
+      </div>
+    </div>
+    <div style="margin-top:14px">
+      <h2 style="margin:0 0 6px;font:700 20px Lexend,sans-serif;color:var(--ink)">Perché non è l'ennesimo quiz</h2>
+      <p style="margin:0 0 16px;font:400 14px Inter,sans-serif;color:var(--ink2)">Non conta quante domande vedi, ma se te le ricordi il giorno dell'esame.</p>
+      <div style="display:flex;flex-direction:column;gap:14px">
+        <div style="background:oklch(93% .01 90);border:2px solid var(--border);border-radius:20px;padding:18px;opacity:.85">
+          <div style="font:600 10.5px Inter,sans-serif;letter-spacing:.03em;text-transform:uppercase;color:var(--ink2);margin-bottom:10px">Metodo tradizionale</div>
+          <div style="display:flex;flex-direction:column;gap:6px;margin-bottom:12px">
+            <div style="height:11px;background:oklch(88% .01 90);border-radius:4px;width:100%"></div>
+            <div style="height:11px;background:oklch(88% .01 90);border-radius:4px;width:88%"></div>
+            <div style="height:11px;background:oklch(88% .01 90);border-radius:4px;width:94%"></div>
+          </div>
+          <p style="margin:0;font:400 13.5px/1.5 Inter,sans-serif;color:var(--ink2)">Un muro di domande uguali da rileggere all'infinito.</p>
+        </div>
+        <div class="qcard" style="padding:18px">
+          <div style="font:700 10.5px Inter,sans-serif;letter-spacing:.03em;text-transform:uppercase;color:var(--aqua-d);margin-bottom:10px">Con Deer</div>
+          <div class="mnemo" style="margin-top:0;margin-bottom:12px">
+            <div class="mnemo-tag">🔑 Mnemotecnica dedicata</div>
+            <p style="margin:0;font:500 13px/1.5 Inter,sans-serif;color:var(--ink)">Diventa un'immagine che si fissa in pochi secondi.</p>
+          </div>
+          <p style="margin:0;font:400 13.5px/1.5 Inter,sans-serif;color:var(--ink2)">Non studi di più: ricordi meglio.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div style="background:var(--ink);padding:16px 22px;display:flex;flex-direction:column;gap:8px;align-items:center">
+    <span style="font:500 12px Inter,sans-serif;color:oklch(85% .02 90)">Deer — mnemotecniche per il concorso farmacie</span>
+    <div style="display:flex;gap:18px">
+      <span style="font:500 12px Inter,sans-serif;color:oklch(85% .02 90)">Privacy</span>
+      <span style="font:500 12px Inter,sans-serif;color:oklch(85% .02 90)">Termini</span>
+    </div>
+  </div>
+</div>
+</div>
+
+</div>
+<p class="dv-next">Ripreso da brumpatenti.it: header sticky con CTA pill, hero con trust-bar di numeri sotto il CTA, comparativa a due colonne, footer scuro a fascia sottile. Dimmi se procedo a sviluppare la pagina intera da <a class="dv-oid" href="#3a">3a</a>/<a class="dv-oid" href="#3b">3b</a></p>
+</section>
+<section class="dv-turn" id="t2">
+<div class="dv-thd"><a class="dv-tid" href="#t2">2</a><span class="dv-tname">Versione desktop delle stesse 3 direzioni</span></div>
+<div class="dv-opts">
+
+<div class="dv-opt" id="2a">
+<div class="dv-olabel"><a class="dv-oid" href="#2a">2a</a>Desktop di <a class="dv-oid" href="#1a">1a</a> — split classico</div>
+<div class="dv-card" style="width:1280px">
+  <div style="padding:28px 64px;display:flex;align-items:center;justify-content:space-between">
+    <div style="display:flex;align-items:center;gap:8px"><div class="logo-mark"></div><span class="wordmark">Deer</span></div>
+  </div>
+  <div style="padding:20px 64px 80px;display:grid;grid-template-columns:1.1fr 1fr;gap:64px;align-items:center">
+    <div style="display:flex;flex-direction:column;gap:20px">
+      <h1 style="margin:0;font:700 52px/1.12 Lexend,sans-serif;color:var(--ink)">La strada più veloce per vincere la farmacia.</h1>
+      <p style="margin:0;font:400 19px/1.5 Inter,sans-serif;color:var(--ink2);max-width:460px">3000 domande ufficiali. Le ricordi con la mnemotecnica, non le rileggi all'infinito.</p>
+      <div style="display:flex;align-items:center;gap:16px;margin-top:8px">
+        <button class="btn-cta" style="padding:18px 32px;font-size:18px">Prova 10 domande gratis →</button>
+        <span style="font:500 13px Inter,sans-serif;color:var(--ink2)">Nessuna registrazione richiesta</span>
+      </div>
+    </div>
+    <div class="qcard" style="max-width:420px;justify-self:end">
+      <span class="qtag">Domanda 4 di 10</span>
+      <p class="qtext">Qual è il termine medico per l'infiammazione del fegato?</p>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <div class="opt-btn opt-correct">A · Epatite ✓</div>
+        <div class="opt-btn">B · Nefrite</div>
+        <div class="opt-btn">C · Gastrite</div>
+      </div>
+      <div class="mnemo">
+        <div class="mnemo-tag">🔑 Mnemotecnica</div>
+        <p style="margin:0;font:500 13.5px/1.5 Inter,sans-serif;color:var(--ink)">EPA-tite → gli ePAtociti sono le cellule del fegato: quando "scoppiano", si infiammano.</p>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<div class="dv-opt" id="2b">
+<div class="dv-olabel"><a class="dv-oid" href="#2b">2b</a>Desktop di <a class="dv-oid" href="#1b">1b</a> — badge & numeri</div>
+<div class="dv-card" style="width:1280px">
+  <div style="padding:28px 64px;display:flex;align-items:center;justify-content:space-between">
+    <div style="display:flex;align-items:center;gap:8px"><div class="logo-mark"></div><span class="wordmark">Deer</span></div>
+    <div style="display:flex;gap:10px">
+      <span class="chip" style="transform:rotate(-3deg)">🦌 3000 domande</span>
+      <span class="chip" style="transform:rotate(2deg)">✅ 0 login</span>
+    </div>
+  </div>
+  <div style="padding:20px 64px 80px;display:grid;grid-template-columns:1.1fr 1fr;gap:64px;align-items:center">
+    <div style="display:flex;flex-direction:column;gap:20px">
+      <h1 style="margin:0;font:700 50px/1.12 Lexend,sans-serif;color:var(--ink)">La strada più veloce per vincere la farmacia.</h1>
+      <p style="margin:0;font:400 19px/1.5 Inter,sans-serif;color:var(--ink2);max-width:460px">Non un altro quiz. Un metodo per ricordare le domande ufficiali in pochi secondi.</p>
+      <button class="btn-cta" style="padding:18px 32px;font-size:18px;width:fit-content;margin-top:8px">Prova 10 domande gratis →</button>
+    </div>
+    <div class="qcard" style="max-width:420px;justify-self:end;position:relative">
+      <span style="position:absolute;top:-14px;right:16px;background:var(--aqua);border:2px solid var(--ink);border-radius:100px;padding:5px 11px;font:700 12px Lexend,sans-serif;color:var(--ink);box-shadow:4px 4px 0 var(--ink);transform:rotate(4deg)">7/10 finora!</span>
+      <span class="qtag">Domanda 4 di 10</span>
+      <p class="qtext">Qual è il termine medico per l'infiammazione del fegato?</p>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <div class="opt-btn opt-correct">A · Epatite ✓</div>
+        <div class="opt-btn">B · Nefrite</div>
+        <div class="opt-btn">C · Gastrite</div>
+      </div>
+      <div class="mnemo">
+        <div class="mnemo-tag">🔑 Mnemotecnica</div>
+        <p style="margin:0;font:500 13.5px/1.5 Inter,sans-serif;color:var(--ink)">EPA-tite → gli ePAtociti sono le cellule del fegato: quando "scoppiano", si infiammano.</p>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<div class="dv-opt" id="2c">
+<div class="dv-olabel"><a class="dv-oid" href="#2c">2c</a>Desktop di <a class="dv-oid" href="#1c">1c</a> — il quiz è l'hero</div>
+<div class="dv-card" style="width:1280px">
+  <div style="padding:28px 64px;display:flex;align-items:center;justify-content:space-between">
+    <div style="display:flex;align-items:center;gap:8px"><div class="logo-mark"></div><span class="wordmark">Deer</span></div>
+  </div>
+  <div style="padding:20px 64px 80px;display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center">
+    <h1 style="margin:0;font:700 44px/1.2 Lexend,sans-serif;color:var(--ink)">Le 3000 domande ufficiali, trasformate in cose che ricordi.</h1>
+    <div class="qcard" style="max-width:440px">
+      <span class="qtag">Anteprima</span>
+      <p class="qtext">Qual è il termine medico per l'infiammazione del fegato?</p>
+      <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:14px">
+        <div class="opt-btn opt-correct">A · Epatite ✓</div>
+        <div class="opt-btn">B · Nefrite</div>
+      </div>
+      <div class="mnemo">
+        <div class="mnemo-tag">🔑 Si sblocca dopo la risposta</div>
+        <p style="margin:0;font:500 13.5px/1.5 Inter,sans-serif;color:var(--ink)">EPA-tite → gli ePAtociti sono le cellule del fegato: quando "scoppiano", si infiammano.</p>
+      </div>
+      <button class="btn-cta" style="width:100%;margin-top:14px">Prova 10 domande gratis →</button>
+    </div>
+  </div>
+</div>
+</div>
+
+</div>
+<p class="dv-next">Prova: "sviluppa tutta la pagina a partire da <a class="dv-oid" href="#2a">2a</a>" · "unisci i badge di <a class="dv-oid" href="#2b">2b</a> con il layout di <a class="dv-oid" href="#2a">2a</a>"</p>
+</section>
+<section class="dv-turn" id="t1">
+<div class="dv-thd"><a class="dv-tid" href="#t1">1</a><span class="dv-tname">Hero + anteprima quiz — 3 direzioni (mobile-first, 390px)</span></div>
+<div class="dv-opts">
+
+<div class="dv-opt" id="1a">
+<div class="dv-olabel"><a class="dv-oid" href="#1a">1a</a>Essenziale — stack diretto</div>
+<div class="dv-card" style="width:390px">
+  <div style="padding:20px 22px 28px;display:flex;flex-direction:column;gap:18px">
+    <div style="display:flex;align-items:center;gap:8px"><div class="logo-mark"></div><span class="wordmark">Deer</span></div>
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <h1 style="margin:0;font:700 30px/1.15 Lexend,sans-serif;color:var(--ink)">La strada più veloce per vincere la farmacia.</h1>
+      <p style="margin:0;font:400 15px/1.5 Inter,sans-serif;color:var(--ink2)">3000 domande ufficiali. Le ricordi con la mnemotecnica, non le rileggi all'infinito.</p>
+    </div>
+    <button class="btn-cta" style="width:100%">Prova 10 domande gratis →</button>
+    <span style="font:500 12px Inter,sans-serif;color:var(--ink2);text-align:center">Nessuna registrazione richiesta</span>
+    <div class="qcard" style="margin-top:6px">
+      <span class="qtag">Domanda 4 di 10</span>
+      <p class="qtext">Qual è il termine medico per l'infiammazione del fegato?</p>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <div class="opt-btn opt-correct">A · Epatite ✓</div>
+        <div class="opt-btn">B · Nefrite</div>
+        <div class="opt-btn">C · Gastrite</div>
+      </div>
+      <div class="mnemo">
+        <div class="mnemo-tag">🔑 Mnemotecnica</div>
+        <p style="margin:0;font:500 13.5px/1.5 Inter,sans-serif;color:var(--ink)">EPA-tite → gli ePAtociti sono le cellule del fegato: quando "scoppiano", si infiammano.</p>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<div class="dv-opt" id="1b">
+<div class="dv-olabel"><a class="dv-oid" href="#1b">1b</a>Badge & numeri — prova sociale sticker</div>
+<div class="dv-card" style="width:390px">
+  <div style="padding:20px 22px 28px;display:flex;flex-direction:column;gap:16px;position:relative">
+    <div style="display:flex;align-items:center;justify-content:space-between">
+      <div style="display:flex;align-items:center;gap:8px"><div class="logo-mark"></div><span class="wordmark">Deer</span></div>
+      <span class="chip" style="transform:rotate(-4deg)">🦌 3000 domande</span>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:10px;margin-top:4px">
+      <h1 style="margin:0;font:700 29px/1.15 Lexend,sans-serif;color:var(--ink)">La strada più veloce per vincere la farmacia.</h1>
+      <p style="margin:0;font:400 15px/1.5 Inter,sans-serif;color:var(--ink2)">Non un altro quiz. Un metodo per ricordare le domande ufficiali in pochi secondi.</p>
+    </div>
+    <div style="display:flex;gap:8px">
+      <span class="chip" style="transform:rotate(2deg)">✅ 0 login</span>
+      <span class="chip" style="transform:rotate(-3deg)">⚡ 2 min</span>
+    </div>
+    <button class="btn-cta" style="width:100%;margin-top:4px">Prova 10 domande gratis →</button>
+    <div class="qcard" style="margin-top:8px;position:relative">
+      <span style="position:absolute;top:-14px;right:16px;background:var(--aqua);border:2px solid var(--ink);border-radius:100px;padding:5px 11px;font:700 12px Lexend,sans-serif;color:var(--ink);box-shadow:4px 4px 0 var(--ink);transform:rotate(4deg)">7/10 finora!</span>
+      <span class="qtag">Domanda 4 di 10</span>
+      <p class="qtext">Qual è il termine medico per l'infiammazione del fegato?</p>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <div class="opt-btn opt-correct">A · Epatite ✓</div>
+        <div class="opt-btn">B · Nefrite</div>
+        <div class="opt-btn">C · Gastrite</div>
+      </div>
+      <div class="mnemo">
+        <div class="mnemo-tag">🔑 Mnemotecnica</div>
+        <p style="margin:0;font:500 13.5px/1.5 Inter,sans-serif;color:var(--ink)">EPA-tite → gli ePAtociti sono le cellule del fegato: quando "scoppiano", si infiammano.</p>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<div class="dv-opt" id="1c">
+<div class="dv-olabel"><a class="dv-oid" href="#1c">1c</a>Il quiz è l'hero — mostra, non racconta</div>
+<div class="dv-card" style="width:390px">
+  <div style="padding:20px 22px 28px;display:flex;flex-direction:column;gap:16px">
+    <div style="display:flex;align-items:center;gap:8px"><div class="logo-mark"></div><span class="wordmark">Deer</span></div>
+    <h1 style="margin:0;font:700 26px/1.2 Lexend,sans-serif;color:var(--ink)">Le 3000 domande ufficiali, trasformate in cose che ricordi.</h1>
+    <div class="qcard">
+      <span class="qtag">Anteprima</span>
+      <p class="qtext">Qual è il termine medico per l'infiammazione del fegato?</p>
+      <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:14px">
+        <div class="opt-btn opt-correct">A · Epatite ✓</div>
+        <div class="opt-btn">B · Nefrite</div>
+      </div>
+      <div class="mnemo">
+        <div class="mnemo-tag">🔑 Si sblocca dopo la risposta</div>
+        <p style="margin:0;font:500 13.5px/1.5 Inter,sans-serif;color:var(--ink)">EPA-tite → gli ePAtociti sono le cellule del fegato: quando "scoppiano", si infiammano.</p>
+      </div>
+    </div>
+    <button class="btn-cta" style="width:100%">Prova 10 domande gratis →</button>
+    <span style="font:500 12px Inter,sans-serif;color:var(--ink2);text-align:center">Senza login. 2 minuti.</span>
+  </div>
+</div>
+</div>
+
+</div>
+<p class="dv-next">Prova: "più energico come <a class="dv-oid" href="#1b">1b</a> ma senza il badge 7/10" · "sviluppa tutta la pagina a partire da <a class="dv-oid" href="#1a">1a</a>" · "voglio una quarta direzione più visiva"</p>
+</section>
+
+</x-dc>
+</body>
+</html>
