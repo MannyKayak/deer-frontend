@@ -174,6 +174,12 @@ components:
     borderColor: '{colors.border-neutral}'
     radius: '{rounded.sm}'
     padding: '13px 14px'
+  answer-option-selected:
+    background: '{colors.primary}/10'
+    text: '{colors.text-primary}'
+    font: '{typography.option-correct}'
+    borderColor: '{colors.primary}'
+    radius: '{rounded.sm}'
   answer-option-correct:
     background: '{colors.correct-bg}'
     text: '{colors.text-primary}'
@@ -181,6 +187,13 @@ components:
     borderColor: '{colors.correct}'
     radius: '{rounded.sm}'
     shadow: '5px 5px 0 {colors.correct}'
+  answer-option-incorrect:
+    background: '{colors.error}/10'
+    text: '{colors.text-primary}'
+    font: '{typography.option-correct}'
+    borderColor: '{colors.error}'
+    radius: '{rounded.sm}'
+    shadow: '5px 5px 0 {colors.error}'
   mnemo-box:
     background: '{colors.mnemo-bg}'
     borderWidth: 2px
@@ -260,7 +273,7 @@ Two radii only, deliberately: `{rounded.sm}` (10px) for anything a user reads or
 - **Button — primary (`button-primary`)** — the only button style in this slice (also doubles as the in-quiz "Conferma" advance button). Pill radius, petroleum fill, white text, ink snap shadow. Compact variant (smaller padding, shorter shadow throw) used in the sticky header, arrow-less; full variant in the hero and quiz carries the `→` arrow.
 - **Category tag (`category-tag`)** — pill, aquamarine-tinted background, petroleum text and border, uppercase. Appears on the hero eyebrow, the quiz card, and the static preview card — same component everywhere.
 - **Quiz card (`quiz-card`)** — the one card the whole product revolves around: white, 3px ink border, 20px radius, heaviest shadow in the system (7px). Used identically for the real quiz (FR-5), the static landing preview (FR-4), and the "Con Deer" comparison column — repetition is intentional, it's the same object doing different jobs.
-- **Answer option (`answer-option` / `answer-option-correct`)** — full-width, stacked vertical, left-aligned text. Default state: white, thin neutral border, no shadow — deliberately quiet until an answer lands. Correct state (applied to the correct option regardless of what the user tapped, per FR-6): green tint background, green border, green snap shadow, bold text. This is the only interactive-state change in the v1 quiz — there is no separate "wrong, your pick" style; the wrong pick simply stays in its default state next to the highlighted correct one.
+- **Answer option (`answer-option` / `answer-option-selected` / `answer-option-correct` / `answer-option-incorrect`)** — full-width, stacked vertical, left-aligned text. Default state: white, thin neutral border, no shadow — deliberately quiet until an answer lands. **Revised 2026-08-02** (supersedes the original FR-6 reading below): tapping an option only sets `answer-option-selected` (primary-color border, low-opacity primary background) — no correctness shown yet, and the pick is changeable. Only on "Conferma" does the *selected* option flip to `answer-option-correct` (green tint/border/snap shadow, bold, ✓) or `answer-option-incorrect` (error-color tint/border/snap shadow, bold, ✗); the unselected correct option is never separately highlighted, so a wrong pick reads as genuinely wrong instead of the UI showing the answer regardless of what was tapped.
 - **Mnemo box (`mnemo-box`)** — gold-tinted, gold-bordered, appears below the options after the tap (instant, no transition — see EXPERIENCE.md Interaction Primitives). Tagged `🔑 Mnemotecnica` in the small caps mnemo-tag style.
 - **Floating badge (`floating-badge`)** — small rotated gold pill anchored to a card corner (e.g. the landing hero's static "Domanda 4/10" preview). Decorative/illustrative use on the landing only — the real in-quiz progress indicator is the plain `category-tag`-style "Domanda N di 10" pill, not the rotated floating badge.
 - **Comparison columns (`comparison-traditional` / `comparison-deer`)** — the rhetorical core of the landing (FR-2). Traditional column deliberately underdesigned: muted flat background, skeleton placeholder lines standing in for "a wall of identical questions," 85% opacity. Deer column is a full `quiz-card`, bordered and shadowed — the contrast in visual weight between the two columns *is* the argument.

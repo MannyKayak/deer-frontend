@@ -1,26 +1,35 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+  /* Fonts — Inter is the workhorse default (body/options/tags), Lexend opts in for headline-weight moments */
+  --font-sans: var(--font-inter-raw);
+  --font-lexend: var(--font-lexend-raw);
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  /* Colors — DESIGN.md palette */
+  --color-primary: #24c5ab;
+  --color-primary-dark: #006670;
+  --color-on-primary: #ffffff;
+  --color-accent-gold: #e0af3b;
+  --color-correct: #43a84c;
+  --color-correct-bg: #d0f3d0;
+  --color-error: #e54151;
+  --color-surface-base: #faf5e6;
+  --color-surface-raised: #ffffff;
+  --color-surface-muted: #eae8e0;
+  --color-surface-muted-line: #dad7d0;
+  --color-qtag-bg: #c3e7de;
+  --color-mnemo-bg: #f4ead5;
+  --color-text-primary: #221812;
+  --color-text-secondary: #5f5651;
+  --color-border-neutral: #e7dbd5;
+  --color-footer-bg: #221812;
+  --color-footer-text: #d3cdbf;
+
+  /* Radii — DESIGN.md uses exactly two radii for cards/inner elements, plus full-pill; override the default scale */
+  --radius-sm: 10px;
+  --radius-md: 20px;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans);
 }

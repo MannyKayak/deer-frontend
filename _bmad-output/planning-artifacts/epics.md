@@ -108,34 +108,6 @@ UX-DR17: Banned patterns for this slice (explicitly out of scope, present in ful
 
 UX-DR18: Voice/tone microcopy rules — exact copy strings for hero, CTA, microcopy, comparison section titles/columns, footer text (see PRD §4 and EXPERIENCE.md Voice and Tone do/don't table); direct second-person tone, no exclamation-heavy hype or gamified encouragement.
 
-### FR Coverage Map
-
-| Requirement | Epic.Story |
-| --- | --- |
-| FR-1 | 1.2 |
-| FR-2 | 1.3 |
-| FR-3 | 1.4 |
-| FR-4 | 1.5 |
-| FR-5 | 2.2 |
-| FR-6 | 2.3 |
-| FR-7 | 2.2, 2.3 |
-| FR-8 | 2.4 |
-| FR-9 | 3.2 |
-| FR-10 | 3.3 |
-| FR-11 | 3.4 |
-| FR-12 | 1.2, 2.2, 3.4 (event wiring per surface) |
-| NFR-1 | 2.3, 3.2 |
-| NFR-2 | 1.1 (Server-first foundation), all UI stories |
-| NFR-3 | 3.4 |
-| UX-DR1 (design tokens) | 1.1 |
-| UX-DR2-UX-DR12 (component library) | 1.1, and consumed across all UI stories |
-| UX-DR13 (accessibility floor) | 2.3, 3.2, 3.3 |
-| UX-DR14 (responsive) | 1.2, 1.3, 1.5 |
-| UX-DR15 (interaction primitives) | 1.5, 2.2, 2.3 |
-| UX-DR16 (state patterns) | 2.2, 3.4 |
-| UX-DR17 (banned patterns) | applies as constraint across Epic 2 |
-| UX-DR18 (voice/tone/copy) | 1.2, 1.3, 1.4 |
-
 ## Epic List
 
 ### Epic 1: Landing Page & Foundation
@@ -261,20 +233,22 @@ So that I can engage with the quiz without feeling overwhelmed or needing to log
 ### Story 2.2: Answer Reveal, Mnemonic Unlock & Advance
 
 As a visitor,
-I want to immediately see the correct answer and its mnemonic after I pick an option,
-So that I experience the memory technique instead of just reading about it.
+I want to pick an answer and confirm it before finding out if I was right,
+So that I actually commit to a guess (and can be wrong) instead of the system giving away the answer the moment I touch any option.
 
 **Acceptance Criteria:**
 
 **Given** Story 2.1's quiz flow is in place and a question is displayed
 **When** the visitor taps any answer option
-**Then** the option matching the correct answer instantly switches to `answer-option-correct` (green tint background, green border, green snap shadow, bold text) regardless of which option was tapped — the tapped option itself gets no separate "your answer" styling
-**And** the correct/incorrect state is never conveyed by color alone — the correct option is also marked with a non-color indicator (✓ mark / bold weight) per NFR-1
+**Then** only the tapped option switches to a neutral `answer-option-selected` state (primary-color border, low-opacity primary background) — no correct/incorrect signal is shown yet, and the visitor may tap a different option to change their pick any number of times before confirming
+**And** a "Conferma" `button-primary` becomes available once an option is selected
+**When** the visitor taps "Conferma"
+**Then** the answer options lock (no longer tappable) and the selected option instantly switches to `answer-option-correct` (green tint, green border, green snap shadow, bold text, ✓ mark) if it matches the correct answer, or to `answer-option-incorrect` (error-color tint, error-color border, error-color snap shadow, bold text, ✗ mark) if it does not — the correct option is **not** separately highlighted when the visitor picked wrong, so the visitor can genuinely get a question wrong
+**And** the correct/incorrect state is never conveyed by color alone — each state carries a non-color indicator (✓/✗ mark / bold weight) per NFR-1
 **And** a `mnemo-box` appears instantly below the options (no animation/fade/slide), tagged "🔑 Mnemotecnica", with the mnemonic text for that question
-**And** a "Conferma" `button-primary` becomes available and is the only way to advance — there is no auto-advance and no swipe/keyboard-shortcut path beyond standard Tab/Enter focus activation
-**And** tapping "Conferma" advances to the next question (or to the results screen after question 10), preserving previously given answers in the same in-memory state
+**And** the "Conferma" button's label changes to "Continua" once the answer is confirmed/revealed, and tapping it advances to the next question (or to the results screen after question 10), preserving previously given answers in the same in-memory state
 **And** at no point between question 1 and the final screen does any network write occur; a page refresh at any point during the quiz returns the visitor to question 1 with no progress restored (FR-7)
-**And** all interactive elements (answer options, "Conferma") are reachable and operable by keyboard alone with a visible custom focus state (not the default browser outline), per UX-DR13
+**And** all interactive elements (answer options, "Conferma"/"Continua") are reachable and operable by keyboard alone with a visible custom focus state (not the default browser outline), per UX-DR13
 
 ### Story 2.3: Results Screen
 
