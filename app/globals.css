@@ -1,14 +1,15 @@
 @import "tailwindcss";
 
 @theme inline {
-  /* Fonts — Inter is the workhorse default (body/options/tags), Lexend opts in for headline-weight moments */
+  /* Fonts — Inter is the workhorse default (body/options/tags/questions), Fredoka for headlines/CTA/stats/wordmark */
   --font-sans: var(--font-inter-raw);
   --font-lexend: var(--font-lexend-raw);
+  --font-fredoka: var(--font-fredoka-raw);
 
   /* Colors — DESIGN.md palette */
   --color-primary: #24c5ab;
   --color-primary-dark: #006670;
-  --color-on-primary: #ffffff;
+  --color-on-primary: #221812;
   --color-accent-gold: #e0af3b;
   --color-correct: #43a84c;
   --color-correct-bg: #d0f3d0;

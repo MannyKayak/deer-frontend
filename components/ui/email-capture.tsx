@@ -35,7 +35,7 @@ export function EmailCapture({ email, onEmailChange, consent, onConsentChange }:
           aria-invalid={isInvalid}
           aria-describedby={isInvalid ? errorId : undefined}
           placeholder="tu@esempio.it"
-          className={`w-full rounded-sm border-2 bg-surface-raised px-[14px] py-[13px] font-sans text-[15px] text-text-primary outline-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-text-primary ${
+          className={`w-full rounded-sm border-2 bg-surface-raised px-[14px] py-[13px] font-sans text-[15px] text-text-primary outline-hidden focus-visible:outline-solid focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-text-primary ${
             isInvalid ? "border-error" : "border-border-neutral"
           }`}
         />
@@ -51,10 +51,10 @@ export function EmailCapture({ email, onEmailChange, consent, onConsentChange }:
           type="checkbox"
           checked={consent}
           onChange={(event) => onConsentChange(event.target.checked)}
-          className="mt-0.5 h-4 w-4 shrink-0 accent-primary-dark outline-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-text-primary"
+          className="mt-0.5 h-4 w-4 shrink-0 accent-primary-dark outline-hidden focus-visible:outline-solid focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-text-primary"
         />
         <span className="font-sans text-[13px] leading-[1.4] text-text-secondary">
-          {/* [ASSUMPTION: placeholder consent copy pending legal text — see PRD OQ-3] */}
+          {/* [ASSUMPTION: placeholder consent copy pending legal text — see spec OQ-3, Iubenda step]. */}
           Acconsento a ricevere aggiornamenti sul lancio via email. Puoi ritirare il consenso in qualsiasi momento.
         </span>
       </label>

@@ -1,9 +1,14 @@
 import type { Metadata } from "next";
-import { Lexend, Inter } from "next/font/google";
+import { Fredoka, Lexend, Inter } from "next/font/google";
 import "./globals.css";
 
 const lexend = Lexend({
   variable: "--font-lexend-raw",
+  subsets: ["latin"],
+});
+
+const fredoka = Fredoka({
+  variable: "--font-fredoka-raw",
   subsets: ["latin"],
 });
 
@@ -13,7 +18,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Deer — La strada più veloce per vincere la farmacia",
+  title: "Remindeer — La strada più veloce per vincere la farmacia",
   description:
     "3000 domande ufficiali per il concorso pubblico farmacie. Le ricordi con la mnemotecnica, non le rileggi all'infinito.",
 };
@@ -26,7 +31,7 @@ export default function RootLayout({
   return (
     <html
       lang="it"
-      className={`${lexend.variable} ${inter.variable} h-full antialiased`}
+      className={`${fredoka.variable} ${lexend.variable} ${inter.variable} h-full antialiased`}
     >
       <body className="flex min-h-full flex-col bg-surface-base text-text-primary">
         {children}
