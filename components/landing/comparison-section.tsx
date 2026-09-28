@@ -1,5 +1,5 @@
 import { ComparisonTraditional } from "@/components/landing/comparison-traditional";
-import { ComparisonDeer } from "@/components/landing/comparison-deer";
+import { ComparisonRemindeer } from "@/components/landing/comparison-remindeer";
 
 export function ComparisonSection() {
   return (
@@ -19,7 +19,7 @@ export function ComparisonSection() {
           <ComparisonTraditional />
         </div>
         <div className="xl:flex-1">
-          <ComparisonDeer />
+          <ComparisonRemindeer />
         </div>
       </div>
     </section>
