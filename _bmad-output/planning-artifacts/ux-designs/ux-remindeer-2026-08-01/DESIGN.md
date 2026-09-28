@@ -2,14 +2,14 @@
 status: final
 updated: 2026-08-01
 sources:
-  - _bmad-output/planning-artifacts/prds/prd-deer-2026-08-01/prd.md
-  - _bmad-output/planning-artifacts/prds/prd-deer-2026-08-01/addendum.md
-name: Deer
+  - _bmad-output/planning-artifacts/prds/prd-remindeer-2026-08-01/prd.md
+  - _bmad-output/planning-artifacts/prds/prd-remindeer-2026-08-01/addendum.md
+name: Remindeer
 description: Direct, no-fluff exam-prep brand for pharmacy-licensing candidates. Sticker-outline visual language — bold ink borders, flat "snap" shadows, generous radii — built to make a mnemonic feel like a small reward, not a study aid.
 colors:
   primary: '#24C5AB'
   primary-dark: '#006670'
-  on-primary: '#FFFFFF'
+  on-primary: '#221812'
   accent-gold: '#E0AF3B'
   correct: '#43A84C'
   correct-bg: '#D0F3D0'
@@ -27,47 +27,47 @@ colors:
   footer-text: '#D3CDBF'
 typography:
   wordmark:
-    fontFamily: Lexend
+    fontFamily: Fredoka
     fontSize: 20px
     fontWeight: '600'
   headline-hero:
-    fontFamily: Lexend
+    fontFamily: Fredoka
     fontSize: 52px
     fontWeight: '700'
     lineHeight: '1.12'
   headline-hero-mobile:
-    fontFamily: Lexend
+    fontFamily: Fredoka
     fontSize: 30px
     fontWeight: '700'
     lineHeight: '1.15'
   headline-section:
-    fontFamily: Lexend
+    fontFamily: Fredoka
     fontSize: 30px
     fontWeight: '700'
     lineHeight: '1.2'
   headline-section-mobile:
-    fontFamily: Lexend
+    fontFamily: Fredoka
     fontSize: 20px
     fontWeight: '700'
     lineHeight: '1.2'
   cta:
-    fontFamily: Lexend
+    fontFamily: Fredoka
     fontSize: 17px
     fontWeight: '600'
   cta-compact:
-    fontFamily: Lexend
+    fontFamily: Fredoka
     fontSize: 14px
     fontWeight: '600'
   stat-number:
-    fontFamily: Lexend
+    fontFamily: Fredoka
     fontSize: 26px
     fontWeight: '700'
   stat-number-mobile:
-    fontFamily: Lexend
+    fontFamily: Fredoka
     fontSize: 20px
     fontWeight: '700'
   question:
-    fontFamily: Lexend
+    fontFamily: Inter
     fontSize: 17px
     fontWeight: '600'
     lineHeight: '1.4'
@@ -133,11 +133,12 @@ spacing:
   margin-desktop: 56px
 components:
   button-primary:
-    background: '{colors.primary-dark}'
+    background: '{colors.primary}'
     text: '{colors.on-primary}'
     font: '{typography.cta}'
-    radius: '{rounded.full}'
-    border: none
+    radius: '{rounded.md}'
+    borderWidth: 2px
+    borderColor: '{colors.text-primary}'
     shadow: '5px 5px 0 {colors.text-primary}'
     shadowCompact: '4px 4px 0 {colors.text-primary}'
     paddingHero: '18px 30px'
@@ -222,7 +223,7 @@ components:
     borderColor: '{colors.border-neutral}'
     radius: '{rounded.md}'
     opacity: 0.85
-  comparison-deer:
+  comparison-remindeer:
     inherits: quiz-card
   footer:
     background: '{colors.footer-bg}'
@@ -232,17 +233,17 @@ components:
 
 ## Brand & Style
 
-Deer talks like a friend who's already passed the exam, not like a study coach. The visual system backs that up: sticker-outline shapes with bold ink-dark borders, flat "snap" shadows (offset, zero blur — nothing soft or glassy), and generous rounding everywhere except the smallest tags. It reads as playful-but-competent — closer to a well-made board game than a school app. Every surface repeats the same rhetorical move as the copy: a muted, deliberately flat "before" next to a bold, bordered, shadowed "after."
+Remindeer talks like a friend who's already passed the exam, not like a study coach. The visual system backs that up: sticker-outline shapes with bold ink-dark borders, flat "snap" shadows (offset, zero blur — nothing soft or glassy), and generous rounding everywhere except the smallest tags. It reads as playful-but-competent — closer to a well-made board game than a school app. Every surface repeats the same rhetorical move as the copy: a muted, deliberately flat "before" next to a bold, bordered, shadowed "after."
 
 ## Colors
 
 - **Aquamarine (`{colors.primary}`)** is the brand color — logo mark, category tags, stat numbers. Energetic without being loud.
-- **Petroleum (`{colors.primary-dark}`)** is the actionable color — every primary CTA. Darker than the brand aquamarine so white CTA text stays comfortably AA-compliant.
+- **Petroleum (`{colors.primary-dark}`)** was the actionable color for `button-primary` until 2026-09-27; superseded by aquamarine + ink border (see Components) for closer alignment with the sticker-outline border language. Still used elsewhere (category-tag text/border).
 - **Gold (`{colors.accent-gold}`)** is reserved for the mnemonic moment — the mnemo box border and the floating "Domanda N/10" badge. It marks "the thing you came here for," never used for CTAs or navigation.
 - **Correct (`{colors.correct}`)** marks the right answer on every attempt, paired with its own tint background (`{colors.correct-bg}`) and a matching-color snap shadow. Never used decoratively.
 - **Error (`{colors.error}`)** is reserved — this v1 slice has no wrong-answer-only state (the correct answer always highlights regardless of tap), but the token exists for future incorrect-state UI in the full product.
 - **Surface base (`{colors.surface-base}`)** is the page canvas, a warm off-white — never pure white, so raised white cards (`{colors.surface-raised}`) read as distinct layers without needing shadows to separate them.
-- **Surface muted (`{colors.surface-muted}` / `{colors.surface-muted-line}`)** is used exclusively for the "traditional method" side of the comparison — deliberately flatter, lower-contrast, borderless-feeling, to visually undersell it against the Deer column.
+- **Surface muted (`{colors.surface-muted}` / `{colors.surface-muted-line}`)** is used exclusively for the "traditional method" side of the comparison — deliberately flatter, lower-contrast, borderless-feeling, to visually undersell it against the Remindeer column.
 - **Ink (`{colors.text-primary}`)** is both the primary text color and the universal border/shadow color — the sticker-outline look comes from nearly everything bordering in this one near-black, not from per-component border colors.
 - **Footer band (`{colors.footer-bg}` / `{colors.footer-text}`)** inverts to full ink with warm off-white text — the one dark surface in an otherwise light system, closing the page like a stamp.
 
@@ -250,7 +251,7 @@ Avoid: gradients, blurred/soft shadows, any color-only correct/incorrect signal 
 
 ## Typography
 
-Lexend carries every moment that should feel like a headline or a number worth noticing: page titles, the CTA, stat numbers, the question text itself, the wordmark. Inter carries everything meant to be read at speed: body copy, answer options, mnemonic text, tags, meta labels — it's the workhorse for the eventual 3000-question backlog, so legibility at small sizes matters more than personality.
+**Revised 2026-09-27**: Fredoka carries every moment that should feel like a headline or a number worth noticing: page titles, the CTA, stat numbers, the wordmark. Inter carries everything meant to be read at speed — body copy, question text, answer options, mnemonic text, tags, meta labels — it's the workhorse for the eventual 3000-question backlog, so legibility at small sizes matters more than personality. (Question text was briefly set to Lexend; corrected back to Inter to match `project-context.md` and the source design-system PDF, which was never revised to say otherwise.)
 
 Two responsive steps only (390px mobile / 1280px desktop reference, per NFR-2) — most type roles ship a `-mobile` variant sized down, not restructured. Category tags, mnemonic tags, and comparison-column labels are always uppercase with `0.03em` tracking; nothing else is.
 
@@ -270,13 +271,13 @@ Two radii only, deliberately: `{rounded.sm}` (10px) for anything a user reads or
 
 ## Components
 
-- **Button — primary (`button-primary`)** — the only button style in this slice (also doubles as the in-quiz "Conferma" advance button). Pill radius, petroleum fill, white text, ink snap shadow. Compact variant (smaller padding, shorter shadow throw) used in the sticky header, arrow-less; full variant in the hero and quiz carries the `→` arrow.
+- **Button — primary (`button-primary`)** — the only button style in this slice (also doubles as the in-quiz "Avanti" advance button, see Story 2.2-REV). **Revised 2026-09-27**: aquamarine fill (`{colors.primary}`, `#24C5AB`), 20px radius (`{rounded.md}`, no longer full pill), 2px ink border added, ink text (`{colors.on-primary}` = `#221812`, ≈8:1 — white on aquamarine failed WCAG AA at ≈2.2:1, changed in code review 2026-09-27), ink snap shadow — closes the one inconsistency where the primary CTA was the only bordered-less sticker-outline surface in the system. Compact variant (smaller padding, shorter shadow throw) used in the sticky header, arrow-less; full variant in the hero and quiz carries the `→` arrow.
 - **Category tag (`category-tag`)** — pill, aquamarine-tinted background, petroleum text and border, uppercase. Appears on the hero eyebrow, the quiz card, and the static preview card — same component everywhere.
-- **Quiz card (`quiz-card`)** — the one card the whole product revolves around: white, 3px ink border, 20px radius, heaviest shadow in the system (7px). Used identically for the real quiz (FR-5), the static landing preview (FR-4), and the "Con Deer" comparison column — repetition is intentional, it's the same object doing different jobs.
+- **Quiz card (`quiz-card`)** — the one card the whole product revolves around: white, 3px ink border, 20px radius, heaviest shadow in the system (7px). Used identically for the real quiz (FR-5), the static landing preview (FR-4), and the "Con Remindeer" comparison column — repetition is intentional, it's the same object doing different jobs.
 - **Answer option (`answer-option` / `answer-option-selected` / `answer-option-correct` / `answer-option-incorrect`)** — full-width, stacked vertical, left-aligned text. Default state: white, thin neutral border, no shadow — deliberately quiet until an answer lands. **Revised 2026-08-02** (supersedes the original FR-6 reading below): tapping an option only sets `answer-option-selected` (primary-color border, low-opacity primary background) — no correctness shown yet, and the pick is changeable. Only on "Conferma" does the *selected* option flip to `answer-option-correct` (green tint/border/snap shadow, bold, ✓) or `answer-option-incorrect` (error-color tint/border/snap shadow, bold, ✗); the unselected correct option is never separately highlighted, so a wrong pick reads as genuinely wrong instead of the UI showing the answer regardless of what was tapped.
 - **Mnemo box (`mnemo-box`)** — gold-tinted, gold-bordered, appears below the options after the tap (instant, no transition — see EXPERIENCE.md Interaction Primitives). Tagged `🔑 Mnemotecnica` in the small caps mnemo-tag style.
 - **Floating badge (`floating-badge`)** — small rotated gold pill anchored to a card corner (e.g. the landing hero's static "Domanda 4/10" preview). Decorative/illustrative use on the landing only — the real in-quiz progress indicator is the plain `category-tag`-style "Domanda N di 10" pill, not the rotated floating badge.
-- **Comparison columns (`comparison-traditional` / `comparison-deer`)** — the rhetorical core of the landing (FR-2). Traditional column deliberately underdesigned: muted flat background, skeleton placeholder lines standing in for "a wall of identical questions," 85% opacity. Deer column is a full `quiz-card`, bordered and shadowed — the contrast in visual weight between the two columns *is* the argument.
+- **Comparison columns (`comparison-traditional` / `comparison-remindeer`)** — the rhetorical core of the landing (FR-2). Traditional column deliberately underdesigned: muted flat background, skeleton placeholder lines standing in for "a wall of identical questions," 85% opacity. Remindeer column is a full `quiz-card`, bordered and shadowed — the contrast in visual weight between the two columns *is* the argument.
 - **Footer (`footer`)** — full-bleed ink band, warm off-white text, no border/shadow (it's the page's base plane, not a floating element).
 - **Logo mark (`logo-mark`)** — placeholder until final logo ships (OQ-2): 26px aquamarine circle, ink border, two small rotated "ear" shapes. Always paired with the `wordmark` type role, never standalone in this slice.
 
@@ -291,4 +292,4 @@ Two radii only, deliberately: `{rounded.sm}` (10px) for anything a user reads or
 | Pair correct/incorrect state with icon or text, never color alone | Rely on green/red alone for state (NFR-1) |
 | Reuse the exact `quiz-card` component everywhere a question-style card appears | Invent a new card style per surface |
 | Two radii only (10px inside cards, 20px for containers), full-pill for free-floating actions | Mix arbitrary corner radii |
-| Keep the traditional-method column visibly flatter/quieter than the Deer column | Let the "before" side compete visually with the "after" side |
+| Keep the traditional-method column visibly flatter/quieter than the Remindeer column | Let the "before" side compete visually with the "after" side |

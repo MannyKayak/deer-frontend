@@ -1,8 +1,8 @@
 ---
-title: Adversarial Review — Architecture Spine (Deer, Landing + Quiz di Assaggio)
+title: Adversarial Review — Architecture Spine (Remindeer, Landing + Quiz di Assaggio)
 status: final
 created: 2026-08-01
-target: _bmad-output/planning-artifacts/architecture/architecture-deer-2026-08-01/ARCHITECTURE-SPINE.md
+target: _bmad-output/planning-artifacts/architecture/architecture-remindeer-2026-08-01/ARCHITECTURE-SPINE.md
 method: construct compliant-but-incompatible builder pairs
 ---
 
@@ -98,7 +98,7 @@ For each finding below I construct two concrete units (developers or agent-built
 
 **Gap:** AD-4 requires DESIGN.md's component inventory (`quiz-card`, `answer-option`, `mnemo-box`, `category-tag`, `button-primary`) be "reused by name wherever that visual role recurs." DESIGN.md's names are kebab-case design tokens; the Consistency Conventions fix file naming (kebab-case) and component naming (PascalCase) but never state the required mapping from a DESIGN.md token name to an actual exported React component identifier/prop API.
 
-**Concrete clash:** Developer A implements `components/ui/QuizCard.tsx` exporting `QuizCard`, used directly (`<QuizCard>...</QuizCard>`) everywhere the visual role recurs (FR-4 preview, FR-5 real question, FR-2 "Con Deer" column), per AD-4's literal instruction to reuse "the same `quiz-card` component." Developer B, building the comparison section (FR-2) independently, implements a generic `components/ui/Card.tsx` with a `variant="quiz-card" | "comparison-traditional"` prop, reasoning that DESIGN.md's `comparison-deer: inherits: quiz-card` note describes a *token inheritance* relationship, not necessarily a literal shared component instance. When a third story tries to compose the landing page importing both islands' expectations, one path expects `<QuizCard>`, the other expects `<Card variant="quiz-card">` — same visual role, two incompatible component APIs, and AD-4 doesn't specify which pattern (dedicated component vs. variant prop) is mandatory.
+**Concrete clash:** Developer A implements `components/ui/QuizCard.tsx` exporting `QuizCard`, used directly (`<QuizCard>...</QuizCard>`) everywhere the visual role recurs (FR-4 preview, FR-5 real question, FR-2 "Con Remindeer" column), per AD-4's literal instruction to reuse "the same `quiz-card` component." Developer B, building the comparison section (FR-2) independently, implements a generic `components/ui/Card.tsx` with a `variant="quiz-card" | "comparison-traditional"` prop, reasoning that DESIGN.md's `comparison-remindeer: inherits: quiz-card` note describes a *token inheritance* relationship, not necessarily a literal shared component instance. When a third story tries to compose the landing page importing both islands' expectations, one path expects `<QuizCard>`, the other expects `<Card variant="quiz-card">` — same visual role, two incompatible component APIs, and AD-4 doesn't specify which pattern (dedicated component vs. variant prop) is mandatory.
 
 **Fix direction:** Extend AD-4 or the Structural Seed to fix the actual export name/API shape (e.g. "one `QuizCard` component in `components/ui/`, no variant-prop reimplementation") — not just "reuse the visual role."
 

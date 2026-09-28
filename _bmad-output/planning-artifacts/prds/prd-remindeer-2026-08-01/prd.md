@@ -1,17 +1,17 @@
 ---
-title: Deer — Landing + Quiz di Assaggio
+title: Remindeer — Landing + Quiz di Assaggio
 status: final
 created: 2026-08-01
 updated: 2026-08-01
 ---
 
-# PRD: Deer — Landing + Quiz di Assaggio
+# PRD: Remindeer — Landing + Quiz di Assaggio
 
-_Working title — "Deer" confermato come nome prodotto per questo slice._
+_Working title — "Remindeer" confermato come nome prodotto per questo slice._
 
 ## 0. Scopo del documento
 
-Questo PRD guida la costruzione del **primo slice pubblico** di Deer: una
+Questo PRD guida la costruzione del **primo slice pubblico** di Remindeer: una
 landing page con quiz-assaggio senza login, pensata per misurare
 l'engagement reale prima di investire nel prodotto completo (le 3000
 domande, l'area personale, i pagamenti). È rivolto a chi implementerà questo
@@ -25,10 +25,10 @@ inline e indicizzate in fondo.
 
 ## 1. Vision
 
-Deer aiuta i neo-laureati in farmacia a superare il concorso pubblico per le
+Remindeer aiuta i neo-laureati in farmacia a superare il concorso pubblico per le
 sedi farmaceutiche, l'esame che assegna il diritto a gestire una farmacia.
 Il problema non è l'accesso alle domande — le 3000 domande ufficiali sono
-pubbliche — è **ricordarle** il giorno dell'esame. Deer risolve questo con
+pubbliche — è **ricordarle** il giorno dell'esame. Remindeer risolve questo con
 mnemotecniche associate a ogni domanda: non un quiz in più, ma un metodo per
 fissare in memoria in pochi secondi ciò che altrimenti richiede riletture
 infinite. Posizionamento: "La strada più veloce per vincere la farmacia."
@@ -84,7 +84,7 @@ di validazione prima di costruire il resto.
     legge tutta la landing prima di cliccare qualunque cosa.
   - **Entry state:** non autenticata, desktop, arriva da un post social.
   - **Percorso:** scorre hero → sezione comparativa (metodo tradizionale vs
-    Deer) → anteprima quiz in pagina (senza ancora cliccare) → decide di
+    Remindeer) → anteprima quiz in pagina (senza ancora cliccare) → decide di
     cliccare "Prova 10 domande gratis" solo dopo aver letto la comparativa.
   - **Climax:** la sezione comparativa le convince che la differenza è reale
     ("non studi di più: ricordi meglio"), non solo un claim.
@@ -93,7 +93,7 @@ di validazione prima di costruire il resto.
 
 ## 3. Glossario
 
-- **Deer** — nome del prodotto/brand per questo slice (confermato dal PO;
+- **Remindeer** — nome del prodotto/brand per questo slice (confermato dal PO;
   il PDF di design system usava "Farmaconcorso" come nome alternativo, non
   usato in questo PRD — vedi `addendum.md`).
 - **Mnemotecnica** — associazione mnemonica (immagine, gioco di parole,
@@ -114,7 +114,9 @@ di validazione prima di costruire il resto.
   parlava genericamente di "faccine/cuori/stelle"; ristretto a sole stelle
   in questa sessione — vedi memlog.)*
 - **Opt-in email** — campo email opzionale sulla schermata finale, per
-  aggiornamenti sul lancio del prodotto completo. Non un account.
+  aggiornamenti sul lancio del prodotto completo. Non un account. Distinto
+  dalla sezione email della landing (FR-13, aggiunta 2026-09-27) — le due
+  raccolte restano indipendenti.
 - **PO** — Product Owner, proprietario di codice, dati e account.
 
 ## 4. Funzionalità
@@ -133,15 +135,19 @@ completi in `addendum.md`.
 
 **Descrizione:** pagina pubblica, responsive, mobile-first (breakpoint di
 riferimento: 390px mobile / 1280px desktop, coerenti con le esplorazioni di
-design). Composta da: header con logo+wordmark Deer (logo definitivo in
+design). Composta da: header con logo+wordmark Remindeer (logo definitivo in
 produzione — placeholder confermato: solo scritta/wordmark testuale finché
-non è pronto, vedi OQ-2) e CTA compatta; hero con headline, subheadline,
-CTA primaria, microcopy "Nessuna registrazione richiesta", trust bar a 3
-statistiche; sezione comparativa a due colonne ("Metodo tradizionale" vs
-"Con Deer"); anteprima del quiz (una domanda campione, non interattiva o
-con link diretto all'avvio); footer minimale con link Privacy/Termini.
-Copy esatto preso dal file HTML di esplorazione (variante "Essenziale",
-3a/3b) — vedi `addendum.md` per le varianti alternative scartate.
+non è pronto, vedi OQ-2) e CTA compatta; hero testuale senza immagine
+prodotto, con headline, subheadline, CTA primaria, microcopy "Nessuna
+registrazione richiesta", trust bar a 3 statistiche; sezione comparativa a
+due colonne ("Metodo tradizionale" vs "Con Remindeer"); sezione "lascia la tua
+mail" (FR-13); footer minimale con link Privacy/Termini. Copy esatto preso
+dal file HTML di esplorazione (variante "Essenziale", 3a/3b) — vedi
+`addendum.md` per le varianti alternative scartate.
+
+**Revisione 2026-09-27:** l'anteprima quiz in pagina (ex FR-4) è stata
+ritirata — il quiz vive ora su una pagina dedicata (`/quiz`), non più
+incorporato/anticipato in home. Vedi `sprint-change-proposal-2026-09-27.md`.
 
 **Requisiti funzionali:**
 
@@ -168,7 +174,7 @@ trust bar) e avviare il quiz con un tap/click. Realizza UJ-1, UJ-2.
 
 #### FR-2: Sezione comparativa
 
-Il visitatore può leggere la contrapposizione "metodo tradizionale vs Deer"
+Il visitatore può leggere la contrapposizione "metodo tradizionale vs Remindeer"
 prima di decidere se avviare il quiz. Realizza UJ-2.
 
 **Conseguenze (testabili):**
@@ -178,7 +184,7 @@ prima di decidere se avviare il quiz. Realizza UJ-2.
   ricordi il giorno dell'esame."
 - Colonna sinistra ("Metodo tradizionale"): "Un muro di 3000 domande
   uguali, da rileggere all'infinito sperando che restino in testa."
-- Colonna destra ("Con Deer"): box mnemotecnica con testo "Ogni domanda
+- Colonna destra ("Con Remindeer"): box mnemotecnica con testo "Ogni domanda
   diventa un'immagine o un'associazione che si fissa in pochi secondi." e
   chiusura "Non studi di più: ricordi meglio."
 - Layout single-column su mobile, due colonne affiancate da desktop in su.
@@ -189,20 +195,34 @@ Il visitatore può vedere il footer con nome prodotto e link legali.
 
 **Conseguenze (testabili):**
 
-- Testo: "Deer — mnemotecniche per il concorso farmacie".
+- Testo: "Remindeer — mnemotecniche per il concorso farmacie".
 - Link "Privacy" e "Termini" presenti (contenuto delle pagine collegate:
   vedi Open Question OQ-3 — non ancora scritto).
 
-#### FR-4: Anteprima quiz in pagina
+#### FR-4: Anteprima quiz in pagina — **RITIRATO (2026-09-27)**
 
-Il visitatore può vedere una card con una domanda campione, senza doverla
-avviare, prima di decidere se cliccare la CTA. Realizza UJ-2.
+~~Il visitatore può vedere una card con una domanda campione, senza doverla
+avviare, prima di decidere se cliccare la CTA.~~ Ritirato: il quiz si
+sposta su pagina dedicata (`/quiz`), la landing non anticipa più il
+contenuto del quiz. Vedi `sprint-change-proposal-2026-09-27.md`. La card
+statica e il relativo accessor `getPreviewQuestion()` vanno rimossi in
+implementazione.
+
+#### FR-13: Sezione "lascia la tua mail" in landing — **NUOVO (2026-09-27)**
+
+Il visitatore può lasciare la propria email per aggiornamenti sul lancio
+direttamente dalla landing, senza dover completare il quiz. Distinta da
+FR-10 (email opzionale a fine quiz) — le due restano indipendenti, non si
+uniscono.
 
 **Conseguenze (testabili):**
-- Card mostra tag categoria e testo domanda, nello stesso formato delle
-  card del quiz vero (vedi FR-5), ma non interattiva (nessuna opzione
-  cliccabile, nessuna mnemotecnica mostrata qui).
-- Non sostituisce l'avvio del quiz reale — è un'anteprima statica.
+- Sezione dedicata tra la sezione comparativa e il footer.
+- Campo email + consenso esplicito (stessa logica di consenso GDPR di
+  FR-10, copy propria).
+- Genera un evento distinto da quello di fine quiz (nome definitivo a
+  carico di implementazione, es. `email_signup_landing`).
+- Nessun impatto su FR-9/FR-10/FR-11 (box feedback e email di fine quiz
+  restano invariati).
 
 **Note:** _(vedi `addendum.md` per le 3 varianti hero alternative
 esplorate — badge sticker "prova sociale" e "quiz come hero" — scartate a
@@ -232,23 +252,25 @@ L'utente può vedere una domanda alla volta con le sue opzioni di risposta.
   corrente.
 - Nessun login o dato personale richiesto per procedere.
 
-#### FR-6: Risposta e sblocco mnemotecnica
+#### FR-6: Selezione risposta senza feedback immediato — **REVISIONATO (2026-09-27)**
 
-L'utente può selezionare una risposta e vedere immediatamente se è corretta,
-insieme alla mnemotecnica.
+L'utente può selezionare una risposta per ciascuna domanda; la risposta si
+blocca subito e non è più modificabile. Nessuna correttezza o mnemotecnica
+viene mostrata durante il quiz — tutto è rimandato alla schermata finale
+(vedi FR-8, revisionato).
 
 **Conseguenze (testabili):**
 
-- Al tap su un'opzione, il sistema evidenzia visivamente la risposta
-  corretta (bordo/sfondo verde) indipendentemente da quale opzione l'utente
-  abbia scelto.
-- Un box mnemotecnica appare sotto le opzioni con tag "🔑 Mnemotecnica" e il
-  testo associato alla domanda.
-- Codifica visiva corretto/errato non si basa sul solo colore: accompagnata
-  da icona/testo (vedi §5 Requisiti trasversali, NFR-1).
+- Al tap su un'opzione, questa si blocca in stato "selezionata" (bordo/
+  sfondo primario neutro) — nessun segnale di corretto/errato, nessuna
+  mnemotecnica mostrata a questo punto.
+- L'utente non può più cambiare risposta una volta selezionata.
 - L'utente avanza alla domanda successiva con un tap esplicito su un
-  bottone "Conferma" — non auto-advance, per dare tempo di leggere la
-  mnemotecnica (confermato col PO).
+  bottone "Avanti" — non auto-advance. Il bottone non rivela nulla, serve
+  solo a procedere in modo deliberato.
+- ~~Evidenziazione risposta corretta indipendente dal tap~~ e ~~box
+  mnemotecnica durante il quiz~~ sono rimossi da questo FR e spostati in
+  FR-8 (schermata finale).
 
 #### FR-7: Progresso non persistito
 
@@ -273,17 +295,21 @@ opzionale. Realizza UJ-1.
 
 **Requisiti funzionali:**
 
-#### FR-8: Risultato e riepilogo mnemotecniche
+#### FR-8: Risultato e riepilogo per domanda — **REVISIONATO (2026-09-27)**
 
-L'utente può vedere quante risposte corrette ha dato e ritrovare le
-mnemotecniche viste durante il quiz.
+L'utente può vedere quante risposte corrette ha dato e, per ogni domanda,
+se l'ha indovinata o no — con la mnemotecnica mostrata solo per le
+risposte sbagliate.
 
 **Conseguenze (testabili):**
 
 - Mostra punteggio (es. "7/10 corrette").
-- Elenca le mnemotecniche mostrate durante il quiz (tutte e 10, non solo
-  quelle risposte correttamente — il valore è ricordarle, non solo il
-  punteggio).
+- Elenca tutte e 10 le domande con esito: corretta → solo segno di spunta,
+  nessuna mnemotecnica; sbagliata → mnemotecnica associata mostrata (tag
+  "🔑 Mnemotecnica").
+- CTA "Ritenta": riavvia le stesse 10 domande dall'inizio (stessa sessione,
+  stato azzerato). Un nuovo completamento genera un nuovo evento FR-11
+  indipendente.
 
 #### FR-9: Box feedback
 
@@ -386,13 +412,18 @@ banner.
 
 ### 7.1 In Scope
 
-- Landing: hero, sezione comparativa, anteprima quiz, footer.
-- Quiz di assaggio: 10 domande placeholder, una alla volta, senza login.
-- Schermata finale: risultato, riepilogo mnemotecniche, box feedback,
-  campo email opzionale.
+- Landing: hero (testuale, senza immagine), sezione comparativa, sezione
+  email signup (FR-13), footer. **(2026-09-27: anteprima quiz rimossa,
+  sezione email aggiunta.)**
+- Quiz di assaggio: 10 domande placeholder, una alla volta, senza login, su
+  pagina dedicata (`/quiz`); selezione bloccata, nessun feedback durante
+  il quiz.
+- Schermata finale: risultato, riepilogo per-domanda (corretto/sbagliato,
+  mnemotecnica solo sulle sbagliate), CTA "Ritenta", box feedback, campo
+  email opzionale (distinto da FR-13).
 - Salvataggio evento di completamento (Supabase, perimetro minimo) +
   analytics cookieless.
-- Design system Deer: palette OKLCH, Lexend+Inter, stile sticker outline.
+- Design system Remindeer: palette OKLCH, Lexend+Inter, stile sticker outline.
 
 ### 7.2 Out of Scope per MVP
 
@@ -431,7 +462,7 @@ banner.
 
 1. **OQ-1**: Chi fornisce il contenuto reale delle 10 domande + mnemotecniche
    e quando sostituisce il placeholder di questa fase?
-2. **OQ-2**: Logo definitivo Deer — in produzione, quando disponibile?
+2. **OQ-2**: Logo definitivo Remindeer — in produzione, quando disponibile?
 3. **OQ-3**: Testo legale per pagine Privacy/Termini e copy di consenso
    email — non ancora fatto. Iubenda candidato (genera Privacy/Termini +
    gestione consenso, costo contenuto, compatibile col budget), da

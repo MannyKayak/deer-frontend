@@ -1,7 +1,7 @@
-# Review: ARCHITECTURE-SPINE.md (Deer — Landing + Quiz di Assaggio)
+# Review: ARCHITECTURE-SPINE.md (Remindeer — Landing + Quiz di Assaggio)
 
 Reviewer: rubric-walker
-Target: `_bmad-output/planning-artifacts/architecture/architecture-deer-2026-08-01/ARCHITECTURE-SPINE.md`
+Target: `_bmad-output/planning-artifacts/architecture/architecture-remindeer-2026-08-01/ARCHITECTURE-SPINE.md`
 Cross-checked against: PRD (`prd.md`), memlog (`.memlog.md`), DESIGN.md, `app/`, `package.json`, `_bmad-output/project-context.md`.
 
 ## Verdict

@@ -1,4 +1,4 @@
-# Addendum — Deer Landing + Quiz di Assaggio
+# Addendum — Remindeer Landing + Quiz di Assaggio
 
 Contenuto che approfondisce il PRD ma non ci appartiene direttamente:
 razionale di alternative scartate, dettagli tecnici del design system,
@@ -7,7 +7,7 @@ discrepanze tra fonti risolte con il PO.
 ## Inventario fonti di design
 
 - `Deer Landing - Hero Quiz Exploration.dc.html` (+ `support.js`) —
-  esplorazione HTML, 3 "turni" con varianti A/B/C, brand "Deer".
+  esplorazione HTML, 3 "turni" con varianti A/B/C, brand "Remindeer".
 - `uploads/Design System Farmaconc v2.pdf` — design system 2 pagine, brand
   "Farmaconcorso".
 - `uploads/WhatsApp Image 2026-07-31 at 12.19.58.jpeg` — foto di conferma
@@ -17,7 +17,7 @@ discrepanze tra fonti risolte con il PO.
 
 | Punto | HTML | PDF | Deciso |
 |---|---|---|---|
-| Nome brand | Deer | Farmaconcorso | **Deer** |
+| Nome brand | Remindeer | Farmaconcorso | **Remindeer** |
 | Font titoli | Lexend (CSS reale) | Fredoka (dichiarato) | **Lexend** |
 | CTA primaria | "Prova 10 domande gratis" | "Inizia la simulazione gratis" | **"Prova 10 domande gratis"** |
 

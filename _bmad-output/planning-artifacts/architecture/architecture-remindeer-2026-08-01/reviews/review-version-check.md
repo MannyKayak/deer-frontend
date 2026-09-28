@@ -1,10 +1,10 @@
-# Version / Reality Check Review — ARCHITECTURE-SPINE.md (deer, 2026-08-01)
+# Version / Reality Check Review — ARCHITECTURE-SPINE.md (remindeer, 2026-08-01)
 
 Scope: verify every version claim and named technology in the Stack table (and the invariants that lean on them) against the actual project install and current web reality, not training-data assumptions.
 
 ## 1. Next.js / React / TypeScript / Tailwind — MATCH, verified against installed package.json
 
-`C:\Users\gusta\Documents\github\deer\package.json`:
+`C:\Users\gusta\Documents\github\remindeer\package.json`:
 - `next`: `16.2.12` — matches spine exactly.
 - `react` / `react-dom`: `19.2.4` — matches spine exactly.
 - `typescript`: `^5` (devDependency) — matches spine's `^5`.

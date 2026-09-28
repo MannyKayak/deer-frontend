@@ -1,4 +1,4 @@
-# PRD Quality Review — prd-deer-2026-08-01
+# PRD Quality Review — prd-remindeer-2026-08-01
 
 ## Overall verdict
 
@@ -6,7 +6,7 @@ This is a tight, honest PRD for the narrow slice it claims to cover: FRs carry l
 
 ## Decision-readiness — strong
 
-Decisions are stated as decisions, not hedged. The addendum's discrepancy table (brand name Deer vs Farmaconcorso, font Lexend vs Fredoka, CTA copy) names what was in tension and what was chosen, not just the outcome. Open Questions (§8, OQ-1..OQ-6) are genuinely unresolved — e.g. OQ-6 "Dominio non ancora deciso" has no answer smuggled into the next sentence. No hedge language ("potrebbe", "dovrebbe", "in generale") appears anywhere in the document. No findings.
+Decisions are stated as decisions, not hedged. The addendum's discrepancy table (brand name Remindeer vs Farmaconcorso, font Lexend vs Fredoka, CTA copy) names what was in tension and what was chosen, not just the outcome. Open Questions (§8, OQ-1..OQ-6) are genuinely unresolved — e.g. OQ-6 "Dominio non ancora deciso" has no answer smuggled into the next sentence. No hedge language ("potrebbe", "dovrebbe", "in generale") appears anywhere in the document. No findings.
 
 ## Substance over theater — strong
 

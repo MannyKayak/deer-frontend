@@ -1,6 +1,6 @@
 # Reconcile — Deer Landing - Hero Quiz Exploration.dc.html (+ support.js)
 
-**What it is:** HTML prototyping-canvas export, 3 "turns" of hero/landing exploration (mobile-first 390px in turn 1, desktop pairings in turn 2, full landing markup in turn 3). Brand consistently "Deer" throughout — this file, not the PDF, is where the brand name and Lexend font are real CSS, not just declared.
+**What it is:** HTML prototyping-canvas export, 3 "turns" of hero/landing exploration (mobile-first 390px in turn 1, desktop pairings in turn 2, full landing markup in turn 3). Brand consistently "Remindeer" throughout — this file, not the PDF, is where the brand name and Lexend font are real CSS, not just declared.
 
 **Kept — this is the primary visual source for DESIGN.md and the landing IA in EXPERIENCE.md:**
 - Full CSS for every core component: `.btn-cta`, `.chip`, `.qcard`, `.qtag`, `.qtext`, `.opt-btn`/`.opt-correct`, `.mnemo`/`.mnemo-tag`, `.logo-mark`, `.wordmark` — copied into `DESIGN.md.components` near-verbatim (pixel values, OKLCH→hex conversions of the same `:root` palette declared in project-context.md).
