@@ -1,8 +1,8 @@
 import type { AnalyticsEvent } from "./events";
 
 /**
- * Provider-agnostic tracking call. Vendor (Plausible vs Umami, OQ-4) isn't
- * chosen yet, so this is a safe no-op in production until wired.
+ * Provider-agnostic tracking call. Vendor is Umami Cloud (spec OQ-4), not yet
+ * wired (needs the PO account), so this is a safe no-op in production until wired.
  */
 export function track(
   event: AnalyticsEvent,

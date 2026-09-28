@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 
 /**
  * Plain wrapper — no comparison-specific styling. Reused unchanged for
- * the static landing preview (Story 1.4) and the real quiz (Epic 2).
+ * the quiz and its results screen.
  */
 export function QuizCard({
   children,
