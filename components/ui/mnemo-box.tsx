@@ -9,9 +9,7 @@ export function MnemoBox({ children, imageUrl }: { children?: ReactNode; imageUr
         🔑 Mnemotecnica
       </span>
       {children ? (
-        <p className="mt-1 font-sans text-[13.5px] font-medium leading-[1.5] text-text-primary">
-          {children}
-        </p>
+        <p className="mt-1 font-sans text-[13.5px] font-medium leading-[1.5] text-text-primary">{children}</p>
       ) : null}
       {imageUrl ? <ContentImage src={imageUrl} alt="Immagine della mnemotecnica" className="mt-2" /> : null}
     </div>

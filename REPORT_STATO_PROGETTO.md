@@ -33,6 +33,7 @@ Report generato tramite ispezione diretta del codice al 2026-08-02. Nessun file 
 - **File presenti**: unico file `supabase/migrations/0001_quiz_completions.sql`. Nessun `config.toml`, nessuna cartella `functions/`, `seed.sql` o altro.
 
 - **Contenuto integrale di `0001_quiz_completions.sql`**:
+
   ```sql
   create table if not exists quiz_completions (
     id uuid primary key default gen_random_uuid(),
@@ -46,6 +47,7 @@ Report generato tramite ispezione diretta del codice al 2026-08-02. Nessun file 
   -- No policies defined: RLS with zero policies denies all access to anon/publishable keys.
   -- The server-side secret key (sb_secret_...) bypasses RLS by design (AD-5).
   ```
+
   Nessuna policy RLS esplicita, nessuna funzione, nessun trigger definiti.
 
 - **File di config Supabase (`config.toml`)**: non trovato / da verificare — assente nel repo.
@@ -70,26 +72,26 @@ Report generato tramite ispezione diretta del codice al 2026-08-02. Nessun file 
 
 Un'unica chiamata `supabase.from(...)` in tutto il codebase:
 
-| File | Tabella | Operazione | Contesto |
-|---|---|---|---|
-| `lib/supabase/client.ts` (funzione `insertQuizCompletion`) | `quiz_completions` | `insert` | Server-only (`import "server-only"`), invocata da una server action |
+| File                                                       | Tabella            | Operazione | Contesto                                                            |
+| ---------------------------------------------------------- | ------------------ | ---------- | ------------------------------------------------------------------- |
+| `lib/supabase/client.ts` (funzione `insertQuizCompletion`) | `quiz_completions` | `insert`   | Server-only (`import "server-only"`), invocata da una server action |
 
 La server action che la chiama è `lib/actions/submitQuizCompletion.ts` (`"use server"`), a sua volta invocata da `components/quiz/results-screen.tsx` (`"use client"`) tramite `useActionState` + `<form action={formAction}>`. Nessuna chiamata diretta a Supabase da componenti client, nessun `fetch` verso REST/endpoint Supabase trovato.
 
 ## 5. Dati "client-side" nella landing (hardcoded)
 
-| Contenuto | File | Riga circa | Struttura |
-|---|---|---|---|
-| 10 domande quiz + opzioni + risposta corretta + mnemotecnica | `lib/content/questions.ts` | 20–158 | Array tipizzato `Question[]` (oggetti con `id`, `category`, `question`, `options[]`, `correctOptionId`, `mnemonic`) — commento esplicito nel file: **placeholder**, "le vere 10 domande/mnemotecniche saranno fornite dal PO prima del lancio" |
-| Statistiche di trust in hero ("3000 domande", "2 min", "0 login") | `components/landing/hero.tsx` | 4–8 | Array tipizzato `TRUST_STATS` (oggetti `{value, label}`) |
-| Copy hero (titolo, sottotitolo, CTA) | `components/landing/hero.tsx` | 13–31 | Testo libero JSX |
-| Copy sezione comparazione (titolo, sottotitolo) | `components/landing/comparison-section.tsx` | 8–14 | Testo libero JSX |
-| Blocco "Con Remindeer" | `components/landing/comparison-remindeer.tsx` | 7–16 | Testo libero JSX |
-| Blocco "Metodo tradizionale" | `components/landing/comparison-traditional.tsx` | 4–15 | Testo libero JSX |
-| Footer (nome brand, link privacy/termini — link puntano ad ancore `#privacy`/`#termini` non implementate) | `components/landing/footer.tsx` | 5–13 | Testo libero JSX |
-| Header (nome brand, CTA) | `components/landing/header.tsx` | 9–15 | Testo libero JSX |
-| Testo consenso email marketing | `components/ui/email-capture.tsx` | 57–58 | Testo libero JSX, commentato esplicitamente come **placeholder in attesa di testo legale** (`[ASSUMPTION: placeholder consent copy pending legal text — see PRD OQ-3]`) |
-| Metadata SEO (title/description) | `app/layout.tsx` | 16–18 | Oggetto tipizzato `Metadata` |
+| Contenuto                                                                                                 | File                                            | Riga circa | Struttura                                                                                                                                                                                                                                      |
+| --------------------------------------------------------------------------------------------------------- | ----------------------------------------------- | ---------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 10 domande quiz + opzioni + risposta corretta + mnemotecnica                                              | `lib/content/questions.ts`                      | 20–158     | Array tipizzato `Question[]` (oggetti con `id`, `category`, `question`, `options[]`, `correctOptionId`, `mnemonic`) — commento esplicito nel file: **placeholder**, "le vere 10 domande/mnemotecniche saranno fornite dal PO prima del lancio" |
+| Statistiche di trust in hero ("3000 domande", "2 min", "0 login")                                         | `components/landing/hero.tsx`                   | 4–8        | Array tipizzato `TRUST_STATS` (oggetti `{value, label}`)                                                                                                                                                                                       |
+| Copy hero (titolo, sottotitolo, CTA)                                                                      | `components/landing/hero.tsx`                   | 13–31      | Testo libero JSX                                                                                                                                                                                                                               |
+| Copy sezione comparazione (titolo, sottotitolo)                                                           | `components/landing/comparison-section.tsx`     | 8–14       | Testo libero JSX                                                                                                                                                                                                                               |
+| Blocco "Con Remindeer"                                                                                    | `components/landing/comparison-remindeer.tsx`   | 7–16       | Testo libero JSX                                                                                                                                                                                                                               |
+| Blocco "Metodo tradizionale"                                                                              | `components/landing/comparison-traditional.tsx` | 4–15       | Testo libero JSX                                                                                                                                                                                                                               |
+| Footer (nome brand, link privacy/termini — link puntano ad ancore `#privacy`/`#termini` non implementate) | `components/landing/footer.tsx`                 | 5–13       | Testo libero JSX                                                                                                                                                                                                                               |
+| Header (nome brand, CTA)                                                                                  | `components/landing/header.tsx`                 | 9–15       | Testo libero JSX                                                                                                                                                                                                                               |
+| Testo consenso email marketing                                                                            | `components/ui/email-capture.tsx`               | 57–58      | Testo libero JSX, commentato esplicitamente come **placeholder in attesa di testo legale** (`[ASSUMPTION: placeholder consent copy pending legal text — see PRD OQ-3]`)                                                                        |
+| Metadata SEO (title/description)                                                                          | `app/layout.tsx`                                | 16–18      | Oggetto tipizzato `Metadata`                                                                                                                                                                                                                   |
 
 Non sono presenti FAQ nel codice ispezionato.
 
@@ -102,8 +104,8 @@ Non sono presenti FAQ nel codice ispezionato.
 
 - **Route API** (`app/api/...` o `pages/api/...`): nessuna trovata.
 - **Server actions**:
-  | Path | Scopo |
-  |---|---|
+  | Path                                                           | Scopo                                                                                                                                                                                                                                |
+  | -------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
   | `lib/actions/submitQuizCompletion.ts` — `submitQuizCompletion` | Valida (zod) risposte quiz + rating + email/consenso, ricalcola lo score server-side dal contenuto in `lib/content` (mai fidandosi dello score del client), poi inserisce il record in `quiz_completions` via `insertQuizCompletion` |
 
 ## 8. Deploy e configurazione
@@ -113,9 +115,7 @@ Non sono presenti FAQ nel codice ispezionato.
   ```ts
   import type { NextConfig } from "next";
 
-  const nextConfig: NextConfig = {
-    /* config options here */
-  };
+  const nextConfig: NextConfig = {/* config options here */};
 
   export default nextConfig;
   ```
@@ -138,13 +138,13 @@ Non sono presenti FAQ nel codice ispezionato.
 
 ## Osservazioni tecniche
 
-1. **Migration SQL senza policy RLS**: la tabella `quiz_completions` ha RLS abilitata ma zero policy — quindi è accessibile *solo* dalla secret key server-side. È una scelta di design intenzionale e documentata nel commento SQL, ma va tenuta a mente in fase di scorporo: se il backoffice futuro userà la publishable key o un ruolo diverso, servirà scrivere le policy mancanti.
+1. **Migration SQL senza policy RLS**: la tabella `quiz_completions` ha RLS abilitata ma zero policy — quindi è accessibile _solo_ dalla secret key server-side. È una scelta di design intenzionale e documentata nel commento SQL, ma va tenuta a mente in fase di scorporo: se il backoffice futuro userà la publishable key o un ruolo diverso, servirà scrivere le policy mancanti.
 
 2. **`SUPABASE_PUBLISHABLE_KEY` presente in `.env` ma non usata nel codice**: possibile residuo predisposto per un client-side futuro (es. backoffice), oppure dead config. Da chiarire prima dello scorporo per evitare di portare dietro credenziali inutilizzate.
 
 3. **Contenuto quiz (10 domande) è hardcoded e dichiaratamente placeholder**: commentato esplicitamente nel codice come dati provvisori in attesa del contenuto reale da parte del PO. `lib/content/index.ts` è già stato progettato come singolo seam/accessor per questo — un buon punto di innesto quando il contenuto reale passerà a Supabase o CMS, ma oggi è puro codice statico versionato nel repo, non dati.
 
-4. **Nessun backoffice/admin esiste ancora nel codice**: il progetto oggi è *solo* la landing/quiz pubblico più un'unica write-action verso Supabase. Lo "scorporo backend/backoffice" quindi riguarda soprattutto migration SQL + client Supabase + eventualmente la server action, che sono già ragionevolmente isolati (`lib/supabase/`, `lib/actions/`, `supabase/migrations/`) — non richiede disaccoppiare codice UI misto.
+4. **Nessun backoffice/admin esiste ancora nel codice**: il progetto oggi è _solo_ la landing/quiz pubblico più un'unica write-action verso Supabase. Lo "scorporo backend/backoffice" quindi riguarda soprattutto migration SQL + client Supabase + eventualmente la server action, che sono già ragionevolmente isolati (`lib/supabase/`, `lib/actions/`, `supabase/migrations/`) — non richiede disaccoppiare codice UI misto.
 
 5. **Assenza di `supabase/config.toml` e di collegamento CLI esplicito**: se il progetto Supabase è gestito solo da dashboard remota (non linkato via CLI), lo scorporo dovrà stabilire da zero il workflow di migration (CLI init/link) nel nuovo progetto backend.
 

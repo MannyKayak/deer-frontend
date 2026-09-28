@@ -5,10 +5,16 @@ export function Footer() {
         Remindeer — mnemotecniche per il concorso farmacie
       </span>
       <nav className="flex items-center gap-4">
-        <a href="#privacy" className="font-sans text-[13px] font-medium text-footer-text underline-offset-2 hover:underline">
+        <a
+          href="#privacy"
+          className="font-sans text-[13px] font-medium text-footer-text underline-offset-2 hover:underline"
+        >
           Privacy
         </a>
-        <a href="#termini" className="font-sans text-[13px] font-medium text-footer-text underline-offset-2 hover:underline">
+        <a
+          href="#termini"
+          className="font-sans text-[13px] font-medium text-footer-text underline-offset-2 hover:underline"
+        >
           Termini
         </a>
       </nav>

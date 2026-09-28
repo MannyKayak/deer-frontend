@@ -5,12 +5,7 @@ type AnswerOptionProps = {
   disabled?: boolean;
 };
 
-export function AnswerOption({
-  children,
-  state = "default",
-  onClick,
-  disabled = false,
-}: AnswerOptionProps) {
+export function AnswerOption({ children, state = "default", onClick, disabled = false }: AnswerOptionProps) {
   const stateClasses =
     state === "correct"
       ? "border-correct bg-correct-bg font-bold text-text-primary shadow-[5px_5px_0_var(--color-correct)]"

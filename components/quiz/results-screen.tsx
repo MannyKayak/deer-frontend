@@ -14,10 +14,7 @@ import { track } from "@/lib/analytics/track";
 import type { QuizQuestion } from "@/lib/data/types";
 import type { QuizAnswer } from "@/components/quiz/quiz-flow";
 
-type ResultsFormState =
-  | { ok: true }
-  | { ok: false; error: string; feedbackSent: boolean }
-  | null;
+type ResultsFormState = { ok: true } | { ok: false; error: string; feedbackSent: boolean } | null;
 
 /**
  * Feedback goes to analytics only; the email (if any) joins the mailing list.
@@ -64,24 +61,21 @@ export function ResultsScreen({
   // Only the latest grading request may update state; unmount invalidates all.
   const requestIdRef = useRef(0);
 
-  const runGrading = useCallback(
-    () => {
-      const requestId = ++requestIdRef.current;
-      gradeQuiz(answers)
-        .catch((): GradeQuizResult => ({ ok: false, error: "Non riusciamo a correggere il quiz. Riprova." }))
-        .then((result) => {
-          if (requestId !== requestIdRef.current) return;
-          setGrading(result);
-          if (result.ok) {
-            track("quiz_completed", {
-              score: result.results.filter((r) => r.isCorrect).length,
-              total: questions.length,
-            });
-          }
-        });
-    },
-    [answers, questions.length],
-  );
+  const runGrading = useCallback(() => {
+    const requestId = ++requestIdRef.current;
+    gradeQuiz(answers)
+      .catch((): GradeQuizResult => ({ ok: false, error: "Non riusciamo a correggere il quiz. Riprova." }))
+      .then((result) => {
+        if (requestId !== requestIdRef.current) return;
+        setGrading(result);
+        if (result.ok) {
+          track("quiz_completed", {
+            score: result.results.filter((r) => r.isCorrect).length,
+            total: questions.length,
+          });
+        }
+      });
+  }, [answers, questions.length]);
 
   useEffect(() => {
     runGrading();
@@ -141,9 +135,7 @@ export function ResultsScreen({
             <li key={question.id} className="flex flex-col gap-2 border-b-2 border-border-neutral pb-4 last:border-b-0">
               <div className="flex flex-wrap items-center justify-between gap-2">
                 <CategoryTag>{question.category}</CategoryTag>
-                <span
-                  className={`font-sans text-[13px] font-bold ${isCorrect ? "text-correct" : "text-error"}`}
-                >
+                <span className={`font-sans text-[13px] font-bold ${isCorrect ? "text-correct" : "text-error"}`}>
                   <span aria-hidden="true">{isCorrect ? "✓ " : "✗ "}</span>
                   {isCorrect ? "Corretta" : "Sbagliata"}
                 </span>

@@ -8,10 +8,7 @@ const inputSchema = z.object({
   email: z.string().trim().toLowerCase().pipe(z.email().max(254)),
 });
 
-export type SubmitEmailSignupState =
-  | { ok: true }
-  | { ok: false; error: string }
-  | null;
+export type SubmitEmailSignupState = { ok: true } | { ok: false; error: string } | null;
 
 /**
  * Mailing-list signup, shared by the landing section (CAP-13) and the

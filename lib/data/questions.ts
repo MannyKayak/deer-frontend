@@ -61,9 +61,7 @@ export async function getMnemonics(questionIds: string[]): Promise<Map<string, Q
     throw new Error(error.message);
   }
 
-  const paths = data.flatMap((row) =>
-    row.mnemonics?.image?.storage_path ? [row.mnemonics.image.storage_path] : [],
-  );
+  const paths = data.flatMap((row) => (row.mnemonics?.image?.storage_path ? [row.mnemonics.image.storage_path] : []));
   const imageUrls = await getImageUrls(paths);
 
   for (const row of data) {

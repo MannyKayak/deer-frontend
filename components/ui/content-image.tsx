@@ -4,6 +4,8 @@
  * next/image optimization doesn't apply. Callers render nothing when the URL is null.
  */
 export function ContentImage({ src, alt, className = "" }: { src: string; alt: string; className?: string }) {
-  // eslint-disable-next-line @next/next/no-img-element
-  return <img src={src} alt={alt} className={`h-auto max-w-full rounded-sm border-2 border-border-neutral ${className}`} />;
+  return (
+    // eslint-disable-next-line @next/next/no-img-element
+    <img src={src} alt={alt} className={`h-auto max-w-full rounded-sm border-2 border-border-neutral ${className}`} />
+  );
 }

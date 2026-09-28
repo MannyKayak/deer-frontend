@@ -23,9 +23,7 @@ export type QuestionResult = {
   mnemonic: QuizMnemonic | null;
 };
 
-export type GradeQuizResult =
-  | { ok: true; results: QuestionResult[] }
-  | { ok: false; error: string };
+export type GradeQuizResult = { ok: true; results: QuestionResult[] } | { ok: false; error: string };
 
 /**
  * Grades a finished quiz via `check_answer` (read-only, no DB write).
@@ -33,9 +31,7 @@ export type GradeQuizResult =
  * (question not visible / option not in question) counts as wrong.
  * Mnemonics are returned here, never with the questions (CAP-6).
  */
-export async function gradeQuiz(
-  answers: { questionId: string; optionId: string }[],
-): Promise<GradeQuizResult> {
+export async function gradeQuiz(answers: { questionId: string; optionId: string }[]): Promise<GradeQuizResult> {
   const parsed = answersSchema.safeParse(answers);
   if (!parsed.success) {
     return { ok: false, error: "Risposte non valide." };

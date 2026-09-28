@@ -29,13 +29,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html
-      lang="it"
-      className={`${fredoka.variable} ${lexend.variable} ${inter.variable} h-full antialiased`}
-    >
-      <body className="flex min-h-full flex-col bg-surface-base text-text-primary">
-        {children}
-      </body>
+    <html lang="it" className={`${fredoka.variable} ${lexend.variable} ${inter.variable} h-full antialiased`}>
+      <body className="flex min-h-full flex-col bg-surface-base text-text-primary">{children}</body>
     </html>
   );
 }

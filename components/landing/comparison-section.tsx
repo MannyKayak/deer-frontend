@@ -9,8 +9,7 @@ export function ComparisonSection() {
           Perché non è l&apos;ennesimo quiz
         </h2>
         <p className="max-w-2xl font-sans text-[15px] leading-[1.5] text-text-secondary xl:text-lg">
-          La differenza non è quante domande vedi, ma se te le ricordi il
-          giorno dell&apos;esame.
+          La differenza non è quante domande vedi, ma se te le ricordi il giorno dell&apos;esame.
         </p>
       </div>
 
