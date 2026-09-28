@@ -7,36 +7,36 @@ stepsCompleted:
   - step-05-epic-quality-review
   - step-06-final-assessment
 documentsIncluded:
-  prd: _bmad-output/planning-artifacts/prds/prd-deer-2026-08-01/prd.md
+  prd: _bmad-output/planning-artifacts/prds/prd-remindeer-2026-08-01/prd.md
   architecture:
-    - _bmad-output/planning-artifacts/architecture/architecture-deer-2026-08-01/ARCHITECTURE-SPINE.md
-    - _bmad-output/planning-artifacts/architecture/architecture-deer-2026-08-01/SOLUTION-DESIGN.md
+    - _bmad-output/planning-artifacts/architecture/architecture-remindeer-2026-08-01/ARCHITECTURE-SPINE.md
+    - _bmad-output/planning-artifacts/architecture/architecture-remindeer-2026-08-01/SOLUTION-DESIGN.md
   epics: _bmad-output/planning-artifacts/epics.md
   ux:
-    - _bmad-output/planning-artifacts/ux-designs/ux-deer-2026-08-01/DESIGN.md
-    - _bmad-output/planning-artifacts/ux-designs/ux-deer-2026-08-01/EXPERIENCE.md
+    - _bmad-output/planning-artifacts/ux-designs/ux-remindeer-2026-08-01/DESIGN.md
+    - _bmad-output/planning-artifacts/ux-designs/ux-remindeer-2026-08-01/EXPERIENCE.md
 ---
 
 # Implementation Readiness Assessment Report
 
 **Date:** 2026-08-01
-**Project:** deer
+**Project:** remindeer
 
 ## Document Inventory
 
 ### PRD
-- **Whole:** `prds/prd-deer-2026-08-01/prd.md`
+- **Whole:** `prds/prd-remindeer-2026-08-01/prd.md`
 - Supporting: `addendum.md`, `review-rubric.md`
 
 ### Architecture
-- **Whole:** `architecture/architecture-deer-2026-08-01/ARCHITECTURE-SPINE.md`, `SOLUTION-DESIGN.md`
+- **Whole:** `architecture/architecture-remindeer-2026-08-01/ARCHITECTURE-SPINE.md`, `SOLUTION-DESIGN.md`
 - Supporting: `reviews/review-adversarial.md`, `reviews/review-rubric-walker.md`, `reviews/review-version-check.md`
 
 ### Epics & Stories
 - **Whole:** `epics.md`
 
 ### UX Design
-- **Whole:** `ux-designs/ux-deer-2026-08-01/DESIGN.md`, `EXPERIENCE.md`
+- **Whole:** `ux-designs/ux-remindeer-2026-08-01/DESIGN.md`, `EXPERIENCE.md`
 - Supporting: `reconcile-hero-quiz-exploration.md`, `reconcile-design-system-pdf.md`, `reconcile-whatsapp-image.md`, mockups/
 
 ## Duplicates / Conflicts
@@ -53,9 +53,9 @@ None — PRD, Architecture, Epics, UX all present.
 
 FR1: Hero con CTA verso il quiz — headline, subheadline, CTA "Prova 10 domande gratis", microcopy "Nessuna registrazione richiesta", trust bar 3 statistiche, click CTA → domanda 1/10 senza step intermedi, header sticky con CTA compatta sempre raggiungibile.
 
-FR2: Sezione comparativa — titolo "Perché non è l'ennesimo quiz", colonna "Metodo tradizionale" vs colonna "Con Deer" (box mnemotecnica), single-column mobile / due colonne desktop.
+FR2: Sezione comparativa — titolo "Perché non è l'ennesimo quiz", colonna "Metodo tradizionale" vs colonna "Con Remindeer" (box mnemotecnica), single-column mobile / due colonne desktop.
 
-FR3: Footer minimale — testo "Deer — mnemotecniche per il concorso farmacie", link Privacy e Termini presenti.
+FR3: Footer minimale — testo "Remindeer — mnemotecniche per il concorso farmacie", link Privacy e Termini presenti.
 
 FR4: Anteprima quiz in pagina — card con tag categoria + testo domanda campione, stesso formato delle card del quiz reale ma non interattiva, non sostituisce l'avvio del quiz reale.
 

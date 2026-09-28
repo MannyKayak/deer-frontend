@@ -16,7 +16,7 @@ so that I know who's behind the product and can find Privacy/Terms if needed.
 
 ## Acceptance Criteria
 
-1. **Given** the landing page is in place **When** a visitor scrolls to the bottom of the page **Then** the footer renders as a full-bleed ink-colored band with text "Deer — mnemotecniche per il concorso farmacie" in the footer-text color, using the `footer` component (no border/shadow, per UX-DR9).
+1. **Given** the landing page is in place **When** a visitor scrolls to the bottom of the page **Then** the footer renders as a full-bleed ink-colored band with text "Remindeer — mnemotecniche per il concorso farmacie" in the footer-text color, using the `footer` component (no border/shadow, per UX-DR9).
 2. **And** "Privacy" and "Termini" links are present and point to placeholder routes/anchors (real legal copy is OQ-3, out of scope for this story).
 3. **And** the footer renders correctly at both mobile (390px) and desktop (1280px) reference breakpoints.
 
@@ -24,7 +24,7 @@ so that I know who's behind the product and can find Privacy/Terms if needed.
 
 - [x] Task 1: Build `Footer` component in `components/landing/footer.tsx` (AC: #1, #2)
   - [x] Full-bleed `footer-bg` background band, `footer-text` text color, no border/shadow (`footer` component per DESIGN.md — full-bleed ink band, warm off-white text, "it's the page's base plane, not a floating element")
-  - [x] Text: "Deer — mnemotecniche per il concorso farmacie"
+  - [x] Text: "Remindeer — mnemotecniche per il concorso farmacie"
   - [x] "Privacy" and "Termini" links pointing to placeholder anchors (`#privacy`, `#termini` — no real pages exist yet, OQ-3 unresolved; do not fabricate legal copy)
 - [x] Task 2: Mount `Footer` in `app/page.tsx`, after `ComparisonSection` (AC: #1)
 - [x] Task 3: Verify responsive behavior at 390px and 1280px (AC: #3)
@@ -48,9 +48,9 @@ No new UI primitives needed (unlike Story 1.2's `QuizCard`/`MnemoBox`). Don't in
 ### References
 
 - [Source: _bmad-output/planning-artifacts/epics.md#Story 1.3] — canonical ACs
-- [Source: _bmad-output/planning-artifacts/prds/prd-deer-2026-08-01/prd.md#FR-3] — footer requirement + exact copy string
-- [Source: _bmad-output/planning-artifacts/ux-designs/ux-deer-2026-08-01/DESIGN.md#Components (footer)] — token values
-- [Source: _bmad-output/planning-artifacts/architecture/architecture-deer-2026-08-01/ARCHITECTURE-SPINE.md#Deferred] — OQ-3 legal copy explicitly out of scope this slice
+- [Source: _bmad-output/planning-artifacts/prds/prd-remindeer-2026-08-01/prd.md#FR-3] — footer requirement + exact copy string
+- [Source: _bmad-output/planning-artifacts/ux-designs/ux-remindeer-2026-08-01/DESIGN.md#Components (footer)] — token values
+- [Source: _bmad-output/planning-artifacts/architecture/architecture-remindeer-2026-08-01/ARCHITECTURE-SPINE.md#Deferred] — OQ-3 legal copy explicitly out of scope this slice
 - [Source: _bmad-output/implementation-artifacts/1-1-hero-with-cta.md, 1-2-comparison-section.md] — established token/breakpoint conventions to reuse
 
 ## Change Log

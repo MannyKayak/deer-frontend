@@ -4,7 +4,11 @@ baseline_commit: 8d45f62a85336228465f91048a9688ebc65b2f9d
 
 # Story 3.1: Feedback Box
 
-Status: done
+Status: review
+
+> **Revision 2026-09-28** — trigger: `specs/spec-remindeer/SPEC.md` (update 2026-09-28: quiz content from shared Supabase, landing = reads + mailing list only).
+>
+> Star rating is no longer stored in Supabase (landing writes only mailing-list signups). On "Invia" it is sent as analytics event `quiz_feedback` with `rating` (1-5). Still optional and independent of the email field.
 
 ## Story
 
@@ -31,7 +35,17 @@ so that I can express my reaction without it blocking anything else on the scree
   - [x] Render below the mnemonic recap; rendering is unconditional — never gated by anything else on the screen, and selecting a star doesn't hide/change any other section (AC #2 by construction, nothing to gate)
   - [x] No network call — rating stays local state; the actual submission wiring is Story 3.3's scope (`submitQuizCompletion` Server Action doesn't exist yet)
 
+### Review Findings
+
+_Code review 2026-09-28 (Blind Hunter + Edge Case Hunter + Acceptance Auditor, combined review of 2.1–2.3, 3.1, 3.2)._
+
+- [ ] [Review][Patch] Empty submit (no rating, no email) returns `{ ok: true }` → "Grazie per il tuo feedback!" and the form disappears for good — disable "Invia" until something is filled [components/quiz/results-screen.tsx:35]
+- [ ] [Review][Patch] Stale Dev Notes/Tasks in 3.1/3.2 ("no network call", "Story 3.3 does the submission") contradict the revision — update to match `submitResultsForm` [_bmad-output/implementation-artifacts/3-1, 3-2]
+- [x] [Review][Defer] Feedback + completion data are silently dropped in production — `track()` is a no-op until Umami is wired (CAP-11 retired) [lib/analytics/track.ts] — deferred, pre-existing; launch blocker
+
 ## Dev Notes
+
+> **Code review 2026-09-28:** the Dev Notes/Tasks below predate the submission wiring. Current behaviour: `submitResultsForm` in `results-screen.tsx` sends the rating as `quiz_feedback` independently of the email; an email is submitted via `submitEmailSignup` only with consent (otherwise silently withheld, AC #3); a failed signup never drops or re-sends the rating; "Invia" is disabled until a rating or an email is entered. Story 3.3 is retired.
 
 ### Scope boundary: this story ends at "the rating is capturable in local state"
 
@@ -52,13 +66,14 @@ Story 3.3 (`Quiz Completion Write & Cookieless Analytics`) is what actually send
 ### References
 
 - [Source: _bmad-output/planning-artifacts/epics.md#Story 3.1] — canonical ACs
-- [Source: _bmad-output/planning-artifacts/prds/prd-deer-2026-08-01/prd.md#FR-9] — 5-level rating, optional, not a gate, independent of email field
-- [Source: _bmad-output/planning-artifacts/ux-designs/ux-deer-2026-08-01/EXPERIENCE.md#State Patterns, #Accessibility Floor] — "no pre-selected value", "exposes current value + each star's role to AT"
-- [Source: _bmad-output/planning-artifacts/architecture/architecture-deer-2026-08-01/ARCHITECTURE-SPINE.md#AD-2, AD-4, AD-7] — no writes yet, reuse tokens, in-memory-only state
+- [Source: _bmad-output/planning-artifacts/prds/prd-remindeer-2026-08-01/prd.md#FR-9] — 5-level rating, optional, not a gate, independent of email field
+- [Source: _bmad-output/planning-artifacts/ux-designs/ux-remindeer-2026-08-01/EXPERIENCE.md#State Patterns, #Accessibility Floor] — "no pre-selected value", "exposes current value + each star's role to AT"
+- [Source: _bmad-output/planning-artifacts/architecture/architecture-remindeer-2026-08-01/ARCHITECTURE-SPINE.md#AD-2, AD-4, AD-7] — no writes yet, reuse tokens, in-memory-only state
 - [Source: _bmad-output/implementation-artifacts/2-3-results-screen.md] — `results-screen.tsx` this story extends
 
 ## Change Log
 
+- 2026-09-28: Revised for Supabase content + landing read/mailing-list-only permissions (see revision note at top).
 - 2026-08-02: Implemented Story 3.1 — new `StarRating` component (`role="radiogroup"`/`role="radio"`, gold-filled/neutral-outline, keyboard + focus-visible), wired into `ResultsScreen` with local `rating` state. Status → review.
 
 ## Dev Agent Record

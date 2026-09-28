@@ -1,11 +1,11 @@
-# Deer — Project Context (decisioni tecniche e vincoli)
+# Remindeer — Project Context (decisioni tecniche e vincoli)
 
 Fonte di verità per tutti i workflow BMAD su questo progetto. Non riaprire
 discussione su punti marcati DECISO.
 
 ## Prodotto
 
-Deer è piattaforma web (sito responsive, non app nativa) che aiuta neo-laureati
+Remindeer è piattaforma web (sito responsive, non app nativa) che aiuta neo-laureati
 in farmacia a memorizzare le 3000 domande ufficiali del concorso per le sedi
 farmaceutiche, tramite mnemotecniche associate alle domande.
 
@@ -75,5 +75,5 @@ implementazione di codice applicativo, nessuna architettura, nessuna epica —
 workflow separati, ognuno con chat fresca (requisito BMAD).
 
 PRD da produrre: centrato sul primo slice (landing + quiz-assaggio), con
-Deer-prodotto come visione complessiva sullo sfondo — non PRD dell'intero
+Remindeer-prodotto come visione complessiva sullo sfondo — non PRD dell'intero
 prodotto in una volta.

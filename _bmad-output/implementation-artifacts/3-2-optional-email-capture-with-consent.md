@@ -4,7 +4,11 @@ baseline_commit: 8d45f62a85336228465f91048a9688ebc65b2f9d
 
 # Story 3.2: Optional Email Capture with Consent
 
-Status: done
+Status: review
+
+> **Revision 2026-09-28** — trigger: `specs/spec-remindeer/SPEC.md` (update 2026-09-28: quiz content from shared Supabase, landing = reads + mailing list only).
+>
+> Post-quiz email now goes to the same mailing list as Story 1.5 via `submitEmailSignup` (consent required, no write without it), firing `email_signup_quiz`. `quiz_completions.email` is no longer written. Same backoffice blocker as 1.5 (spec OQ-11).
 
 ## Story
 
@@ -32,7 +36,17 @@ so that I can be notified later without being forced to sign up now.
   - [x] Rendered unconditionally below the feedback box; nothing on the screen is gated by these fields (mirrors Story 3.1's AC #2 handling)
   - [x] No derivation of a "final submittable email" value in this story — that's Story 3.3's job when it builds the actual submission payload; this story only needs `email` and `consent` to exist as independent, readable state for 3.3 to consume (AC #3's "only email withheld" rule is a Story 3.3 concern once a submission exists, not something to half-implement here without a target to feed)
 
+### Review Findings
+
+_Code review 2026-09-28 (Blind Hunter + Edge Case Hunter + Acceptance Auditor, combined review of 2.1–2.3, 3.1, 3.2)._
+
+- [ ] [Review][Patch] (Decision resolved: delete) Delete 0002 + 0003; backoffice owns schema (OQ-11) — was: `supabase/migrations/0002_email_signups.sql` + `0003_email_signups_dedupe_consent.sql` are new in this change though SPEC/ADR-004 says this repo never creates migrations; 0002 still documents the superseded secret-key model, 0003 would break every insert (NOT NULL consent columns). Delete them, or keep as "proposal for backoffice" with a clear header.
+- [ ] [Review][Patch] Invalid email or missing consent blocks the star rating — `submitResultsForm` returns early before `track("quiz_feedback")` (violates 3.2 AC #2/#3, CAP-9). Track rating independently; withhold only the email [components/quiz/results-screen.tsx:27-34]
+- [ ] [Review][Patch] Deprecated Zod v4 chained `.email()` — use `z.email()` like `gradeQuiz` uses `z.uuid()` [lib/actions/submitEmailSignup.ts:8]
+
 ## Dev Notes
+
+> **Code review 2026-09-28:** the Dev Notes/Tasks below predate the submission wiring. Current behaviour: `submitResultsForm` in `results-screen.tsx` sends the rating as `quiz_feedback` independently of the email; an email is submitted via `submitEmailSignup` only with consent (otherwise silently withheld, AC #3); a failed signup never drops or re-sends the rating; "Invia" is disabled until a rating or an email is entered. Story 3.3 is retired.
 
 ### Scope boundary: independence, not withholding logic, is this story's job
 
@@ -53,13 +67,14 @@ AC #3 describes what should happen at *submission* time (email withheld, feedbac
 ### References
 
 - [Source: _bmad-output/planning-artifacts/epics.md#Story 3.2] — canonical ACs
-- [Source: _bmad-output/planning-artifacts/prds/prd-deer-2026-08-01/prd.md#FR-10, OQ-3] — optional email, format-only validation, placeholder consent copy allowance
-- [Source: _bmad-output/planning-artifacts/ux-designs/ux-deer-2026-08-01/EXPERIENCE.md#State Patterns, #Accessibility Floor] — inline validation non-blocking, email-withheld-not-everything-else rule, keyboard/focus requirements
-- [Source: _bmad-output/planning-artifacts/architecture/architecture-deer-2026-08-01/ARCHITECTURE-SPINE.md#AD-2, AD-4, AD-7] — no writes yet, reuse tokens, in-memory-only state
+- [Source: _bmad-output/planning-artifacts/prds/prd-remindeer-2026-08-01/prd.md#FR-10, OQ-3] — optional email, format-only validation, placeholder consent copy allowance
+- [Source: _bmad-output/planning-artifacts/ux-designs/ux-remindeer-2026-08-01/EXPERIENCE.md#State Patterns, #Accessibility Floor] — inline validation non-blocking, email-withheld-not-everything-else rule, keyboard/focus requirements
+- [Source: _bmad-output/planning-artifacts/architecture/architecture-remindeer-2026-08-01/ARCHITECTURE-SPINE.md#AD-2, AD-4, AD-7] — no writes yet, reuse tokens, in-memory-only state
 - [Source: _bmad-output/implementation-artifacts/3-1-feedback-box.md] — sibling results-screen addition, same scope-boundary pattern (capture locally, submit later in Story 3.3)
 
 ## Change Log
 
+- 2026-09-28: Revised for Supabase content + landing read/mailing-list-only permissions (see revision note at top).
 - 2026-08-02: Implemented Story 3.2 — new `EmailCapture` component (email input with blur-triggered format validation, consent checkbox with placeholder GDPR copy), wired into `ResultsScreen` with independent `email`/`consent` local state. Status → review.
 
 ## Dev Agent Record

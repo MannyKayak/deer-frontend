@@ -6,6 +6,10 @@ baseline_commit: 8d45f62a85336228465f91048a9688ebc65b2f9d
 
 Status: done
 
+> **Revision 2026-09-28** — trigger: `specs/spec-remindeer/SPEC.md` (update 2026-09-28: quiz content from shared Supabase, landing = reads + mailing list only).
+>
+> Retired (FR-4). Code removed 2026-09-28: `components/landing/quiz-preview.tsx` and `getPreviewQuestion()` (with all of `lib/content/`) deleted.
+
 <!-- Note: Validation is optional. Run validate-create-story for quality check before dev-story. -->
 
 ## Story
@@ -63,14 +67,15 @@ EXPERIENCE.md describes the desktop hero as "a two-column grid (copy left, live 
 ### References
 
 - [Source: _bmad-output/planning-artifacts/epics.md#Story 1.4] — canonical ACs
-- [Source: _bmad-output/planning-artifacts/prds/prd-deer-2026-08-01/prd.md#FR-4] — preview requirement (note the mnemonic-visibility discrepancy addressed above)
-- [Source: _bmad-output/planning-artifacts/ux-designs/ux-deer-2026-08-01/DESIGN.md#Components, #UX-DR6, #UX-DR7] — mnemo-box/floating-badge decorative-use spec
-- [Source: _bmad-output/planning-artifacts/ux-designs/ux-deer-2026-08-01/EXPERIENCE.md#Component Patterns, #Responsive & Platform] — preview inertness rules, desktop hero-grid note (deferred, see Dev Note)
-- [Source: _bmad-output/planning-artifacts/architecture/architecture-deer-2026-08-01/ARCHITECTURE-SPINE.md#AD-3, AD-4, AD-6, AD-8] — content accessor contract, component reuse, server-only
+- [Source: _bmad-output/planning-artifacts/prds/prd-remindeer-2026-08-01/prd.md#FR-4] — preview requirement (note the mnemonic-visibility discrepancy addressed above)
+- [Source: _bmad-output/planning-artifacts/ux-designs/ux-remindeer-2026-08-01/DESIGN.md#Components, #UX-DR6, #UX-DR7] — mnemo-box/floating-badge decorative-use spec
+- [Source: _bmad-output/planning-artifacts/ux-designs/ux-remindeer-2026-08-01/EXPERIENCE.md#Component Patterns, #Responsive & Platform] — preview inertness rules, desktop hero-grid note (deferred, see Dev Note)
+- [Source: _bmad-output/planning-artifacts/architecture/architecture-remindeer-2026-08-01/ARCHITECTURE-SPINE.md#AD-3, AD-4, AD-6, AD-8] — content accessor contract, component reuse, server-only
 - [Source: _bmad-output/implementation-artifacts/1-1-hero-with-cta.md, 1-2-comparison-section.md] — `QuizCard`/`MnemoBox`/`CategoryTag` already built, reuse unchanged
 
 ## Change Log
 
+- 2026-09-28: Revised for Supabase content + landing read/mailing-list-only permissions (see revision note at top).
 - 2026-08-02: Implemented Story 1.4 — `lib/content/questions.ts` (10 placeholder Q&A), `lib/content/index.ts` accessor, `QuizPreview` component, mounted between `Hero` and `ComparisonSection`. Resolved a real PRD-vs-epics.md content-visibility discrepancy in favor of epics.md (documented in the story's Dev Notes). Status → review.
 
 ## Dev Agent Record

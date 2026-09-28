@@ -1,10 +1,16 @@
 ---
-baseline_commit: 8d45f62a85336228465f91048a9688ebc65b2f9d
+baseline_commit: 0a49ef9dfd007bcae962695d9b716fe7bb97341e
+supersedes: Story 1.1 as implemented in commit 0a49ef9 (was Status: done)
+change_trigger: _bmad-output/planning-artifacts/sprint-change-proposal-2026-09-27.md
 ---
 
-# Story 1.1: Hero with CTA
+# Story 1.1: Hero with CTA (Revised — token & typography update)
 
 Status: done
+
+> **Revision 2026-09-28** — trigger: `specs/spec-remindeer/SPEC.md` (update 2026-09-28: quiz content from shared Supabase, landing = reads + mailing list only).
+>
+> CTAs now link to `/quiz` and read "Prova il quiz gratis" (was "Prova 10 domande gratis") — question count is dynamic, so no number appears in CTA copy.
 
 <!-- Note: Validation is optional. Run validate-create-story for quality check before dev-story. -->
 
@@ -12,149 +18,162 @@ Status: done
 
 As a visitor,
 I want to see a branded hero with a clear call to action,
-so that I can understand what Deer offers and start the quiz in one tap.
+so that I can understand what Remindeer offers and start the quiz in one tap.
 
 ## Acceptance Criteria
 
-1. **Given** the project is scaffolded with Next.js App Router, TypeScript, Tailwind CSS v4, and the design tokens from DESIGN.md registered under `@theme` **When** a visitor loads the landing page **Then** the hero section renders eyebrow "Concorso pubblico farmacie", headline "La strada più veloce per vincere la farmacia.", subheadline "3000 domande ufficiali. Le ricordi con la mnemotecnica, non le rileggi all'infinito.", primary CTA "Prova 10 domande gratis" (with `→` arrow), microcopy "Nessuna registrazione richiesta", and a trust bar with 3 stats ("3000 domande ufficiali", "2 min per il quiz gratuito", "0 login richiesti").
-2. **And** the header is sticky through scroll with a compact CTA (no arrow) always reachable.
-3. **And** clicking either CTA (hero or header) is wired to the shared quiz entry point with no intermediate form or confirmation step — see **Dev Note: CTA target scope** below, since the quiz itself is built in Epic 2.
-4. **And** the hero and header render correctly at both the 390px mobile and 1280px desktop reference breakpoints per UX-DR14.
-5. **And** `lib/analytics/track.ts` and `lib/analytics/events.ts` exist with a fixed event list including `visit_landing`, and `visit_landing` fires once when the landing page loads.
-6. **And** `button-primary`, `category-tag`, and `logo-mark` are implemented as reusable components per DESIGN.md (UX-DR2, UX-DR3, UX-DR10) and used here, not one-off markup.
+1. **Given** the project is scaffolded with Next.js App Router, TypeScript, Tailwind CSS v4, and the design tokens from `DESIGN.md` registered under `@theme` **When** a visitor loads the landing page **Then** the hero section renders eyebrow "Concorso pubblico farmacie", headline "La strada più veloce per vincere la farmacia.", subheadline "3000 domande ufficiali. Le ricordi con la mnemotecnica, non le rileggi all'infinito.", primary CTA "Prova 10 domande gratis" (with `→` arrow), microcopy "Nessuna registrazione richiesta", and a trust bar with 3 stats ("3000 domande ufficiali", "2 min per il quiz gratuito", "0 login richiesti").
+2. **And** the hero is text-only, single-column, centered on both mobile and desktop — no product image or live quiz-card preview (confirms the existing implementation already has no image; this AC exists to make sure no such element is (re)introduced while other stories change around it).
+3. **And** the header is sticky through scroll with a compact CTA (no arrow) always reachable.
+4. **And** clicking either CTA (hero or header) lands the visitor directly on question 1/10 with no intermediate form or confirmation step. The CTA target is `href="#quiz"` today because the quiz is mounted inline on `app/page.tsx` (see Dev Note: current CTA wiring — do not change this in this story, Story 2.1 owns the `/quiz` route move).
+5. **And** the hero and header render correctly at both the 390px mobile and 1280px desktop reference breakpoints per UX-DR14.
+6. **And** `lib/analytics/track.ts` and `lib/analytics/events.ts` continue to exist with a fixed event list including `visit_landing`, and `visit_landing` still fires once when the landing page loads (no change expected here — verify it still works after the edits below).
+7. **And** `button-primary` uses the revised token set (UX-DR2, `DESIGN.md` 2026-09-27 revision): `background: {colors.primary}` (`#24C5AB`, was `{colors.primary-dark}`), `radius: {rounded.md}` (20px, was `{rounded.full}` pill), plus a new `2px` solid border in `{colors.text-primary}` (was borderless).
+8. **And** headline, CTA label, and stat-number text render in **Fredoka** (was Lexend) — `DESIGN.md` typography tokens `headline-hero(-mobile)`, `cta`/`cta-compact`, `stat-number(-mobile)`, `wordmark` all changed family 2026-09-27. Subheadline, microcopy, eyebrow, and trust-bar labels stay Inter (`font-sans`) — unchanged.
+9. **And** `button-primary`, `category-tag`, and `logo-mark` remain implemented as reusable components per `DESIGN.md` and used here, not one-off markup (no regression on this from the original story).
 
 ## Tasks / Subtasks
 
-- [x] Task 1: Wire design tokens into Tailwind v4 (AC: #1, #4, #6)
-  - [x] Add Lexend + Inter via `next/font/google` in `app/layout.tsx`, replacing the default Geist fonts; expose as CSS variables (`--font-lexend`, `--font-inter`)
-  - [x] Add DESIGN.md's color/radius/spacing tokens as CSS custom properties inside the `@theme` block in `app/globals.css` (see **Dev Note: Tailwind v4 token registration** — do not create a `tailwind.config.js` with `theme.extend`)
-- [x] Task 2: Build shared UI primitives in `components/ui/` (AC: #6)
-  - [x] `LogoMark` — 26px aquamarine circle, 2px ink border, two small rotated "ear" shapes (placeholder per OQ-2), always paired with the wordmark text, never standalone
-  - [x] `ButtonPrimary` — full variant (hero/quiz, `→` arrow) and compact variant (sticky header, no arrow); pill radius, petroleum fill, white text, ink snap shadow (5px full / 4px compact); this component will later double as the in-quiz "Conferma" button (Epic 2) — keep it generic (label, variant, optional arrow, `href`/`onClick`), not hero-specific
-  - [x] `CategoryTag` — pill, aquamarine-tinted background, petroleum text/border, uppercase; used here for the hero eyebrow; will be reused unchanged for the quiz card's "Domanda N di 10" label and the static preview card (Story 1.4, Epic 2) — keep prop-driven (just `children`/text), no eyebrow-specific hardcoding
-- [x] Task 3: Build Hero + sticky header in `components/landing/` (AC: #1, #2, #3, #4)
-  - [x] `Header` — logo + wordmark, compact `ButtonPrimary`, `position: sticky`
-  - [x] `Hero` — eyebrow (`CategoryTag`), headline, subheadline, full `ButtonPrimary` with arrow, microcopy, trust bar (3 stats)
-  - [x] Wire both CTAs to the shared quiz-entry target per **Dev Note: CTA target scope**
-- [x] Task 4: Analytics wrapper (AC: #5)
-  - [x] `lib/analytics/events.ts` — fixed event name list/type: `visit_landing`, `quiz_started`, `quiz_completed` (only `visit_landing` fires in this story; the other two are reserved for Epic 2/3 so the list is stable from the start, per AD-9)
-  - [x] `lib/analytics/track.ts` — provider-agnostic `track(event, props?)` that safely no-ops if no analytics script is loaded yet (Plausible/Umami choice is OQ-4, unresolved)
-  - [x] Fire `visit_landing` once on landing page load — see **Dev Note: firing a client event from a Server Component tree**
-- [x] Task 5: Assemble `app/page.tsx` + `app/layout.tsx` (AC: #1, #2)
-  - [x] Replace the create-next-app boilerplate content in both files entirely (current content is the unmodified `create-next-app` template — see Dev Notes)
-  - [x] Update `metadata` (title/description) away from the "Create Next App" default
-- [x] Task 6: Verify responsive behavior at 390px and 1280px breakpoints; spot-check text/background contrast against DESIGN.md's do/don't table (AC: #4)
+- [x] Task 1: Add the Fredoka font and wire it into the theme (AC: #8)
+  - [x] Add `Fredoka` via `next/font/google` in `app/layout.tsx` alongside the existing `Lexend`/`Inter` imports — expose as a new CSS variable, e.g. `variable: "--font-fredoka-raw"` (keep `Lexend`/`Inter` imports in place; `Lexend` may become unused by the hero/header but do not remove it from `layout.tsx` yet — other components/stories may still reference `font-lexend` until a full audit; flag any now-orphaned `font-lexend` usage you find, don't silently leave dead code without a note)
+  - [x] Register `--font-fredoka: var(--font-fredoka-raw);` in the `@theme inline` block in `app/globals.css`, next to the existing `--font-sans`/`--font-lexend` entries
+- [x] Task 2: Update `button-primary.tsx` token set (AC: #7)
+  - [x] Change `bg-primary-dark` → `bg-primary`
+  - [x] Change `rounded-full` → `rounded-md`
+  - [x] Add `border-2 border-text-primary` (both variants — full and compact)
+  - [x] Verify the JSDoc comment above the component (mentions "petroleum fill") is updated to match the new spec, so it doesn't mislead the next reader
+- [x] Task 3: Update `hero.tsx` typography (AC: #1, #2, #8)
+  - [x] Headline (`h1`): `font-lexend` → `font-fredoka`
+  - [x] Stat-number spans (`TRUST_STATS` values): `font-lexend` → `font-fredoka`
+  - [x] Leave subheadline (`p`), microcopy (`span`), and trust-bar labels on `font-sans` (Inter) — unchanged
+  - [x] Confirm no image/preview markup exists in this file (it currently doesn't — this is a verification subtask, not expected to require a code change)
+- [x] Task 4: Update `header.tsx` / CTA label typography where it flows through `ButtonPrimary`'s `cta`/`cta-compact` font role (AC: #8)
+  - [x] `ButtonPrimary`'s own class list currently hardcodes `font-lexend` for its label text — change to `font-fredoka` inside `button-primary.tsx` (this covers both the Hero's full CTA and the Header's compact CTA in one place, since they share the component)
+  - [x] No change needed to `header.tsx` itself — it only consumes `ButtonPrimary`
+- [x] Task 5: Manual verification (AC: #1–#9)
+  - [x] Rebuild (`npm run build`) and confirm compiled CSS contains `.bg-primary`, `.rounded-md`, `.border-text-primary`, `.font-fredoka` utility classes actually generated (same verification method as the original Story 1.1 completion notes — don't skip this, it's how the token-registration approach gets caught if silently dropped)
+  - [x] Visually/textually re-verify all original AC copy strings and breakpoint behavior are unaffected by this token-only pass (nothing in this revision changes copy, layout structure, or breakpoints — only color/radius/border/font-family)
+
+### Review Findings
+
+- [x] [Review][Decision] CTA label contrast fails WCAG AA — RESOLVED 2026-09-27: option 1 (ink text on aquamarine) — white `text-on-primary` (#FFFFFF) on `bg-primary` (#24C5AB) ≈ 2.2:1, below 4.5:1 (normal) and 3:1 (large). Code matches DESIGN.md exactly; spec itself is the problem. Affects hero CTA, header CTA, and in-quiz/results buttons (shared component). Options: ink text (`text-text-primary`, ≈8:1), revert fill to `primary-dark`, or accept as-is.
+- [x] [Review][Patch] Switch CTA label to ink text: `on-primary` → #221812 (≈8:1) in globals.css + DESIGN.md token [app/globals.css:12]
+- [x] [Review][Patch] Wordmark font size 18px (`text-lg`) vs DESIGN.md `wordmark.fontSize: 20px` [components/landing/header.tsx:9]
+- [x] [Review][Patch] Full CTA font size 16px (`text-base`) vs DESIGN.md `cta.fontSize: 17px` [components/ui/button-primary.tsx:34]
+- [x] [Review][Patch] JSDoc names in-quiz labels "Avanti"/"Ritenta" but `quiz-flow.tsx:91` still renders "Conferma"/"Continua" — misleads next reader [components/ui/button-primary.tsx:25]
+- [x] [Review][Patch] Brand rename "Deer" → "Remindeer" (header wordmark + `<title>`) not recorded in Completion Notes/Change Log despite Task 5 "no copy changes" [components/landing/header.tsx:10, app/layout.tsx:21]
+- [x] [Review][Defer] Orphaned `font-lexend` usages in comparison-*, email-capture, results-screen, quiz-flow, quiz-preview; Lexend still loaded (3 font families); globals.css comment claims Inter for questions [app/globals.css:4] — deferred, pre-existing
+- [x] [Review][Defer] `ButtonPrimary` has no `disabled:` styles — results-screen submit (`disabled={isPending}`) still looks/hover-lifts active [components/ui/button-primary.tsx:36] — deferred, pre-existing
+- [x] [Review][Defer] Header may overflow/wrap below 390px (longer wordmark + compact CTA, no gap between groups) [components/landing/header.tsx:6] — deferred, pre-existing
+- [x] [Review][Defer] `#quiz` anchor target lacks `scroll-margin-top`; sticky header may cover quiz top after jump [app/page.tsx] — deferred, pre-existing
+- [x] [Review][Defer] Hover lift ignores `prefers-reduced-motion` (no `motion-reduce:` variants) [components/ui/button-primary.tsx:36] — deferred, pre-existing
+- [x] [Review][Defer] Planning doc drift: DESIGN.md prose (~l.270) still reserves `rounded.full` for CTA; epics.md (~l.160) still says `theme.extend` — deferred, pre-existing
 
 ## Dev Notes
 
-### Architecture compliance (must follow)
+### What actually exists today (read this before touching anything)
 
-- **AD-1 (stack fixed):** Next.js App Router + TypeScript + Tailwind CSS v4, deployed to Vercel. Do not introduce a different stack or a CSS-in-JS library.
-- **AD-4 (components owned by DESIGN.md):** `button-primary`, `category-tag`, `logo-mark` visual specs (colors, radii, shadows, padding) are fixed in DESIGN.md's `components` frontmatter — copy the exact values, don't invent new ones. `quiz-card`, `answer-option`, `mnemo-box` etc. are out of scope for this story (Epic 2).
-- **AD-8 (Server Components by default):** `app/page.tsx` and everything under `components/landing/` must stay Server Components — no `'use client'` in `Header`/`Hero`/`LogoMark`/`ButtonPrimary`/`CategoryTag`. See the analytics dev note below for the one place this needs care.
-- **AD-9 (analytics through one wrapper):** all tracking goes through `lib/analytics/track.ts` against the fixed list in `lib/analytics/events.ts`. No component calls a Plausible/Umami SDK directly (OQ-4 isn't resolved yet, so there's nothing vendor-specific to call — `track()` should be a safe no-op or console-log stub for now).
-- **AD-10 (design tokens as theme):** register tokens as theme values consumable via ordinary Tailwind utility classes — see the Tailwind v4 note below, the mechanism is CSS `@theme`, not a JS config.
+This story was previously implemented and marked `done` (see `baseline_commit` in this file's front-matter, commit `0a49ef9`). The PO then requested a design-token/typography change (`sprint-change-proposal-2026-09-27.md`) — **this is not a from-scratch build**, it's a targeted revision of working code. Do not re-scaffold anything Task-1-of-the-original-story already built.
 
-### Dev Note: Tailwind v4 token registration (read before Task 1)
+Current state of every file this story touches, read in full before editing:
 
-`ARCHITECTURE-SPINE.md` (AD-10) says tokens go "under `theme.extend`" — that phrasing is Tailwind v3's JS-config mental model. **This project has no `tailwind.config.js`/`.ts` file** (confirmed: repo root has none) and `app/globals.css` already uses Tailwind v4's CSS-first `@theme inline` block:
+- **`components/landing/hero.tsx`** — already text-only, single-column, no image. Uses `font-lexend` on the `h1` and on each `TRUST_STATS` value span. Subheadline/microcopy already `font-sans` (Inter) — leave those alone.
+- **`components/ui/button-primary.tsx`** — `sharedClasses` string hardcodes `rounded-full bg-primary-dark ... font-lexend`, no border at all today. Both the `full` and `compact` size variants share this one class string — editing it once fixes Hero's CTA, Header's compact CTA, and (later, other stories) the in-quiz "Avanti"/"Ritenta" buttons, since they all render through this same component.
+- **`components/landing/header.tsx`** — only consumes `ButtonPrimary`, no direct styling of its own to change.
+- **`app/globals.css`** — `@theme inline` block already defines `--color-primary: #24c5ab` (this is the exact hex the PO asked for — no new color token needed, just re-point the button to the token that already exists) and `--color-text-primary: #221812` (use this for the new border, not a hardcoded hex). `--radius-md: 20px` already exists too. Only a new `--font-fredoka` variable is actually new.
+- **`app/layout.tsx`** — loads `Lexend` and `Inter` via `next/font/google`, exposes `--font-lexend-raw`/`--font-inter-raw`. No `Fredoka` import exists yet.
+- **`app/page.tsx`** — currently renders `Hero`, `QuizPreview`, an inline `<section id="quiz">` wrapping `QuizFlow`, and `ComparisonSection` all on one page. **Do not touch `app/page.tsx`, `QuizPreview`, or `QuizFlow` in this story** — `QuizPreview`'s removal is Story 1.4 (retired, code-removal-only), the `/quiz` route extraction is Story 2.1-REV. This story is scoped strictly to Hero/Header visual tokens.
 
-```css
-@import "tailwindcss";
-:root { --background: #ffffff; --foreground: #171717; }
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-```
+### Dev Note: current CTA wiring — do not "fix" it here
 
-Follow this exact pattern for DESIGN.md's tokens — add `--color-*`, `--font-*`, `--radius-*`, `--spacing-*` custom properties inside `@theme`, e.g. `--color-primary: #24C5AB;`, `--color-primary-dark: #006670;`, `--radius-sm: 10px;`, `--radius-md: 20px;`. Tailwind v4 auto-generates utility classes from these (`bg-primary`, `text-primary-dark`, `rounded-sm`, `rounded-md`, etc.) — no separate config file needed. **Do not create a `tailwind.config.js` with `theme.extend`** — it won't match how this project is actually wired and will silently not apply.
+The CTA currently points at `href="#quiz"`, matching an in-page anchor because the quiz is still mounted inline on the landing page (see `app/page.tsx` above). The epics.md AC language ("lands on question 1/10", "own /quiz route") describes the **target end state after Story 2.1-REV lands**, not this story's scope. Leave `href="#quiz"` as-is here — changing it without Story 2.1-REV's route existing would break the CTA. This is an intentional sequencing note, not an oversight in the AC wording above.
 
-Exact token values needed for this story (full palette in DESIGN.md if more are needed later):
-`primary #24C5AB`, `primary-dark #006670`, `on-primary #FFFFFF`, `accent-gold #E0AF3B`, `surface-base #FAF5E6`, `surface-raised #FFFFFF`, `qtag-bg #C3E7DE`, `text-primary #221812`, `text-secondary #5F5651`, `border-neutral #E7DBD5`. Radii: `sm 10px`, `md 20px`, `full 100px`. `button-primary` shadow: `5px 5px 0 {text-primary}` (full) / `4px 4px 0 {text-primary}` (compact). `chip`/tag shadow pattern (flat, zero blur) applies to any bordered sticker-style element.
+### Architecture compliance (must still hold)
 
-DESIGN.md's typography roles (`headline-hero`, `cta`, `eyebrow`, `stat-number`, etc.) are named **combinations** of family+size+weight+line-height, not a single Tailwind theme axis — there's no architecture decision on whether these become named `--text-*` theme keys or per-element utility composition. For this story, wire `--font-lexend`/`--font-inter` family tokens into `@theme` and compose the rest with ordinary Tailwind utilities (arbitrary values for the exact px sizes DESIGN.md specifies, e.g. `text-[52px]` for `headline-hero`) — don't invent a new named-role system unprompted.
+- **AD-8 (Server Components by default):** `Hero`, `Header`, `ButtonPrimary` remain Server Components — this revision is CSS/markup-class changes only, introduces no interactivity, no `'use client'` needed anywhere touched here.
+- **AD-10 (design tokens as theme):** new `--font-fredoka` token goes in `app/globals.css`'s existing `@theme inline` block, same mechanism as `--font-lexend`/`--font-sans` — do not create a `tailwind.config.js`.
+- **AD-4 (components owned by DESIGN.md):** the exact new values are fixed in `DESIGN.md`'s `components.button-primary` and `typography.*` frontmatter (2026-09-27 revision) — copy those, don't eyeball new numbers.
 
-Needed for this story from DESIGN.md's typography table: `headline-hero` (Lexend 700, 52px/1.12, `-mobile` 30px/1.15), `wordmark` (Lexend 600, 20px), `eyebrow` (Inter 600, 11px, `0.03em` tracking, uppercase), `cta` (Lexend 600, 17px) / `cta-compact` (Lexend 600, 14px), `stat-number` (Lexend 700, 26px, `-mobile` 20px), `body`/`body-mobile` (Inter 400, 18px/15px) for the subheadline/microcopy.
+### Font-family token map (exact, from `DESIGN.md` 2026-09-27 revision)
 
-### Dev Note: CTA target scope (read before Task 3)
+| Role | Old family | New family | Used in (this story's scope) |
+|---|---|---|---|
+| `headline-hero`/`-mobile` | Lexend | **Fredoka** | `hero.tsx` `h1` |
+| `cta`/`cta-compact` | Lexend | **Fredoka** | `button-primary.tsx` label text (both variants) |
+| `stat-number`/`-mobile` | Lexend | **Fredoka** | `hero.tsx` `TRUST_STATS` value spans |
+| `wordmark` | Lexend | **Fredoka** | `header.tsx` "Remindeer" text span — in scope too, since it's the wordmark role even though `header.tsx` needed no other change |
+| `body`, `eyebrow`, `option`, `question`, etc. | Inter | **Inter (unchanged)** | subheadline, microcopy, trust-bar labels, `CategoryTag` — do not touch |
 
-Epic 2 (the actual quiz) doesn't exist yet — this story only builds the landing. AC #3 in epics.md says the CTA "lands the visitor directly on question 1/10", but there's nothing to land on yet. **Structural Seed in ARCHITECTURE-SPINE.md shows a single `app/page.tsx`, no `/quiz` route** — combined with AD-7 ("no route segment encodes quiz step"), the quiz is not a separate Next.js page; it's a client island (`components/quiz/`) that Epic 2 will mount on the same page. **Do not create a `/quiz` route.** For this story: point both CTAs at a stable in-page anchor, e.g. `href="#quiz"` (or wire an `onClick` scroll-into-view), so Epic 2 can drop `<section id="quiz">` in without Story 1.1 needing rework. It's expected that this anchor resolves to nothing visible yet — that's correct for this story's scope, not a bug.
+Note the `wordmark` span in `header.tsx` (`<span className="font-lexend ...">Remindeer</span>`) also needs `font-lexend` → `font-fredoka` — this was missed from the Tasks list above by category (it's technically in `header.tsx`, not just flowing through `ButtonPrimary`); add it to Task 4.
 
-### Dev Note: firing a client event from a Server Component tree (read before Task 4)
+### `button-primary.tsx` exact class diff
 
-There's a real tension between AD-8 ("`'use client'` appears only in `components/quiz/` and `components/feedback/`") and AD-9/FR-12 (landing must fire `visit_landing` on load) — firing any client-side event on mount inherently needs either a Client Component or a `<script>` tag, and AD-8's Structural Seed doesn't list an analytics client boundary. Two ways to resolve, pick one and stay consistent:
+Old: `rounded-full bg-primary-dark font-lexend font-semibold text-on-primary`
+New: `rounded-md bg-primary border-2 border-text-primary font-fredoka font-semibold text-on-primary`
 
-- **Recommended:** add one small, non-visual Client Component (e.g. `components/analytics/PageViewTracker.tsx`, `'use client'`, no UI, just a `useEffect` calling `track('visit_landing')` once) and mount it once in `app/page.tsx`. It's not "landing UI" in the sense AD-8 is guarding against (no interactive island competing for bundle size), just an event-firing hook — reasonable reading of AD-8's intent even though it's technically a `'use client'` file outside `components/quiz/`/`components/feedback/`.
-- **Fallback (zero exceptions to AD-8):** use Next's built-in `next/script` component (usable directly from a Server Component, doesn't require `'use client'` on the parent) with an inline snippet calling a plain global tracking function.
+Shadow (`shadow-[5px_5px_0_var(--color-text-primary)]` / compact `4px`) is unchanged — ink shadow color was already correct, only the fill/radius/border/font change.
 
-If this feels like it should be an explicit architecture decision rather than a per-story call, flag it — this note is filling a real gap, not restating an existing rule.
+### Testing standards
 
-### Minor copy/layout nuances (non-binding, don't over-engineer)
-
-- Trust bar labels may abbreviate on mobile ("quiz gratis" instead of "per il quiz gratuito", "login" instead of "login richiesti") — a responsive typography variant per `addendum.md`, not a separate content requirement. Full desktop labels are always correct; mobile abbreviation is optional polish, not an AC.
-- `addendum.md` mentions a mobile-only variant where the header's compact CTA is replaced by a small "Farmacie" chip. `EXPERIENCE.md` explicitly calls this "a layout detail only, not a distinct requirement." AC #2 (compact CTA always reachable) is the binding requirement — implement that; the chip variant is not required for this story.
+No test framework exists in this repo (confirmed again — still no Jest/Vitest/Playwright config since the original Story 1.1). Verify manually: rebuild, inspect compiled CSS for the new utility classes, and eyeball the rendered hero/header against `DESIGN.md`'s updated component spec. If a QA automation pass is wanted later, that's the separate `bmad-qa-generate-e2e-tests` skill, not this story.
 
 ### Project Structure Notes
 
-- Repo is currently the unmodified `create-next-app` output (`app/page.tsx`, `app/layout.tsx`, `app/globals.css` all default boilerplate; `package.json` already pins `next@16.2.12`, `react@19.2.4`, `tailwindcss@^4` — matching ARCHITECTURE-SPINE.md's Stack table exactly, no version drift). This story replaces `page.tsx`/`layout.tsx`/`globals.css` content wholesale — expected, not a regression.
-- No `components/`, `lib/`, or `public/` custom assets exist yet. Create `components/ui/`, `components/landing/`, `lib/analytics/` fresh, matching the Structural Seed in `ARCHITECTURE-SPINE.md`.
-- Default `public/*.svg` files (`next.svg`, `vercel.svg`, etc.) and their references in the old `page.tsx` can be deleted once no longer imported — don't leave dead imports.
-- No test framework is specified anywhere in the architecture or epics for this slice (Stack table lists no Jest/Vitest/Playwright). Verify this story manually against each AC and against the reference mockups (`mockups/key-landing-mobile.html`, `mockups/key-landing-desktop.html` — see References) rather than inventing a test framework unprompted. Automated E2E tests, if wanted later, go through the separate `bmad-qa-generate-e2e-tests` skill after implementation.
+- No new files, no new directories. Every change is an edit to an existing file: `app/layout.tsx`, `app/globals.css`, `components/ui/button-primary.tsx`, `components/landing/hero.tsx`, `components/landing/header.tsx`.
+- `lib/data/` appears as an untracked directory in the current git status and `lib/data/quiz.ts` exists alongside `lib/content/questions.ts` — this looks like in-progress/parallel content work unrelated to this story; do not touch it, do not assume it's connected to Story 1.1's scope.
 
 ### References
 
-- [Source: _bmad-output/planning-artifacts/epics.md#Story 1.1] — canonical ACs
-- [Source: _bmad-output/planning-artifacts/prds/prd-deer-2026-08-01/prd.md#FR-1] — hero requirement + exact copy strings
-- [Source: _bmad-output/planning-artifacts/ux-designs/ux-deer-2026-08-01/DESIGN.md#Colors, #Typography, #Components] — token values, `button-primary`/`category-tag`/`logo-mark` specs
-- [Source: _bmad-output/planning-artifacts/ux-designs/ux-deer-2026-08-01/EXPERIENCE.md#Component Patterns, #Responsive & Platform] — CTA behavioral rules, breakpoint layout
-- [Source: _bmad-output/planning-artifacts/ux-designs/ux-deer-2026-08-01/mockups/key-landing-mobile.html] and [key-landing-desktop.html] — pixel-reference for visual QA
-- [Source: _bmad-output/planning-artifacts/architecture/architecture-deer-2026-08-01/ARCHITECTURE-SPINE.md#AD-1, AD-4, AD-8, AD-9, AD-10, Structural Seed] — stack, component ownership, client/server boundary, analytics wrapper, token registration, directory layout
-- [Source: node_modules/next/dist/docs/01-app/01-getting-started/13-fonts.md] — `next/font/google` usage pattern for Lexend/Inter (confirmed against the installed Next.js 16.2.12 docs, not training-data Next.js — per AGENTS.md)
+- [Source: _bmad-output/planning-artifacts/epics.md#Story 1.1] — canonical revised ACs (2026-09-27)
+- [Source: _bmad-output/planning-artifacts/sprint-change-proposal-2026-09-27.md] — why this changed, full impact analysis
+- [Source: _bmad-output/planning-artifacts/prds/prd-remindeer-2026-08-01/prd.md#FR-1] — original hero requirement + exact copy strings (unchanged by this revision)
+- [Source: _bmad-output/planning-artifacts/ux-designs/ux-remindeer-2026-08-01/DESIGN.md#Components, #Typography] — revised `button-primary` and typography token values (2026-09-27)
+- [Source: _bmad-output/planning-artifacts/ux-designs/ux-remindeer-2026-08-01/EXPERIENCE.md#Responsive & Platform] — confirms hero is now text-only on both breakpoints
+- [Source: components/landing/hero.tsx, components/ui/button-primary.tsx, components/landing/header.tsx, app/globals.css, app/layout.tsx] — actual current implementation read in full for this story (see Dev Notes above)
+- [Source: _bmad-output/implementation-artifacts/1-1-hero-with-cta.md @ commit 0a49ef9] — original story's Dev Notes on Tailwind v4 `@theme` token registration and `next/font/google` usage pattern, still valid and not repeated here in full
 
 ## Latest Tech Information
 
-- Installed versions (already in `package.json`, matches architecture exactly): `next@16.2.12`, `react@19.2.4`, `react-dom@19.2.4`, `tailwindcss@^4`, `@tailwindcss/postcss@^4`, `typescript@^5`.
-- `next/font/google` API (Next 16.2.12, confirmed against bundled docs): import the font function directly (`import { Lexend, Inter } from 'next/font/google'`), call with `subsets`/`weight` options, apply via `className` or expose as a CSS variable with `variable: '--font-lexend'` and reference it in `@theme`. Non-variable fonts require an explicit `weight` array/string (Lexend/Inter are variable fonts on Google Fonts, so `weight` is optional — omit it and let the variable font handle all needed weights).
-- Next 16.2.12 also exposes global `PageProps`/`LayoutProps` type helpers (no import needed) if typing route props becomes relevant later — not needed for this static story.
+- No new libraries introduced. `next/font/google`'s `Fredoka` export works identically to the already-used `Lexend`/`Inter` (same Google Fonts variable-font mechanism) — no version-specific concerns beyond what the original Story 1.1 already confirmed against the installed Next.js 16.2.12 docs.
 
 ## Change Log
 
-- 2026-08-02: Implemented Story 1.1 — design tokens wired into Tailwind v4 `@theme`, `LogoMark`/`ButtonPrimary`/`CategoryTag` primitives, `Header`/`Hero` landing components, analytics wrapper + `PageViewTracker`, `app/page.tsx`/`app/layout.tsx` assembled. Fixed a breakpoint precision issue during implementation (see Completion Notes). Status → review.
+- 2026-09-28: Revised for Supabase content + landing read/mailing-list-only permissions (see revision note at top).
+- 2026-09-27: Story revised per `sprint-change-proposal-2026-09-27.md` — button-primary token set (aquamarine fill, 20px radius, ink border) and Fredoka typography for headline/CTA/stat-number/wordmark. Status reset to `ready-for-dev`.
+- 2026-09-27: Implemented — Fredoka font + `--font-fredoka` theme token; `button-primary` → `bg-primary`/`rounded-md`/`border-2 border-text-primary`/`font-fredoka`; hero headline + stat numbers + header wordmark → Fredoka; hero content centered (AC #2). Status → `review`.
+- 2026-09-27: Code review — CTA label → ink (`on-primary` #221812, WCAG AA fix; DESIGN.md token updated), wordmark 20px, full CTA 17px, JSDoc labels corrected. Brand rename "Deer" → "Remindeer" (header wordmark + `<title>`) recorded here: copy change applied alongside this story to match DESIGN.md `name: Remindeer`.
 
 ## Dev Agent Record
 
 ### Agent Model Used
 
-Claude Sonnet 5 (claude-sonnet-5)
+Claude Opus 5.5 (claude-opus-5-5)
 
 ### Debug Log References
 
-- `npm run build` — clean compile, TypeScript pass, static page generated (run twice: once pre-breakpoint-fix, once after)
-- `npx eslint app components lib` — 0 errors/warnings (full-repo `npm run lint` shows pre-existing errors/warnings in `_bmad-output/.../imports/support.js`, an unrelated UX-design import asset not touched by this story)
-- Manual smoke test via `npm run dev` + `curl`: verified rendered HTML contains all required copy strings (headline, subheadline, microcopy, all 3 trust-bar stats), verified compiled CSS actually generated rules for the custom `@theme` tokens (`.bg-primary-dark`, `.font-lexend`, `.bg-qtag-bg`, `--radius-sm`), confirming the Tailwind v4 token-registration approach works end-to-end and isn't silently dropped.
+- `npm run build` — compiled OK, TypeScript OK, 4/4 static pages generated.
+- `npx eslint app components` — no findings.
+- Compiled CSS verified: `.bg-primary{background-color:#24c5ab}`, `.rounded-md{border-radius:20px}`, `.border-text-primary{border-color:#221812}`, `.border-2{…border-width:2px}`, `.font-fredoka{font-family:var(--font-fredoka-raw)}`, `.text-center`.
+- Prerendered `index.html`: all AC #1 copy strings present, no `<img>` in hero, both CTAs `href="#quiz"`, `<html>` carries the Fredoka/Lexend/Inter variable classes.
+- Visual check via Playwright on `next start` at 1280×800 and 390×844: header sticky with compact CTA, hero single-column centered, trust bar wraps to 2+1 on mobile. Screenshots discarded after check.
 
 ### Completion Notes List
 
-- All 6 ACs implemented and manually verified against rendered HTML + compiled CSS (no test framework exists in this repo yet, per the story's own Dev Notes — see Project Structure Notes). Could not verify the `visit_landing` console log or live browser rendering visually (no browser automation available this session); relied on server-rendered HTML output + code review instead. Flagging this explicitly rather than claiming full visual QA.
-- Confirmed the two flagged Dev Note risks resolved as recommended: (1) tokens registered via CSS `@theme` in `globals.css`, not a `tailwind.config.js` — verified the generated utility classes exist in compiled CSS; (2) added `components/analytics/page-view-tracker.tsx` as the one small `'use client'` exception outside `quiz/`/`feedback/`, per the story's recommended resolution to the AD-8/AD-9 tension.
-- **New finding during implementation (not anticipated in the story):** the story specified Tailwind's `sm:`/`lg:` prefixes (640px/1024px) for the mobile→desktop switch, but DESIGN.md's reference breakpoint is exactly 1280px. Tailwind v4's default `xl:` prefix is exactly 1280px — switched all responsive classes in `Header`/`Hero` from `sm:`/`lg:` to `xl:` so the breakpoint switch happens at the spec'd value, not an approximation. Rebuilt and reverified after the fix.
-- `app/page.tsx`/`app/layout.tsx`/`app/globals.css` boilerplate fully replaced as expected (see story's Project Structure Notes) — not a regression.
-- CTA on both Header and Hero points to `href="#quiz"`, per the story's CTA-target-scope Dev Note; this anchor intentionally resolves to nothing yet — Epic 2 Story 2.1 will add `<section id="quiz">`.
-- Left default `public/*.svg` files in place (unused but harmless, not blocking any AC) — noted as optional cleanup in the story, not done to keep this story's diff focused on its own scope.
+- Task 1: `Fredoka` added via `next/font/google` (`--font-fredoka-raw`), registered as `--font-fredoka` in `@theme inline`. `Lexend` import kept as instructed.
+- Task 2 + 4: `button-primary` class set changed exactly per Dev Notes diff (shadow untouched); JSDoc updated (no longer "pill"; in-quiz labels now "Avanti"/"Ritenta"). Covers hero CTA and header compact CTA.
+- Task 3: hero `h1` + `TRUST_STATS` values → `font-fredoka`; Inter elements untouched; no image/preview markup present.
+- Task 4 (Dev Notes addendum): header wordmark span → `font-fredoka`.
+- **Deviation / AC #2:** Dev Notes said hero was already compliant, but it was left-aligned (`items-start`). AC #2 and EXPERIENCE.md require "centered" on both breakpoints, so the section, CTA block and trust bar were switched to `items-center`/`text-center`/`justify-center`. Layout structure, copy and breakpoints otherwise unchanged.
+- No test framework in repo (per Dev Notes) — verification is build + compiled-CSS inspection + prerendered HTML + visual check. `visit_landing` wiring (`PageViewTracker` in `app/page.tsx`, event in `lib/analytics/events.ts`) untouched and intact (AC #6).
+- **Flag — orphaned `font-lexend` usages** (out of scope, left as-is; DESIGN.md now maps these roles to Fredoka): `comparison-section.tsx` (h2), `comparison-remindeer.tsx` (h3, p), `comparison-traditional.tsx` (h3), `email-capture.tsx` (label), `results-screen.tsx` (2 spans), `quiz-flow.tsx` + `quiz-preview.tsx` (question text — should become Inter per 2026-09-27 `typography.question` fix). Suggest handling in Story 2.x / 1.4 removal or a small follow-up.
+- **Flag — contrast:** `button-primary` spec (white `on-primary` text on `#24C5AB`) gives ≈2.2:1, below WCAG AA 4.5:1 (and 3:1 large-text). Implemented as specified; recommend UX decide on ink text (`text-primary`, ≈8:1) or keep `primary-dark` fill.  **Resolved in code review 2026-09-27: ink text chosen.**
 
 ### File List
 
-- `app/layout.tsx` (modified)
-- `app/page.tsx` (modified)
-- `app/globals.css` (modified)
-- `components/ui/logo-mark.tsx` (new)
-- `components/ui/button-primary.tsx` (new)
-- `components/ui/category-tag.tsx` (new)
-- `components/landing/header.tsx` (new)
-- `components/landing/hero.tsx` (new)
-- `components/analytics/page-view-tracker.tsx` (new)
-- `lib/analytics/events.ts` (new)
-- `lib/analytics/track.ts` (new)
+- app/layout.tsx (modified)
+- app/globals.css (modified)
+- components/ui/button-primary.tsx (modified)
+- components/landing/hero.tsx (modified)
+- components/landing/header.tsx (modified)
+- _bmad-output/implementation-artifacts/1-1-hero-with-cta.md (modified — status/tasks/record)
+- _bmad-output/implementation-artifacts/sprint-status.yaml (modified — 1-1 → review)

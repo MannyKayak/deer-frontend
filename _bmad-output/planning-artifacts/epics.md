@@ -1,21 +1,21 @@
 ---
 stepsCompleted: [step-01-validate-prerequisites, step-02-design-epics, step-03-create-stories]
 inputDocuments:
-  - _bmad-output/planning-artifacts/prds/prd-deer-2026-08-01/prd.md
-  - _bmad-output/planning-artifacts/architecture/architecture-deer-2026-08-01/ARCHITECTURE-SPINE.md
-  - _bmad-output/planning-artifacts/architecture/architecture-deer-2026-08-01/SOLUTION-DESIGN.md
-  - _bmad-output/planning-artifacts/ux-designs/ux-deer-2026-08-01/DESIGN.md
-  - _bmad-output/planning-artifacts/ux-designs/ux-deer-2026-08-01/EXPERIENCE.md
-  - _bmad-output/specs/spec-deer/SPEC.md
-  - _bmad-output/specs/spec-deer/glossary.md
+  - _bmad-output/planning-artifacts/prds/prd-remindeer-2026-08-01/prd.md
+  - _bmad-output/planning-artifacts/architecture/architecture-remindeer-2026-08-01/ARCHITECTURE-SPINE.md
+  - _bmad-output/planning-artifacts/architecture/architecture-remindeer-2026-08-01/SOLUTION-DESIGN.md
+  - _bmad-output/planning-artifacts/ux-designs/ux-remindeer-2026-08-01/DESIGN.md
+  - _bmad-output/planning-artifacts/ux-designs/ux-remindeer-2026-08-01/EXPERIENCE.md
+  - _bmad-output/specs/spec-remindeer/SPEC.md
+  - _bmad-output/specs/spec-remindeer/glossary.md
   - _bmad-output/project-context.md
 ---
 
-# Deer - Epic Breakdown
+# Remindeer - Epic Breakdown
 
 ## Overview
 
-This document provides the complete epic and story breakdown for Deer (first public slice: landing page + quiz di assaggio), decomposing requirements from the PRD, the UX design contract (DESIGN.md + EXPERIENCE.md), the Architecture Spine + Solution Design, and the SPEC.md canonical contract into implementable stories.
+This document provides the complete epic and story breakdown for Remindeer (first public slice: landing page + quiz di assaggio), decomposing requirements from the PRD, the UX design contract (DESIGN.md + EXPERIENCE.md), the Architecture Spine + Solution Design, and the SPEC.md canonical contract into implementable stories.
 
 ## Requirements Inventory
 
@@ -23,19 +23,19 @@ This document provides the complete epic and story breakdown for Deer (first pub
 
 FR-1: Hero with CTA toward the quiz — visitor sees hero (headline, subheadline, CTA, microcopy, trust bar) and starts the quiz in one tap/click, no intermediate step. Sticky header keeps a compact CTA reachable through scroll.
 
-FR-2: Comparison section — visitor reads the "traditional method vs Deer" contrast before deciding to start the quiz. Single column on mobile, two columns side by side from desktop up.
+FR-2: Comparison section — visitor reads the "traditional method vs Remindeer" contrast before deciding to start the quiz. Single column on mobile, two columns side by side from desktop up.
 
 FR-3: Minimal footer — visitor sees product name and Privacy/Termini links (link targets pending OQ-3).
 
-FR-4: In-page quiz preview — visitor sees a non-interactive sample question card (same quiz-card shape as the real quiz) before deciding to start the real quiz. No clickable options, no mnemonic ever shown here.
+FR-4: **RETIRED (2026-09-27)** — In-page quiz preview. Quiz moved off the landing page to its own route (`/quiz`); the landing no longer previews quiz content. See `sprint-change-proposal-2026-09-27.md`.
 
 FR-5: Single-question presentation — visitor sees one question at a time: category tag, "Domanda N di 10" progress indicator, question text, 3-4 full-width answer options. Next question never visible before the current one is answered. No login/personal data required.
 
-FR-6: Answer reveal + mnemonic unlock — on tapping any option, the correct option is visually highlighted (independent of what was tapped); a mnemo box appears tagged "🔑 Mnemotecnica"; correctness is never color-only; advancing requires an explicit "Conferma" tap (no auto-advance).
+FR-6: **REVISED (2026-09-27)** — Answer selection without immediate feedback. Tapping an option locks it in a neutral selected state — no correct/incorrect reveal, no mnemo box, pick is not changeable afterward. Advancing requires an explicit "Avanti" tap (no auto-advance), which does not reveal anything, it only moves forward. Reveal moves entirely to the results screen (FR-8).
 
 FR-7: Progress not persisted server-side — no network write happens between question 1 and the final screen; a refresh mid-quiz returns to question 1; no record created for intermediate answers.
 
-FR-8: Result + mnemonic recap — after question 10, visitor sees score ("N/10 corrette") and all 10 mnemonics encountered, regardless of which were answered correctly.
+FR-8: **REVISED (2026-09-27)** — Result + per-question breakdown. After question 10, visitor sees score ("N/10 corrette") and, for each of the 10 questions, its resolved state: correct → checkmark only, incorrect → mnemonic box shown. A "Ritenta" CTA restarts the same 10 questions from question 1.
 
 FR-9: Feedback box — 5-level star rating, optional, never gates the rest of the final screen; the feedback event is sent independently of whether email is filled.
 
@@ -44,6 +44,8 @@ FR-10: Optional email capture — field clearly marked optional; only blocking v
 FR-11: Quiz-completed event write — exactly one Supabase (EU-Frankfurt) record per completion (score, optional feedback, optional email, server-stamped timestamp); zero records for abandoned quizzes; score recomputed server-side from submitted answers (never trusted from client); write goes through exactly one Server Action; Supabase secret key never reaches the browser.
 
 FR-12: Cookieless analytics — `visit_landing`, `quiz_started`, `quiz_completed` fire through one tracking wrapper; `quiz_completed` fires only after the completion Server Action returns success (never optimistically); no cookie consent banner shown.
+
+FR-13: **NEW (2026-09-27)** — Landing email signup section. Standalone email capture between the comparison section and the footer, independent of the results-screen email capture (FR-10) — own consent copy, own analytics event, own submission path. Reachable without ever starting the quiz.
 
 ### NonFunctional Requirements
 
@@ -74,19 +76,19 @@ NFR-3 (Privacy): email and feedback data stored in Supabase EU (Frankfurt) per G
 
 UX-DR1: Design tokens — palette (OKLCH/hex: primary aquamarine, primary-dark petroleum, accent-gold, correct/correct-bg, surface-base/raised/muted/muted-line, qtag-bg, mnemo-bg, text-primary/secondary, border-neutral, footer-bg/text), typography scale (Lexend for headlines/CTA/numbers/questions, Inter for body/options/tags, with `-mobile` variants for responsive steps), spacing scale (4px base unit, tokens 1-10 plus margin-mobile/margin-desktop), and two radii (`sm` 10px, `md` 20px, `full` 100px pill) must be registered under Tailwind v4 `theme.extend` (AD-10).
 
-UX-DR2: `button-primary` component — pill radius, petroleum fill, white text, ink snap shadow; full variant (hero/quiz, carries `→` arrow) and compact variant (sticky header, no arrow, shorter shadow throw). Doubles as the in-quiz "Conferma" button.
+UX-DR2: `button-primary` component — **REVISED (2026-09-27)**: aquamarine fill (`#24C5AB`), 20px radius (`rounded.md`, no longer full pill), 2px ink border, white text, ink snap shadow; full variant (hero/quiz, carries `→` arrow) and compact variant (sticky header, no arrow, shorter shadow throw). Doubles as the in-quiz "Avanti" button and the results-screen "Ritenta" button.
 
 UX-DR3: `category-tag` component — pill, aquamarine-tinted background, petroleum text/border, uppercase. Reused identically on hero eyebrow, real quiz card ("Domanda N di 10" progress label included), and static preview card (never carries the progress label there).
 
-UX-DR4: `quiz-card` component — white, 3px ink border, 20px radius, 7px ink snap shadow. One component reused for the real quiz (FR-5), the static landing preview (FR-4), and the "Con Deer" comparison column — never re-implemented per surface.
+UX-DR4: `quiz-card` component — white, 3px ink border, 20px radius, 7px ink snap shadow. One component reused for the real quiz (FR-5), the static landing preview (FR-4), and the "Con Remindeer" comparison column — never re-implemented per surface.
 
-UX-DR5: `answer-option` / `answer-option-correct` components — full-width, stacked, left-aligned. Default: white, thin neutral border, no shadow. Correct state (applied regardless of user's tap): green tint background, green border, green snap shadow, bold text + implicit non-color marker per NFR-1. No separate "wrong, your pick" style in v1.
+UX-DR5: `answer-option` / `answer-option-selected` / `answer-option-correct` / `answer-option-incorrect` components — full-width, stacked, left-aligned. Default: white, thin neutral border, no shadow. **REVISED (2026-09-27)**: tap sets `answer-option-selected` (neutral, primary-tinted, locked) with no reveal during the quiz; `answer-option-correct`/`answer-option-incorrect` (green/error tint, snap shadow, bold text, ✓/✗ per NFR-1) are now used only on the results screen's per-question breakdown, not live during the quiz.
 
-UX-DR6: `mnemo-box` component — gold-tinted background, gold border, tagged "🔑 Mnemotecnica" in small-caps mnemo-tag style. Appears instantly (no transition/animation) below options after tap in the real quiz; shown pre-revealed as static illustration on the landing hero preview and the comparison "Con Deer" column.
+UX-DR6: `mnemo-box` component — gold-tinted background, gold border, tagged "🔑 Mnemotecnica" in small-caps mnemo-tag style. **REVISED (2026-09-27)**: no longer appears during the quiz; appears on the results screen next to incorrect answers only (correct answers show a checkmark, no mnemo box). Still shown pre-revealed as static illustration on the comparison "Con Remindeer" column (the landing hero preview usage is retired with FR-4).
 
-UX-DR7: `floating-badge` component — small rotated gold pill anchored to a card corner, decorative/illustrative use only on the landing (e.g. static "Domanda 4/10" preview badge) — distinct from the real in-quiz progress indicator, which uses the plain `category-tag` style.
+UX-DR7: `floating-badge` component — small rotated gold pill anchored to a card corner. **REVISED (2026-09-27)**: its only landing usage (the static "Domanda 4/10" preview badge) is retired with FR-4; retained as a reusable component for future decorative use. Distinct from the real in-quiz progress indicator, which uses the plain `category-tag` style.
 
-UX-DR8: `comparison-traditional` / `comparison-deer` components — traditional column deliberately underdesigned (muted flat background, skeleton placeholder lines, 85% opacity); Deer column is a full `quiz-card`. The visual-weight contrast between the two columns is the rhetorical argument (FR-2).
+UX-DR8: `comparison-traditional` / `comparison-remindeer` components — traditional column deliberately underdesigned (muted flat background, skeleton placeholder lines, 85% opacity); Remindeer column is a full `quiz-card`. The visual-weight contrast between the two columns is the rhetorical argument (FR-2).
 
 UX-DR9: `footer` component — full-bleed ink band, warm off-white text, no border/shadow.
 
@@ -98,25 +100,25 @@ UX-DR12: Elevation system — no blur ever; flat hard-edged offset shadows in in
 
 UX-DR13: Accessibility floor (behavioral) — correct-answer state never color-only (✓ + bold weight always accompany green border/background, NFR-1); WCAG 2.1 AA contrast verified specifically for `text-secondary` on `surface-muted`; all interactive elements (CTA, answer options, Conferma, star rating, email field, consent checkbox, footer links) keyboard-reachable and operable with a visible custom focus state (not default browser outline); star rating exposes current value and each star's role to assistive tech; tap targets ≥44×44px.
 
-UX-DR14: Responsive layout rules — mobile (390px): single column, hero stack order logo→headline→subheadline→CTA→microcopy→trust-bar→preview→comparison→footer. Desktop (1280px): hero becomes two-column grid (copy left, live preview quiz-card right); comparison becomes two side-by-side columns; header keeps compact CTA visible via `position: sticky`. Quiz itself has no distinct desktop layout — always a single centered card on both breakpoints.
+UX-DR14: Responsive layout rules — **REVISED (2026-09-27)**: mobile (390px): single column, hero stack order logo→headline→subheadline→CTA→microcopy→trust-bar→comparison→email-signup→footer (preview card removed, email-signup section added). Desktop (1280px): hero is single-column, centered, text-only (no more two-column copy+preview grid); comparison becomes two side-by-side columns; email-signup section between comparison and footer; header keeps compact CTA visible via `position: sticky`. Quiz itself (now on its own `/quiz` route) has no distinct desktop layout — always a single centered card on both breakpoints.
 
-UX-DR15: Interaction primitives — tap/click only to select an answer (no drag/swipe); explicit tap on "Conferma" to advance (no auto-advance, no swipe, no keyboard shortcut beyond standard Tab/Enter); landing preview card is fully inert (tapping does nothing); sticky header CTA behaves identically to hero CTA.
+UX-DR15: Interaction primitives — **REVISED (2026-09-27)**: tap/click to select an answer locks the pick immediately (no drag/swipe, no changing the pick, no reveal); explicit tap on "Avanti" to advance (no auto-advance, no swipe, no keyboard shortcut beyond standard Tab/Enter) — "Avanti" moves forward only, it never reveals correctness; "Ritenta" on the results screen restarts the same 10 questions; sticky header CTA behaves identically to hero CTA. (Landing preview card interaction rule retired with FR-4.)
 
-UX-DR16: State patterns — mid-quiz refresh/tab close returns to question 1, nothing persisted (FR-7); answer tap causes instant snap-in of correct state + mnemo box (no animation/fade/slide); quiz-completion write failure (network drop) keeps score/recap visible (computed client-side) with a small inline non-blocking error + retry control near feedback/email area only; invalid email format shows inline validation without blocking feedback submission or screen viewing; email filled + consent unchecked on submit withholds only the email from the completion event (feedback and completion event still go through); star rating defaults to all-unfilled.
+UX-DR16: State patterns — **REVISED (2026-09-27)**: mid-quiz refresh/tab close returns to question 1, nothing persisted (FR-7); answer tap causes instant snap-in of the neutral `answer-option-selected` state only, no reveal, no mnemo box; on reaching the results screen all 10 questions resolve at once (checkmark on correct, mnemo-box on incorrect); quiz-completion write failure (network drop) keeps score/breakdown visible (computed client-side) with a small inline non-blocking error + retry control near feedback/email area only; invalid email format shows inline validation without blocking feedback submission or screen viewing; email filled + consent unchecked on submit withholds only the email from the completion event (feedback and completion event still go through); star rating defaults to all-unfilled; "Ritenta" restarts the same 10 questions from question 1, in-memory.
 
-UX-DR17: Banned patterns for this slice (explicitly out of scope, present in full-product design system PDF but rejected here) — countdown/session timer, "Salta" (skip) control, auto-advance, streak/badge display, login gate, cross-session progress resume.
+UX-DR17: Banned patterns for this slice (explicitly out of scope, present in full-product design system PDF but rejected here) — countdown/session timer, "Salta" (skip) control, auto-advance, streak/badge display, login gate, cross-session progress resume, **and (added 2026-09-27) any per-question correct/incorrect reveal or mnemonic disclosure during the quiz itself** — reveal happens only on the results screen.
 
 UX-DR18: Voice/tone microcopy rules — exact copy strings for hero, CTA, microcopy, comparison section titles/columns, footer text (see PRD §4 and EXPERIENCE.md Voice and Tone do/don't table); direct second-person tone, no exclamation-heavy hype or gamified encouragement.
 
 ## Epic List
 
 ### Epic 1: Landing Page & Foundation
-Project scaffold, design system wired into Tailwind theme, base component library (button-primary, category-tag, quiz-card, chip, comparison-traditional/deer, footer, logo-mark), and the public landing page (hero+CTA, comparison section, footer, static quiz preview) that hooks a cold visitor and gets them to the quiz. Includes the analytics wrapper module and the `visit_landing` event.
-**FRs covered:** FR-1, FR-2, FR-3, FR-4, FR-12 (partial: wrapper + visit_landing)
+**REVISED (2026-09-27)**: Project scaffold, design system wired into Tailwind theme, base component library (button-primary, category-tag, quiz-card, chip, comparison-traditional/remindeer, footer, logo-mark), and the public landing page (text-only hero+CTA, comparison section, email-signup section, footer) that hooks a cold visitor and gets them to the quiz or captures their email directly. The in-page quiz preview (FR-4) is retired — the quiz now lives on its own route (Epic 2). Includes the analytics wrapper module and the `visit_landing` event.
+**FRs covered:** FR-1, FR-2, FR-3, FR-12 (partial: wrapper + visit_landing), FR-13 (new). ~~FR-4~~ retired.
 
 ### Epic 2: Quiz di Assaggio
-The 10-question, no-login taste-quiz flow: single-question presentation, answer reveal with mnemonic unlock, client-only progress (no server persistence), and the results screen with score + full mnemonic recap. Includes the `quiz_started` analytics event.
-**FRs covered:** FR-5, FR-6, FR-7, FR-8, FR-12 (partial: quiz_started)
+**REVISED (2026-09-27)**: The 10-question, no-login taste-quiz flow on its own route (`/quiz`): single-question presentation, silent answer selection with no per-question reveal, client-only progress (no server persistence), and a results screen with score + full per-question breakdown (correct/incorrect, mnemonics on wrong answers only) + "Ritenta". Includes the `quiz_started` analytics event.
+**FRs covered:** FR-5, FR-6 (revised), FR-7, FR-8 (revised), FR-12 (partial: quiz_started)
 
 ### Epic 3: Feedback, Email Capture & Completion Event
 Final-screen feedback box (star rating) and optional email capture with consent checkbox, the single server-side completion write (score recomputed server-side, EU data residency, Supabase secret key never reaches the browser), and the `quiz_completed` analytics event fired only after write success.
@@ -127,15 +129,16 @@ Final-screen feedback box (star rating) and optional email capture with consent 
 FR-1: Epic 1 - Hero with CTA to quiz
 FR-2: Epic 1 - Comparison section
 FR-3: Epic 1 - Minimal footer
-FR-4: Epic 1 - In-page quiz preview
+FR-4: RETIRED (2026-09-27) - was Epic 1, in-page quiz preview
 FR-5: Epic 2 - Single-question presentation
-FR-6: Epic 2 - Answer reveal + mnemonic unlock
+FR-6: Epic 2 - Answer selection without immediate feedback (revised 2026-09-27)
 FR-7: Epic 2 - No mid-quiz server persistence
-FR-8: Epic 2 - Result + mnemonic recap
+FR-8: Epic 2 - Result + per-question breakdown (revised 2026-09-27)
 FR-9: Epic 3 - Feedback box
 FR-10: Epic 3 - Optional email capture
 FR-11: Epic 3 - Quiz-completed event write
 FR-12: Epic 1, 2, 3 - Cookieless analytics (wrapper in Epic 1; visit_landing in Epic 1; quiz_started in Epic 2; quiz_completed in Epic 3)
+FR-13: Epic 1 - Landing email signup section (new 2026-09-27)
 NFR-1: Epic 2, 3 - Accessibility (color-never-alone state, contrast)
 NFR-2: Epic 1 - Mobile-first performance (applies across all UI stories via Server-Component-default)
 NFR-3: Epic 3 - Privacy / EU data residency
@@ -146,27 +149,30 @@ NFR-3: Epic 3 - Privacy / EU data residency
 
 Project scaffold, design system wired into Tailwind theme, base component library, and the public landing page (hero, comparison, footer, quiz preview) that hooks a cold visitor and gets them to the quiz. Includes the analytics wrapper module and the `visit_landing` event.
 
-### Story 1.1: Hero with CTA
+### Story 1.1: Hero with CTA — **REVISED 2026-09-27**
 
 As a visitor,
 I want to see a branded hero with a clear call to action,
-So that I can understand what Deer offers and start the quiz in one tap.
+So that I can understand what Remindeer offers and start the quiz in one tap.
 
 **Acceptance Criteria:**
 
 **Given** the project is scaffolded with Next.js App Router, TypeScript, Tailwind CSS v4, and the design tokens from DESIGN.md registered under `theme.extend`
 **When** a visitor loads the landing page
 **Then** the hero section renders eyebrow "Concorso pubblico farmacie", headline "La strada più veloce per vincere la farmacia.", subheadline "3000 domande ufficiali. Le ricordi con la mnemotecnica, non le rileggi all'infinito.", primary CTA "Prova 10 domande gratis" (with `→` arrow), microcopy "Nessuna registrazione richiesta", and a trust bar with 3 stats ("3000 domande ufficiali", "2 min per il quiz gratuito", "0 login richiesti")
+**And** the hero is text-only, single-column, centered on both mobile and desktop — no product image or live quiz-card preview (the previous desktop two-column copy+preview grid is retired along with Story 1.4)
 **And** the header is sticky through scroll with a compact CTA (no arrow) always reachable
-**And** clicking either CTA (hero or header) lands the visitor directly on question 1/10 with no intermediate form or confirmation step
+**And** clicking either CTA (hero or header) lands the visitor directly on question 1/10 (on the `/quiz` route, see Epic 2) with no intermediate form or confirmation step
 **And** the hero and header render correctly at both the 390px mobile and 1280px desktop reference breakpoints per UX-DR14
 **And** `lib/analytics/track.ts` and `lib/analytics/events.ts` exist with a fixed event list including `visit_landing`, and `visit_landing` fires once when the landing page loads
 **And** `button-primary`, `category-tag`, and `logo-mark` are implemented as reusable components per DESIGN.md (UX-DR2, UX-DR3, UX-DR10) and used here, not one-off markup
+**And** `button-primary` uses the revised token set: `{colors.primary}` (#24C5AB) fill, `{rounded.md}` (20px) radius, 2px ink border (UX-DR2)
+**And** headline, CTA, and stat-number text render in Fredoka (typography tokens revised 2026-09-27); body/subheadline text renders in Inter
 
 ### Story 1.2: Comparison Section
 
 As a skeptical visitor,
-I want to read a direct comparison between the traditional method and Deer's mnemonic approach,
+I want to read a direct comparison between the traditional method and Remindeer's mnemonic approach,
 So that I can judge whether the difference is real before starting the quiz.
 
 **Acceptance Criteria:**
@@ -175,9 +181,9 @@ So that I can judge whether the difference is real before starting the quiz.
 **When** a visitor scrolls to the comparison section
 **Then** the section shows title "Perché non è l'ennesimo quiz" and subtitle "La differenza non è quante domande vedi, ma se te le ricordi il giorno dell'esame."
 **And** the left column ("Metodo tradizionale") uses the `comparison-traditional` component (muted, flat, 85% opacity, no shadow) with the text "Un muro di 3000 domande uguali, da rileggere all'infinito sperando che restino in testa."
-**And** the right column ("Con Deer") uses the `comparison-deer` component (inherits full `quiz-card` styling) with the mnemonic example text and the closing line "Non studi di più: ricordi meglio."
+**And** the right column ("Con Remindeer") uses the `comparison-remindeer` component (inherits full `quiz-card` styling) with the mnemonic example text and the closing line "Non studi di più: ricordi meglio."
 **And** the layout is single-column stacked on mobile (390px) and two columns side-by-side on desktop (1280px) per FR-2 and UX-DR14
-**And** the visual weight contrast between the two columns is visibly asymmetric (traditional flatter/quieter, Deer bordered/shadowed) per UX-DR8
+**And** the visual weight contrast between the two columns is visibly asymmetric (traditional flatter/quieter, Remindeer bordered/shadowed) per UX-DR8
 
 ### Story 1.3: Minimal Footer
 
@@ -189,31 +195,40 @@ So that I know who's behind the product and can find Privacy/Terms if needed.
 
 **Given** the landing page is in place
 **When** a visitor scrolls to the bottom of the page
-**Then** the footer renders as a full-bleed ink-colored band with text "Deer — mnemotecniche per il concorso farmacie" in the footer-text color, using the `footer` component (no border/shadow, per UX-DR9)
+**Then** the footer renders as a full-bleed ink-colored band with text "Remindeer — mnemotecniche per il concorso farmacie" in the footer-text color, using the `footer` component (no border/shadow, per UX-DR9)
 **And** "Privacy" and "Termini" links are present and point to placeholder routes/anchors (real legal copy is OQ-3, out of scope for this story)
 **And** the footer renders correctly at both mobile and desktop reference breakpoints
 
-### Story 1.4: In-Page Quiz Preview
+### Story 1.4: In-Page Quiz Preview — **RETIRED 2026-09-27**
 
-As a visitor evaluating before committing,
-I want to see what a real quiz question looks like without starting the quiz,
-So that I know what to expect before clicking the CTA.
+~~As a visitor evaluating before committing, I want to see what a real quiz question looks like without starting the quiz, so that I know what to expect before clicking the CTA.~~
+
+**Retired.** FR-4 is retired — the quiz moved to its own route (`/quiz`, see Epic 2 Story 2.1-REV) and the landing no longer previews it. See `sprint-change-proposal-2026-09-27.md`.
+
+**Implementation note for whoever picks this up:** remove the preview section/component from the landing page, remove the `getPreviewQuestion()` accessor from `lib/content/index.ts` if nothing else uses it, and remove any now-orphaned `floating-badge` usage that existed only for this preview.
+
+### Story 1.5: Landing Email Signup Section — **NEW 2026-09-27**
+
+As a visitor who isn't ready to take the quiz,
+I want to leave my email directly from the landing page,
+So that I can stay informed about the launch without having to complete the quiz first.
 
 **Acceptance Criteria:**
 
-**Given** the landing page is in place and `lib/content/index.ts` exposes a `getPreviewQuestion()` accessor (per AD-6) reading from the versioned static content file
-**When** a visitor views the preview section
-**Then** a `quiz-card` renders a sample question with its category tag and question text, in the same visual shape as the real quiz card
-**And** the card is fully inert — tapping any option or the card itself does nothing, no mnemonic is ever revealed here (per FR-4, UX-DR15)
-**And** the card uses the illustrative, always-visible `mnemo-box` and/or `floating-badge` treatment for decorative purposes only (per UX-DR6, UX-DR7), never gated by interaction
-**And** the preview card does not import the raw content data file directly — it goes only through the `lib/content` accessor (AD-6)
-**And** clicking the real CTA elsewhere on the page (not this card) is what starts the actual quiz — this card has no such affordance
+**Given** the landing page (hero, comparison section) is in place
+**When** a visitor scrolls to the section between the comparison section and the footer
+**Then** an email signup section renders with an email field (optional, format-validated only) and a separate consent checkbox with GDPR consent microcopy (placeholder copy acceptable pending OQ-3, same standard as Story 3.2)
+**And** submitting requires a valid email format and a checked consent box — this is a dedicated, distinct submission path from the results-screen email capture (Story 3.2); the two never merge or share one record
+**And** a distinct analytics event (e.g. `email_signup_landing`) fires through `lib/analytics/track.ts` on successful submission, added to the fixed event list in `lib/analytics/events.ts`
+**And** the section is reachable and usable by a visitor who never starts or completes the quiz
+**And** the field and checkbox are keyboard-reachable and operable with a visible custom focus state, consistent with UX-DR13
+**And** the section renders correctly at both the 390px mobile and 1280px desktop reference breakpoints
 
 ## Epic 2: Quiz di Assaggio
 
 The 10-question, no-login taste-quiz flow: single-question presentation, answer reveal with mnemonic unlock, client-only progress (no server persistence), and the results screen with score + full mnemonic recap. Includes the `quiz_started` analytics event.
 
-### Story 2.1: Quiz Flow Start & Single-Question Presentation
+### Story 2.1: Quiz Flow Start & Single-Question Presentation — **REVISED 2026-09-27 (route change)**
 
 As a visitor,
 I want to see one official question at a time with clear answer options,
@@ -222,48 +237,49 @@ So that I can engage with the quiz without feeling overwhelmed or needing to log
 **Acceptance Criteria:**
 
 **Given** `lib/content/index.ts` exposes `getQuestions()` (per AD-6) returning the 10 versioned placeholder questions
-**When** a visitor clicks the CTA and lands on the quiz
-**Then** the `components/quiz/` Client Component island renders question 1 of 10, holding question index and answers state in `useState`/`useReducer` only — no route segment encodes quiz step (AD-7)
+**When** a visitor clicks the CTA and lands on the quiz at its own route (`app/quiz/page.tsx`, replacing the retired in-landing preview/embed, Story 1.4)
+**Then** the `components/quiz/` Client Component island renders question 1 of 10, holding question index and answers state in `useState`/`useReducer` only — no per-question route segment encodes quiz step (AD-7 still holds; only the container page moved off the landing)
 **And** the question card shows category tag (e.g. "Farmacologia"), progress indicator "Domanda N di 10", question text, and 3-4 full-width stacked answer options using `answer-option` (default state: white, thin neutral border, no shadow)
 **And** no question beyond the current one is visible or reachable
 **And** no login or personal data is requested to proceed
 **And** `quiz_started` fires (through `lib/analytics/track.ts`) once when the visitor enters the quiz
 **And** no network write of any kind occurs on this screen
 
-### Story 2.2: Answer Reveal, Mnemonic Unlock & Advance
+### Story 2.2: Answer Selection, Lock & Advance — **REVISED 2026-09-27 (was: Answer Reveal, Mnemonic Unlock & Advance)**
 
 As a visitor,
-I want to pick an answer and confirm it before finding out if I was right,
-So that I actually commit to a guess (and can be wrong) instead of the system giving away the answer the moment I touch any option.
+I want to pick an answer and move on without being told right away if I was right,
+So that I experience the quiz as a real test of memory, with the payoff (and any mnemonic) waiting for me at the end.
 
 **Acceptance Criteria:**
 
 **Given** Story 2.1's quiz flow is in place and a question is displayed
 **When** the visitor taps any answer option
-**Then** only the tapped option switches to a neutral `answer-option-selected` state (primary-color border, low-opacity primary background) — no correct/incorrect signal is shown yet, and the visitor may tap a different option to change their pick any number of times before confirming
-**And** a "Conferma" `button-primary` becomes available once an option is selected
-**When** the visitor taps "Conferma"
-**Then** the answer options lock (no longer tappable) and the selected option instantly switches to `answer-option-correct` (green tint, green border, green snap shadow, bold text, ✓ mark) if it matches the correct answer, or to `answer-option-incorrect` (error-color tint, error-color border, error-color snap shadow, bold text, ✗ mark) if it does not — the correct option is **not** separately highlighted when the visitor picked wrong, so the visitor can genuinely get a question wrong
-**And** the correct/incorrect state is never conveyed by color alone — each state carries a non-color indicator (✓/✗ mark / bold weight) per NFR-1
-**And** a `mnemo-box` appears instantly below the options (no animation/fade/slide), tagged "🔑 Mnemotecnica", with the mnemonic text for that question
-**And** the "Conferma" button's label changes to "Continua" once the answer is confirmed/revealed, and tapping it advances to the next question (or to the results screen after question 10), preserving previously given answers in the same in-memory state
-**And** at no point between question 1 and the final screen does any network write occur; a page refresh at any point during the quiz returns the visitor to question 1 with no progress restored (FR-7)
-**And** all interactive elements (answer options, "Conferma"/"Continua") are reachable and operable by keyboard alone with a visible custom focus state (not the default browser outline), per UX-DR13
+**Then** the tapped option switches to a neutral `answer-option-selected` state (primary-color border, low-opacity primary background) and **locks immediately** — no correct/incorrect signal is shown, no mnemonic box appears, and the visitor **cannot** change their pick afterward (supersedes the previous "may tap a different option before confirming" behavior)
+**And** an "Avanti" `button-primary` becomes available once an option is selected
+**When** the visitor taps "Avanti"
+**Then** the visitor advances to the next question (or to the results screen after question 10) — "Avanti" never reveals correctness and never shows a mnemonic; it only moves forward, preserving all previously given answers in the same in-memory state
+**And** at no point between question 1 and the results screen does any network write occur; a page refresh at any point during the quiz returns the visitor to question 1 with no progress restored (FR-7)
+**And** all interactive elements (answer options, "Avanti") are reachable and operable by keyboard alone with a visible custom focus state (not the default browser outline), per UX-DR13
 
-### Story 2.3: Results Screen
+**Explicitly removed from this story (moved to Story 2.3-REV, results screen):** the `answer-option-correct`/`answer-option-incorrect` reveal, the ✓/✗ marks, the per-question `mnemo-box`, and the "Conferma"→"Continua" label change. None of that happens during the quiz anymore.
+
+### Story 2.3: Results Screen — **REVISED 2026-09-27 (per-question breakdown, was: score + full mnemonic recap)**
 
 As a visitor who just finished the quiz,
-I want to see my score and every mnemonic I encountered,
+I want to see my score and, for every question, whether I got it right and what I missed,
 So that I recognize what I actually remembered, not just how many I got right.
 
 **Acceptance Criteria:**
 
-**Given** the visitor has answered question 10 and tapped "Conferma"
+**Given** the visitor has answered question 10 and tapped "Avanti"
 **When** the results screen renders
-**Then** it displays the score as "N/10 corrette", computed client-side from the in-memory answers collected during the quiz
-**And** it lists all 10 mnemonics encountered during the quiz, regardless of whether each associated question was answered correctly
-**And** the score and mnemonic recap are computed and rendered independently of any backend call — they remain fully visible even if a later completion write (Epic 3) fails
+**Then** it displays the score as "N/10 corrette", computed client-side from the in-memory answers collected during the quiz (server-side score in Story 3.3 remains the trusted source for the saved record; this is the client-side display)
+**And** it lists all 10 questions with their resolved state: correct answers show a checkmark only (no mnemonic); incorrect answers show the `mnemo-box` (🔑 Mnemotecnica) with that question's mnemonic text
+**And** a "Ritenta" `button-primary` is present; tapping it restarts the same 10 questions from question 1, resetting the in-memory quiz state (a subsequent completion produces a new, independent record per Story 3.3/FR-11)
+**And** the score and per-question breakdown are computed and rendered independently of any backend call — they remain fully visible even if a later completion write (Epic 3) fails
 **And** the results screen is reachable only by completing all 10 questions in sequence — there is no route or URL that resurrects or skips to this state
+**And** correct/incorrect state on each row is never conveyed by color alone — paired with the checkmark or the mnemo-box's presence, per NFR-1
 
 <!-- Epic 3 pending approval of Epic 2 -->
 

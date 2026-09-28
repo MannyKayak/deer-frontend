@@ -1,10 +1,31 @@
 ---
-baseline_commit: 8d45f62a85336228465f91048a9688ebc65b2f9d
+baseline_commit: 0a49ef9dfd007bcae962695d9b716fe7bb97341e
+supersedes: Story 2.1 as implemented in commit 0a49ef9 (was Status: done)
+change_trigger: _bmad-output/planning-artifacts/sprint-change-proposal-2026-09-27.md
 ---
 
-# Story 2.1: Quiz Flow Start & Single-Question Presentation
+# Story 2.1: Quiz Flow Start & Single-Question Presentation (Revised — own route)
 
-Status: done
+Status: review
+
+> **Revision 2026-09-28** — trigger: `specs/spec-remindeer/SPEC.md` (update 2026-09-28: quiz content from shared Supabase, landing = reads + mailing list only).
+>
+> Implemented together with 2.2/2.3 against Supabase instead of `lib/content`. **AC amendments:**
+> - AC #1: `app/quiz/page.tsx` (Server Component, `await connection()`) loads every free question via `lib/data/questions.ts#getFreeQuestions()` (ordered by `official_number`) and passes them to `QuizFlow`; `lib/content` no longer exists.
+> - AC #2: progress is "Domanda N di {total}", `total` = number of free questions; option count is whatever the question has (observed 5). Options identified by uuid, shuffled per request.
+> - AC #7: CTAs use `href="/quiz"` via `ButtonPrimary`'s `<a>`.
+> - Header rendered on `/quiz`; Footer also rendered (deviation from Task 1 note — revisit in review if single-focus framing matters).
+>
+> Files:
+> - `app/quiz/page.tsx` (new), `app/page.tsx`
+> - `components/quiz/quiz-flow.tsx`, `components/quiz/results-screen.tsx`
+> - `components/ui/mnemo-box.tsx`, `components/ui/content-image.tsx` (new)
+> - `lib/data/questions.ts`, `lib/data/types.ts`, `lib/data/emailSignup.ts`
+> - `lib/actions/gradeQuiz.ts` (new), `lib/actions/submitEmailSignup.ts` (renamed from `submitLandingEmailSignup.ts`)
+> - `lib/supabase/client.ts`, `lib/supabase/database.types.ts` (generated), `lib/quiz/shuffle.ts` (new)
+> - Deleted: `lib/content/*`, `lib/actions/submitQuizCompletion.ts`, `lib/data/quiz.ts`, `lib/consent.ts`, `components/landing/quiz-preview.tsx`
+>
+> Verified 2026-09-28: `tsc --noEmit`, `eslint app components lib`, `next build` pass; `/quiz` played in browser against live Supabase (question 953) — wrong path (✗ + mnemonic), correct path (✓ only), Ritenta (reshuffled options). Code review pending.
 
 <!-- Note: Validation is optional. Run validate-create-story for quality check before dev-story. -->
 
@@ -16,85 +37,97 @@ so that I can engage with the quiz without feeling overwhelmed or needing to log
 
 ## Acceptance Criteria
 
-1. **Given** `lib/content/index.ts` exposes `getQuestions()` (per AD-6) returning the 10 versioned placeholder questions **When** a visitor clicks the CTA and lands on the quiz **Then** the `components/quiz/` Client Component island renders question 1 of 10, holding question index and answers state in `useState`/`useReducer` only — no route segment encodes quiz step (AD-7).
-2. **And** the question card shows category tag (e.g. "Farmacologia"), progress indicator "Domanda N di 10", question text, and 3-4 full-width stacked answer options using `answer-option` (default state: white, thin neutral border, no shadow).
+1. **Given** `lib/content/index.ts` exposes `getQuestions()` returning the 10 versioned placeholder questions **When** a visitor clicks the CTA **Then** they land on a dedicated `/quiz` route (`app/quiz/page.tsx`) — the quiz is no longer mounted inline on the landing page. The `components/quiz/` Client Component island still holds question index and answers state in `useState`/`useReducer` only — no per-question route segment (AD-7 unchanged, only the container page moved).
+2. **And** the question card shows category tag, progress indicator "Domanda N di 10", question text, and 3-4 full-width stacked answer options — unchanged from the existing implementation.
 3. **And** no question beyond the current one is visible or reachable.
 4. **And** no login or personal data is requested to proceed.
-5. **And** `quiz_started` fires (through `lib/analytics/track.ts`) once when the visitor enters the quiz.
+5. **And** `quiz_started` still fires (through `lib/analytics/track.ts`) once when the visitor enters `/quiz`.
 6. **And** no network write of any kind occurs on this screen.
+7. **And** both CTAs (`Hero`, sticky `Header`) navigate to `/quiz` (a real Next.js `<Link>`/navigation, not the old `href="#quiz"` in-page anchor).
+8. **And** the landing page (`app/page.tsx`) no longer renders the quiz or its static preview — Story 1.4 (in-page quiz preview) is retired; its section and dead code are removed as part of this story (see Task 3).
 
 ## Tasks / Subtasks
 
-- [x] Task 1: Build `AnswerOption` primitive in `components/ui/answer-option.tsx` (AC: #2) — default state only this story (full-width, white, `border-neutral`, `rounded-sm`, no shadow); no click handler yet — tap behavior is Story 2.2's AC, not this one. Keep the prop shape open for a later `correct`/`state` prop rather than closing off extension.
-- [x] Task 2: Build `components/quiz/quiz-flow.tsx` (`'use client'`) (AC: #1, #3, #5, #6)
-  - [x] `useState` holding `currentIndex` (see Completion Notes — deliberately did not pre-add an unused `answers` state; nothing reads/writes it until Story 2.2)
-  - [x] Render only the current question (`getQuestions()[currentIndex]`) — never render or mount future questions
-  - [x] Fire `quiz_started` once on mount (same `useEffect`-on-mount pattern as `PageViewTracker`, Story 1.1)
-- [x] Task 3: Build the question card markup (AC: #2) — reuse `QuizCard`; category `CategoryTag` + a second `CategoryTag` instance for the "Domanda N di 10" progress pill (per UX-DR3: real quiz card carries both, preview card carries neither/only category); question text; `AnswerOption` list (non-interactive this story)
-- [x] Task 4: Mount `QuizFlow` in `app/page.tsx` inside a `<section id="quiz">`, replacing the placeholder anchor target Story 1.1 left behind (AC: #1)
-- [x] Task 5: Verify no network calls fire on this screen (AC: #6); verify `quiz_started` logs once per page load, not once per question
+- [ ] Task 1: Create `app/quiz/page.tsx` (AC: #1, #5)
+  - [ ] Server Component page that renders `<QuizFlow />` (the existing `components/quiz/quiz-flow.tsx` Client Component island, unchanged in this story beyond what Story 2.2/2.3 touch)
+  - [ ] Decide whether to also render `<Header />` on this route for brand consistency (not gated by any AC — reasonable to include, but not required; `<Footer />` is also rendered — accepted in code review 2026-09-28; the header CTA is hidden on `/quiz` via `showCta={false}` so it can't wipe progress)
+- [ ] Task 2: Remove the inline quiz mount from `app/page.tsx` (AC: #8)
+  - [ ] Delete the `<section id="quiz"><QuizFlow /></section>` block and its `QuizFlow` import
+  - [ ] Delete the `<QuizPreview />` line and its import (Story 1.4 retirement)
+  - [ ] Resulting `app/page.tsx` order: `Header`, `Hero`, `ComparisonSection`, `Footer` (Story 1.5 will insert the email-signup section between `ComparisonSection` and `Footer` — leave a clear gap there, don't fight over ordering if 1.5 lands first or after)
+- [ ] Task 3: Delete `components/landing/quiz-preview.tsx` and its accessor (AC: #8)
+  - [ ] Delete the file entirely (no other component imports it — verify with a repo-wide search for `QuizPreview` before deleting, don't assume)
+  - [ ] Remove `getPreviewQuestion()` from `lib/content/index.ts` (verify it has no other callers first — currently only `quiz-preview.tsx` calls it)
+- [ ] Task 4: Update CTA targets (AC: #7)
+  - [ ] `components/landing/hero.tsx`: `<ButtonPrimary href="#quiz" arrow>` → `href="/quiz"`
+  - [ ] `components/landing/header.tsx`: `<ButtonPrimary href="#quiz" variant="compact">` → `href="/quiz"`
+  - [ ] `ButtonPrimary` already renders a plain `<a>` for the `href` case — a plain `<a href="/quiz">` triggers a full Next.js client-side navigation automatically inside the App Router, no `next/link` import strictly required, but using `next/link`'s `<Link>` is the more idiomatic choice if you want prefetching; either satisfies AC #7, pick one and don't mix
+- [ ] Task 5: Verify (AC: #1–#8)
+  - [ ] `npm run build` — confirm `/quiz` appears as a generated route
+  - [ ] Confirm `app/page.tsx` no longer imports `QuizFlow`/`QuizPreview`
+  - [ ] Confirm no dangling `getPreviewQuestion` references (`grep -r getPreviewQuestion`)
+  - [ ] Confirm `quiz_started` still fires once per `/quiz` page load (unchanged `useEffect` in `QuizFlow`)
+
+### Review Findings
+
+_Code review 2026-09-28 (Blind Hunter + Edge Case Hunter + Acceptance Auditor, combined review of 2.1–2.3, 3.1, 3.2)._
+
+- [ ] [Review][Patch] (Decision resolved: keep Footer) Amend Task 1 to accept `<Footer />` on `/quiz` — was: Footer rendered on `/quiz` — Task 1 says don't render `<Footer />` (competes with single-focus framing per EXPERIENCE.md); `app/quiz/page.tsx:33` renders it. Remove it, or amend the task to accept it.
+- [ ] [Review][Patch] Header CTA "Prova il quiz gratis" on `/quiz` links to itself — a mid-quiz click reloads and wipes all answers [components/landing/header.tsx:13]
+- [ ] [Review][Patch] No error boundary for `/quiz` — `getFreeQuestions()` throws on any Supabase error and the user gets the generic Next error page [app/quiz/page.tsx:17]
+- [x] [Review][Defer] Signed image URLs expire after 1h (per CAP-15) and "Ritenta" reuses them; `ContentImage` has no `onError` fallback [components/ui/content-image.tsx] — deferred, pre-existing
+- [x] [Review][Defer] Generic alt text on question/mnemonic images — schema has no alt field [components/quiz/quiz-flow.tsx:69] — deferred, pre-existing
+- [x] [Review][Defer] A free question with zero options softlocks the quiz (no "Avanti") — backoffice data integrity [components/quiz/quiz-flow.tsx:71] — deferred, pre-existing
+- [x] [Review][Defer] ESLint ADR-003 guard only matches identifiers named `supabase` (`getSupabaseClient().from()` passes) [eslint.config.mjs] — deferred, pre-existing
 
 ## Dev Notes
 
-### Architecture compliance (must follow)
+### What actually exists today
 
-- **AD-6:** `getQuestions()` only, through `lib/content` — no direct import of `questions.ts`.
-- **AD-7:** quiz index/answers state lives only in `useState`/`useReducer` inside `components/quiz/quiz-flow.tsx`. No `/quiz` route, no `[step]` segment.
-- **AD-8:** `components/quiz/` is one of the two permitted `'use client'` locations (the other is `components/feedback/`, Epic 3) — this is the correct, sanctioned place for the client boundary, unlike Story 1.1's `components/analytics/` exception which had to justify itself.
-- **AD-9:** `quiz_started` fires only through `lib/analytics/track.ts` against the fixed `events.ts` list (already exists from Story 1.1) — no new event name invented.
-- **AD-4:** reuse `QuizCard` (Story 1.2) and `CategoryTag` (Story 1.1) unchanged; build `AnswerOption` new (first story that needs it).
+Quiz was previously built as a client island mounted **inline on the landing page** (`app/page.tsx`, `<section id="quiz">`), not on its own route — this was a deliberate choice at the time (see this story's original Dev Notes: "Structural Seed shows a single `app/page.tsx`, no `/quiz` route... Do not create a `/quiz` route"). The PO has since reversed that decision (`sprint-change-proposal-2026-09-27.md`): the quiz now needs to be its own page. This story is the one that makes that architectural move. AD-7 ("no route segment encodes quiz step") still holds — it was always about not having `/quiz/[step]` per-question segments, not about the quiz having no route at all.
 
-### Dev Note: resolving how the CTA "starts" the quiz without a Server→Client trigger
+Current `app/page.tsx` (read in full before editing):
+```
+<Header /><Hero /><QuizPreview /><section id="quiz"><QuizFlow /></section><ComparisonSection /><Footer />
+```
+Target order after this story: `<Header /><Hero /><ComparisonSection /><Footer />` (Story 1.5 inserts an email-signup section before `<Footer />`).
 
-Story 1.1 wired both CTAs to `href="#quiz"` (an anchor, not a click handler) specifically because `Header`/`Hero` are Server Components (AD-8) and can't hold state or call into a Client Component elsewhere in the tree. **Resolution for this story:** `QuizFlow` doesn't need an external "start" trigger at all — it mounts once on page load already showing question 1 (`currentIndex` initialized to `0`), same as any other section on the page. The CTA's only job is the anchor scroll to bring `<section id="quiz">` into view — by the time the visitor arrives there, question 1 is already rendered. This satisfies AC #1's "no intermediate step" naturally (there's no separate "tap to begin" screen to skip) and avoids inventing a Server-to-Client imperative API that AD-7/AD-8 don't provide for. `quiz_started` firing on mount (not on scroll-into-view) is a deliberate simplification of this same point — see Task 2. If a "don't count `quiz_started` until the visitor actually scrolls to it" requirement emerges later, that's a scope change, not an oversight here.
+### Architecture compliance
 
-### Dev Note: this story is presentation-only, not yet interactive
+- **AD-7:** unaffected — quiz index/answers state still lives only in `QuizFlow`'s `useState`. Moving the *container page* is not the same as adding a per-question route segment.
+- **AD-8:** `app/quiz/page.tsx` stays a Server Component (like `app/page.tsx`); `QuizFlow` remains the sole `'use client'` boundary.
+- **AD-6:** no change — `getQuestions()` still the only accessor used by the real quiz. `getPreviewQuestion()` is removed as dead code (its only caller, `QuizPreview`, is retired).
 
-AC #2 only asks for `answer-option` in its *default* state; nothing in this story's ACs mentions tapping. Story 2.2 adds the tap handler, the correct-answer reveal, and the "Conferma" advance button. Don't build the click handler now — a story that renders inert options today and Story 2.2 wires them tomorrow is the intended incremental sequence, not a bug to pre-empt.
+### Dev Note: don't let this story creep into Story 2.2/2.3 scope
+
+This story is the **route move only**. Do not touch the select/reveal/advance interaction logic inside `quiz-flow.tsx` (Story 2.2-REV's job) or the results screen (Story 2.3-REV's job) beyond what's needed to relocate the component tree. If you're implementing all three stories in one session, it's fine to combine the work, but keep the AC-to-change mapping clear in the file list / completion notes.
 
 ### Project Structure Notes
 
-- First story to touch `components/quiz/` — new directory.
-- Story 1.1's `href="#quiz"` anchors (in `Header`/`Hero`) don't need any code change — they already point at the `id="quiz"` section this story creates.
-- No test framework in this repo — verify manually, same approach as Epic 1.
+- New file: `app/quiz/page.tsx`.
+- Deleted files: `components/landing/quiz-preview.tsx`.
+- Modified: `app/page.tsx`, `components/landing/hero.tsx`, `components/landing/header.tsx`, `lib/content/index.ts`.
+- No test framework in this repo — verify manually (build + grep + manual click-through).
 
 ### References
 
-- [Source: _bmad-output/planning-artifacts/epics.md#Story 2.1] — canonical ACs
-- [Source: _bmad-output/planning-artifacts/prds/prd-deer-2026-08-01/prd.md#FR-5] — single-question presentation requirement
-- [Source: _bmad-output/planning-artifacts/ux-designs/ux-deer-2026-08-01/DESIGN.md#answer-option, UX-DR3] — default-state spec, category-tag dual-use on real quiz card
-- [Source: _bmad-output/planning-artifacts/architecture/architecture-deer-2026-08-01/ARCHITECTURE-SPINE.md#AD-2, AD-6, AD-7, AD-8, AD-9] — no mid-quiz writes, content accessor, in-memory state, client boundary, analytics wrapper
-- [Source: _bmad-output/implementation-artifacts/1-1-hero-with-cta.md] — CTA anchor target, `PageViewTracker` mount-fire pattern to replicate for `quiz_started`
-- [Source: _bmad-output/implementation-artifacts/1-4-in-page-quiz-preview.md] — `lib/content` accessor already built, `QuizCard`/`CategoryTag` reuse precedent
+- [Source: _bmad-output/planning-artifacts/epics.md#Story 2.1] — canonical revised ACs
+- [Source: _bmad-output/planning-artifacts/sprint-change-proposal-2026-09-27.md] — why the route move happened
+- [Source: _bmad-output/planning-artifacts/ux-designs/ux-remindeer-2026-08-01/EXPERIENCE.md#Information Architecture] — `/quiz` as its own IA surface
+- [Source: app/page.tsx, components/landing/hero.tsx, components/landing/header.tsx, components/landing/quiz-preview.tsx, lib/content/index.ts] — actual current implementation read in full for this revision
+- [Source: _bmad-output/implementation-artifacts/2-1-quiz-flow-start-single-question-presentation.md @ commit 0a49ef9] — original story's reasoning for *not* having a route, now superseded
 
 ## Change Log
 
-- 2026-08-02: Implemented Story 2.1 — `AnswerOption` primitive, `components/quiz/quiz-flow.tsx` client island, `<section id="quiz">` mounted in `app/page.tsx`. Refactored `QuizPreview` (Story 1.4) to reuse the new `AnswerOption` instead of its own inline option markup. Status → review.
+- 2026-09-28: Revised for Supabase content + landing read/mailing-list-only permissions (see revision note at top).
+- 2026-09-27: Story revised per `sprint-change-proposal-2026-09-27.md` — quiz moves to its own `/quiz` route; in-page preview (Story 1.4) removed. Status reset to `ready-for-dev`.
 
 ## Dev Agent Record
 
 ### Agent Model Used
 
-Claude Sonnet 5 (claude-sonnet-5)
-
 ### Debug Log References
-
-- `npm run build` — clean compile, TypeScript pass, static page generated
-- `npx eslint app components lib` — 0 errors/warnings
-- Manual smoke test via `npm run dev` + `curl`: verified `<section id="quiz">` exists, verified the progress text renders as "Domanda 1 di 10" (initially grepped as split by React's SSR hydration comment markers between `{currentIndex + 1}` and `{questions.length}` — confirmed correct once accounting for that, not a bug), verified question 1's text renders
 
 ### Completion Notes List
 
-- All 6 ACs implemented and manually verified.
-- Deviated from the story's own task note: did **not** add an unused `answers` state field alongside `currentIndex` in `QuizFlow` — nothing in this story reads or writes it, and the project's own conventions call for not building state ahead of what's used. Story 2.2 will add it when the tap/reveal logic needs it.
-- Resolved the Server-Component-CTA-to-Client-Component-state puzzle as documented in the story's Dev Notes: `QuizFlow` mounts already showing question 1, no external "start" trigger needed — the CTA's `href="#quiz"` (Story 1.1) just scrolls to it, unchanged from before.
-- Refactored `QuizPreview` to use the new `AnswerOption` component instead of its own near-duplicate inline `<div>` markup — same visual output, now backed by one shared component per AD-4, avoiding the exact "re-implement per surface" anti-pattern DESIGN.md warns against.
-- `quiz_started` fires on `QuizFlow` mount (page load), not on scroll-into-view — documented as a deliberate simplification in the story's Dev Notes, flagged for confirmation if a scroll-triggered variant is actually wanted later.
-- Same limitation as prior stories: no live browser/visual QA this session; also could not verify the `quiz_started` console log output directly (client-side console output isn't visible via `curl`), relied on code review of the `useEffect` + `track()` call instead.
-
 ### File List
-
-- `app/page.tsx` (modified — mounted `<section id="quiz"><QuizFlow /></section>`)
-- `components/landing/quiz-preview.tsx` (modified — reused `AnswerOption`)
-- `components/ui/answer-option.tsx` (new)
-- `components/quiz/quiz-flow.tsx` (new)

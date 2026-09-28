@@ -1,6 +1,6 @@
 # generated: 2026-08-01
-# last_updated: 2026-08-01
-# project: deer
+# last_updated: 2026-09-28
+# project: remindeer
 # project_key: NOKEY
 # tracking_system: file-system
 # story_location: _bmad-output/implementation-artifacts
@@ -41,28 +41,35 @@
 # - Retrospective appends its action items to action_items; sprint-status surfaces open ones
 
 generated: 2026-08-01
-last_updated: 2026-08-02
-project: deer
+last_updated: 2026-09-28
+project: remindeer
 project_key: NOKEY
 tracking_system: file-system
 story_location: _bmad-output/implementation-artifacts
 
+# 2026-09-27: sprint-change-proposal-2026-09-27.md approved (landing/quiz UX
+# refinement). Epic 1 and 2 reopened — see proposal for full rationale.
+# 2026-09-28: spec-remindeer update — quiz content read from shared Supabase
+# (backoffice owns schema, ADR-004); landing = anon reads + mailing-list insert
+# only. 3-3 retired (no completion write). Epic 3 reopened for 3-1/3-2 rework.
+
 development_status:
-  epic-1: done
-  1-1-hero-with-cta: done
+  epic-1: in-progress
+  1-1-hero-with-cta: done # story file regenerated 2026-09-27; code review 2026-09-27
   1-2-comparison-section: done
   1-3-minimal-footer: done
-  1-4-in-page-quiz-preview: done
+  1-4-in-page-quiz-preview: done # RETIRED 2026-09-27 — feature removed from landing, see proposal; no further dev work, kept 'done' as a historical record
+  1-5-landing-email-signup-section: in-progress # 2026-09-28: adapted to deployed schema (email only); blocked on backoffice spec OQ-11 (source, consent proof, unique email, anon insert policy)
   epic-1-retrospective: optional
 
-  epic-2: done
-  2-1-quiz-flow-start-single-question-presentation: done
-  2-2-answer-reveal-mnemonic-unlock-advance: done
-  2-3-results-screen: done
+  epic-2: in-progress
+  2-1-quiz-flow-start-single-question-presentation: review # implemented 2026-09-28 on Supabase content; code review pending
+  2-2-answer-reveal-mnemonic-unlock-advance: review # implemented 2026-09-28; code review pending
+  2-3-results-screen: review # implemented 2026-09-28, grading via check_answer; code review pending
   epic-2-retrospective: optional
 
-  epic-3: done
-  3-1-feedback-box: done
-  3-2-optional-email-capture-with-consent: done
-  3-3-quiz-completion-write-cookieless-analytics: done
+  epic-3: in-progress
+  3-1-feedback-box: review # 2026-09-28: rating now analytics event quiz_feedback, not a DB row
+  3-2-optional-email-capture-with-consent: review # 2026-09-28: email goes to shared mailing list via submitEmailSignup; same OQ-11 blocker as 1-5
+  3-3-quiz-completion-write-cookieless-analytics: done # RETIRED 2026-09-28 — no quiz_completions write (FR-11/CAP-11 retired); kept 'done' as historical record
   epic-3-retrospective: optional

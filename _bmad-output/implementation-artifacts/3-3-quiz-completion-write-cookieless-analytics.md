@@ -6,6 +6,10 @@ baseline_commit: 8d45f62a85336228465f91048a9688ebc65b2f9d
 
 Status: done
 
+> **Revision 2026-09-28** — trigger: `specs/spec-remindeer/SPEC.md` (update 2026-09-28: quiz content from shared Supabase, landing = reads + mailing list only).
+>
+> **Retired (FR-11 / spec CAP-11).** The landing no longer writes `quiz_completions`; `submitQuizCompletion` and `lib/data/quiz.ts` are deleted. Completion is measured by the `quiz_completed` analytics event, fired after `gradeQuiz` succeeds (props `score`, `total`). Analytics vendor decided: Umami Cloud (not wired until the PO account exists). Kept `done` as historical record, like 1.4.
+
 ## Story
 
 As the product owner,
@@ -81,6 +85,7 @@ ARCHITECTURE-SPINE.md's AD-1/AD-11 say "Supabase (Postgres, EU-Frankfurt)". The 
 
 ## Change Log
 
+- 2026-09-28: Revised for Supabase content + landing read/mailing-list-only permissions (see revision note at top).
 - 2026-08-02: Implemented Story 3.3 — provisioned `quiz_completions` table (RLS, zero policies) on the live Supabase project (eu-west-3), added `lib/supabase/client.ts` and `lib/actions/submitQuizCompletion.ts` (Zod v4-validated Server Action, server-side score recompute, server-stamped timestamp), wired an explicit-submit form into `ResultsScreen` with `useActionState`, fired `quiz_completed` only on `{ok:true}`. Minimal supporting edits: `ButtonPrimary` gained a pass-through `type` prop, `EmailCapture`'s input gained `name="email"`. Status → review.
 
 ## Dev Agent Record
