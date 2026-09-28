@@ -1,0 +1,10 @@
+.next
+out
+build
+node_modules
+package-lock.json
+next-env.d.ts
+lib/supabase/database.types.ts
+_bmad
+_bmad-output
+.claude
