@@ -9,10 +9,10 @@ const TRUST_STATS = [
 
 export function Hero() {
   return (
-    <section className="flex flex-col items-start gap-6 px-[22px] py-[44px] xl:px-[56px] xl:py-[80px]">
+    <section className="flex flex-col items-center gap-6 px-[22px] text-center py-[44px] xl:px-[56px] xl:py-[80px]">
       <CategoryTag>Concorso pubblico farmacie</CategoryTag>
 
-      <h1 className="max-w-2xl font-lexend text-[30px] font-bold leading-[1.15] text-text-primary xl:text-[52px] xl:leading-[1.12]">
+      <h1 className="max-w-2xl font-fredoka text-[30px] font-bold leading-[1.15] text-text-primary xl:text-[52px] xl:leading-[1.12]">
         La strada più veloce per vincere la farmacia.
       </h1>
 
@@ -21,19 +21,19 @@ export function Hero() {
         rileggi all&apos;infinito.
       </p>
 
-      <div className="flex flex-col items-start gap-2">
-        <ButtonPrimary href="#quiz" arrow>
-          Prova 10 domande gratis
+      <div className="flex flex-col items-center gap-2">
+        <ButtonPrimary href="/quiz" arrow>
+          Prova il quiz gratis
         </ButtonPrimary>
         <span className="font-sans text-[13px] font-medium text-text-secondary">
           Nessuna registrazione richiesta
         </span>
       </div>
 
-      <div className="flex flex-wrap gap-x-[28px] gap-y-3 pt-4">
+      <div className="flex flex-wrap justify-center gap-x-[28px] gap-y-3 pt-4">
         {TRUST_STATS.map((stat) => (
-          <div key={stat.label} className="flex flex-col">
-            <span className="font-lexend text-[20px] font-bold text-primary-dark xl:text-[26px]">
+          <div key={stat.label} className="flex flex-col items-center">
+            <span className="font-fredoka text-[20px] font-bold text-primary-dark xl:text-[26px]">
               {stat.value}
             </span>
             <span className="font-sans text-[12.5px] font-medium text-text-secondary">
