@@ -174,6 +174,7 @@ export function ResultsScreen({
       ) : (
         <form action={formAction} className="flex flex-col gap-4">
           <input type="hidden" name="feedback" value={rating === 0 ? "" : rating} />
+          <input type="hidden" name="source" value="quiz" />
           <input type="hidden" name="consent" value={consent ? "true" : "false"} />
           <div className="flex flex-col gap-2">
             <span className="font-fredoka text-[15px] font-semibold text-text-primary">Com&apos;è andata?</span>

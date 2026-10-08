@@ -9,10 +9,16 @@ Minimal conforming example:
 import "server-only";
 import { getSupabaseClient } from "@/lib/supabase/client";
 
-export async function insertEmailSignup(email: string): Promise<void> {
+export async function insertEmailSignup(signup: {
+  email: string;
+  source: SignupSource;
+  consentTextVersion: string;
+}): Promise<void> {
   const supabase = getSupabaseClient();
-  const { error } = await supabase.from("email_signups").insert({ email });
-  if (error) throw new Error(error.message);
+  const { error } = await supabase
+    .from("email_signups")
+    .insert({ email: signup.email, source: signup.source, consent_text_version: signup.consentTextVersion });
+  if (error && error.code !== "23505") throw new Error(error.message);
 }
 ```
 

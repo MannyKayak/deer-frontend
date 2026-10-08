@@ -1,6 +1,7 @@
 "use client";
 
 import { useId, useState } from "react";
+import { CONSENT_TEXT } from "@/lib/consent";
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -53,10 +54,7 @@ export function EmailCapture({ email, onEmailChange, consent, onConsentChange }:
           onChange={(event) => onConsentChange(event.target.checked)}
           className="mt-0.5 h-4 w-4 shrink-0 accent-primary-dark outline-hidden focus-visible:outline-solid focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-text-primary"
         />
-        <span className="font-sans text-[13px] leading-[1.4] text-text-secondary">
-          {/* [ASSUMPTION: placeholder consent copy pending legal text — see spec OQ-3, Iubenda step]. */}
-          Acconsento a ricevere aggiornamenti sul lancio via email. Puoi ritirare il consenso in qualsiasi momento.
-        </span>
+        <span className="font-sans text-[13px] leading-[1.4] text-text-secondary">{CONSENT_TEXT}</span>
       </label>
     </div>
   );

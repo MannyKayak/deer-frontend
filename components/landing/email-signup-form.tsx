@@ -32,6 +32,7 @@ export function EmailSignupForm() {
 
   return (
     <form action={formAction} className="flex flex-col gap-4">
+      <input type="hidden" name="source" value="landing" />
       <input type="hidden" name="consent" value={consent ? "true" : "false"} />
       <EmailCapture email={email} onEmailChange={setEmail} consent={consent} onConsentChange={setConsent} />
       {state && !state.ok ? (
