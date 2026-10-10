@@ -107,19 +107,28 @@ export type Database = {
       }
       email_signups: {
         Row: {
+          consent_given_at: string | null
+          consent_text_version: string | null
           created_at: string
           email: string
           id: string
+          source: string | null
         }
         Insert: {
+          consent_given_at?: string | null
+          consent_text_version?: string | null
           created_at?: string
           email: string
           id?: string
+          source?: string | null
         }
         Update: {
+          consent_given_at?: string | null
+          consent_text_version?: string | null
           created_at?: string
           email?: string
           id?: string
+          source?: string | null
         }
         Relationships: []
       }
@@ -191,6 +200,81 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      newsletter_recipients: {
+        Row: {
+          delivered_at: string | null
+          delivery_status: string
+          email: string
+          error: string | null
+          id: string
+          newsletter_id: string
+          signup_id: string | null
+        }
+        Insert: {
+          delivered_at?: string | null
+          delivery_status?: string
+          email: string
+          error?: string | null
+          id?: string
+          newsletter_id: string
+          signup_id?: string | null
+        }
+        Update: {
+          delivered_at?: string | null
+          delivery_status?: string
+          email?: string
+          error?: string | null
+          id?: string
+          newsletter_id?: string
+          signup_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "newsletter_recipients_newsletter_id_fkey"
+            columns: ["newsletter_id"]
+            isOneToOne: false
+            referencedRelation: "newsletters"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "newsletter_recipients_signup_id_fkey"
+            columns: ["signup_id"]
+            isOneToOne: false
+            referencedRelation: "email_signups"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      newsletters: {
+        Row: {
+          body: string
+          created_at: string
+          id: string
+          sent_at: string | null
+          status: string
+          subject: string
+          updated_at: string
+        }
+        Insert: {
+          body: string
+          created_at?: string
+          id?: string
+          sent_at?: string | null
+          status?: string
+          subject: string
+          updated_at?: string
+        }
+        Update: {
+          body?: string
+          created_at?: string
+          id?: string
+          sent_at?: string | null
+          status?: string
+          subject?: string
+          updated_at?: string
+        }
+        Relationships: []
       }
       question_options: {
         Row: {
@@ -309,9 +393,14 @@ export type Database = {
         }[]
       }
       is_admin: { Args: never; Returns: boolean }
+      is_draft_newsletter: {
+        Args: { p_newsletter_id: string }
+        Returns: boolean
+      }
       is_public_image: { Args: { p_image_id: string }; Returns: boolean }
       is_public_question: { Args: { p_question_id: string }; Returns: boolean }
       is_public_storage_path: { Args: { p_path: string }; Returns: boolean }
+      save_newsletter: { Args: { payload: Json }; Returns: string }
       save_question: { Args: { payload: Json }; Returns: string }
     }
     Enums: {
