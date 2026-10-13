@@ -20,6 +20,7 @@ export function AnswerOption({ children, state = "default", onClick, disabled = 
       type="button"
       onClick={onClick}
       disabled={disabled}
+      aria-pressed={onClick ? state === "selected" : undefined}
       className={`w-full rounded-sm border-2 px-[14px] py-[13px] text-left font-sans text-[15px] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-text-primary disabled:cursor-default ${stateClasses}`}
     >
       {state === "correct" ? <span aria-hidden="true">✓ </span> : null}

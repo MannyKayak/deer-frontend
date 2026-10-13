@@ -25,7 +25,7 @@ sources:
 ## Capabilities
 
 - **CAP-1** — Hero with CTA to quiz
-  - **intent:** Visitor sees a text-only hero (headline, subheadline, CTA, microcopy, trust bar) and starts the quiz in one tap/click.
+  - **intent:** Visitor sees a hero (headline, subheadline, CTA, microcopy, trust bar, mascot image) and starts the quiz in one tap/click. Hero copy, stats and image are backoffice-editable under `SPEC-home-hero-content`.
   - **success:** Primary CTA navigates to `/quiz` and lands directly on question 1 (no form, no confirmation). Sticky header keeps a compact CTA reachable through scroll.
 
 - **CAP-2** — Comparison section (traditional method vs Remindeer)
@@ -111,7 +111,6 @@ sources:
 - No payments/Stripe.
 - No cross-session or cross-device persistence of quiz progress.
 - No in-page quiz preview on the landing.
-- No mascot.
 
 ## Success signal
 

@@ -5,42 +5,24 @@ import { QuizCard } from "@/components/ui/quiz-card";
 import { CategoryTag } from "@/components/ui/category-tag";
 import { MnemoBox } from "@/components/ui/mnemo-box";
 import { AnswerOption } from "@/components/ui/answer-option";
-import { StarRating } from "@/components/ui/star-rating";
 import { EmailCapture } from "@/components/ui/email-capture";
 import { ButtonPrimary } from "@/components/ui/button-primary";
 import { gradeQuiz, type GradeQuizResult } from "@/lib/actions/gradeQuiz";
-import { submitEmailSignup } from "@/lib/actions/submitEmailSignup";
+import { submitEmailSignup, type SubmitEmailSignupState } from "@/lib/actions/submitEmailSignup";
 import { track } from "@/lib/analytics/track";
 import type { QuizQuestion } from "@/lib/data/types";
 import type { QuizAnswer } from "@/components/quiz/quiz-flow";
 
-type ResultsFormState = { ok: true } | { ok: false; error: string; feedbackSent: boolean } | null;
-
-/**
- * Feedback goes to analytics only; the email (if any) joins the mailing list.
- * The landing never writes anything else to the DB. The rating is sent
- * independently of the email (CAP-9): an email without consent is withheld
- * (3.2 AC #3), and a failed signup never drops the rating.
- */
-async function submitResultsForm(prevState: ResultsFormState, formData: FormData): Promise<ResultsFormState> {
-  const rating = Number(formData.get("feedback"));
-  const email = String(formData.get("email") ?? "").trim();
-  const consent = formData.get("consent") === "true";
-
-  // A retry after a failed signup must not re-send the rating.
-  const feedbackSent = prevState?.ok === false && prevState.feedbackSent;
-  if (!feedbackSent && rating >= 1 && rating <= 5) {
-    track("quiz_feedback", { rating });
-  }
-
-  if (email && consent) {
-    const result = await submitEmailSignup(null, formData);
-    if (!result?.ok) {
-      return { ok: false, error: result?.error ?? "Invio non riuscito. Riprova.", feedbackSent: true };
-    }
+/** Post-quiz mailing-list signup (CAP-10): same action as the landing form, its own event. */
+async function submitResultsForm(
+  prevState: SubmitEmailSignupState,
+  formData: FormData,
+): Promise<SubmitEmailSignupState> {
+  const result = await submitEmailSignup(prevState, formData);
+  if (result?.ok) {
     track("email_signup_quiz");
   }
-  return { ok: true };
+  return result;
 }
 
 export function ResultsScreen({
@@ -53,7 +35,6 @@ export function ResultsScreen({
   onRetry: () => void;
 }) {
   const [grading, setGrading] = useState<GradeQuizResult | null>(null);
-  const [rating, setRating] = useState(0);
   const [email, setEmail] = useState("");
   const [consent, setConsent] = useState(false);
   const [state, formAction, isPending] = useActionState(submitResultsForm, null);
@@ -115,7 +96,7 @@ export function ResultsScreen({
 
   const resultById = new Map(grading.results.map((r) => [r.questionId, r]));
   const chosenById = new Map(answers.map((a) => [a.questionId, a.optionId]));
-  const canSubmit = rating > 0 || email.trim() !== "";
+  const canSubmit = email.trim() !== "";
   const correctCount = grading.results.filter((r) => r.isCorrect).length;
 
   return (
@@ -169,17 +150,12 @@ export function ResultsScreen({
 
       {state?.ok ? (
         <p role="status" className="font-sans text-[13px] text-text-secondary">
-          Grazie per il tuo feedback!
+          Grazie! Ti scriveremo al lancio.
         </p>
       ) : (
         <form action={formAction} className="flex flex-col gap-4">
-          <input type="hidden" name="feedback" value={rating === 0 ? "" : rating} />
           <input type="hidden" name="source" value="quiz" />
           <input type="hidden" name="consent" value={consent ? "true" : "false"} />
-          <div className="flex flex-col gap-2">
-            <span className="font-fredoka text-[15px] font-semibold text-text-primary">Com&apos;è andata?</span>
-            <StarRating value={rating} onChange={setRating} />
-          </div>
           <EmailCapture email={email} onEmailChange={setEmail} consent={consent} onConsentChange={setConsent} />
           {state && !state.ok ? (
             <p role="alert" className="font-sans text-[13px] text-error">

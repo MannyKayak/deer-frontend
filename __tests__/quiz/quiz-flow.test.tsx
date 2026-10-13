@@ -82,7 +82,7 @@ async function completeQuiz(user: UserEvent) {
 describe("quiz flow", () => {
   beforeEach(mockGrading);
 
-  test("shows one question at a time and locks the first pick without revealing anything", async () => {
+  test("shows one question at a time and lets the pick change without revealing anything", async () => {
     const user = userEvent.setup();
     render(<QuizFlow questions={QUESTIONS} />);
 
@@ -94,8 +94,13 @@ describe("quiz flow", () => {
 
     await user.click(screen.getByRole("button", { name: "Amoxicillina" }));
 
-    expect(screen.getByRole("button", { name: "Paracetamolo" })).toHaveProperty("disabled", true);
-    expect(screen.getByRole("button", { name: "Amoxicillina" })).toHaveProperty("disabled", true);
+    expect(screen.getByRole("button", { name: "Amoxicillina" }).getAttribute("aria-pressed")).toBe("true");
+    expect(screen.getByRole("button", { name: "Paracetamolo" })).toHaveProperty("disabled", false);
+
+    await user.click(screen.getByRole("button", { name: "Paracetamolo" }));
+
+    expect(screen.getByRole("button", { name: "Paracetamolo" }).getAttribute("aria-pressed")).toBe("true");
+    expect(screen.getByRole("button", { name: "Amoxicillina" }).getAttribute("aria-pressed")).toBe("false");
     expect(screen.queryByText(/Corretta|Sbagliata|Mnemotecnica/)).toBeNull();
     expect(checkAnswerMock).not.toHaveBeenCalled();
 
@@ -108,6 +113,22 @@ describe("quiz flow", () => {
     await user.click(screen.getByRole("button", { name: "Vitamina D" }));
 
     expect(screen.getByRole("button", { name: "Vedi i risultati" })).toBeDefined();
+  });
+
+  test("only the last pick of a question is graded", async () => {
+    const user = userEvent.setup();
+    render(<QuizFlow questions={QUESTIONS} />);
+
+    await user.click(screen.getByRole("button", { name: "Amoxicillina" }));
+    await user.click(screen.getByRole("button", { name: "Paracetamolo" }));
+    await user.click(screen.getByRole("button", { name: "Avanti" }));
+    await user.click(screen.getByRole("button", { name: "Vitamina C" }));
+    await user.click(screen.getByRole("button", { name: "Vedi i risultati" }));
+
+    expect(await screen.findByText("1/2 corrette")).toBeDefined();
+    const graded = checkAnswerMock.mock.calls.map(([questionId, optionId]) => [questionId, optionId]);
+    expect(graded).toContainEqual([Q1, Q1_RIGHT]);
+    expect(graded).not.toContainEqual([Q1, Q1_WRONG]);
   });
 
   test("grades on the server and shows score, breakdown and mnemonics only for wrong answers", async () => {
@@ -167,37 +188,24 @@ describe("quiz flow", () => {
   });
 });
 
-describe("results screen feedback and email capture", () => {
+describe("results screen email capture", () => {
   beforeEach(mockGrading);
 
   const submitButton = () => screen.getByRole("button", { name: "Invia" });
   const emailInput = () => screen.getByRole("textbox", { name: /email/i });
   const consentCheckbox = () => screen.getByRole("checkbox", { name: /acconsento/i });
 
-  test("nothing can be sent until there is a rating or an email", async () => {
+  test("nothing can be sent until there is an email", async () => {
     const user = userEvent.setup();
     render(<QuizFlow questions={QUESTIONS} />);
     await completeQuiz(user);
 
+    expect(screen.queryByRole("radio")).toBeNull();
     expect(submitButton()).toHaveProperty("disabled", true);
 
-    await user.click(screen.getByRole("radio", { name: "4 stelle su 5" }));
+    await user.type(emailInput(), "mario@esempio.it");
 
     expect(submitButton()).toHaveProperty("disabled", false);
-  });
-
-  test("a rating alone goes to analytics and never to the mailing list", async () => {
-    const user = userEvent.setup();
-    render(<QuizFlow questions={QUESTIONS} />);
-    await completeQuiz(user);
-
-    await user.click(screen.getByRole("radio", { name: "4 stelle su 5" }));
-    await user.click(submitButton());
-
-    expect(await screen.findByText("Grazie per il tuo feedback!")).toBeDefined();
-    expect(trackMock).toHaveBeenCalledWith("quiz_feedback", { rating: 4 });
-    expect(insertMock).not.toHaveBeenCalled();
-    expect(trackMock).not.toHaveBeenCalledWith("email_signup_quiz");
   });
 
   test("email with consent joins the mailing list", async () => {
@@ -209,53 +217,47 @@ describe("results screen feedback and email capture", () => {
     await user.click(consentCheckbox());
     await user.click(submitButton());
 
-    expect(await screen.findByText("Grazie per il tuo feedback!")).toBeDefined();
+    expect(await screen.findByText("Grazie! Ti scriveremo al lancio.")).toBeDefined();
     expect(insertMock).toHaveBeenCalledExactlyOnceWith({
       email: "mario@esempio.it",
       source: "quiz",
       consentTextVersion: CONSENT_TEXT_VERSION,
     });
     expect(trackMock).toHaveBeenCalledWith("email_signup_quiz");
-    expect(trackMock).not.toHaveBeenCalledWith("quiz_feedback", expect.anything());
   });
 
-  test("an email without consent is withheld, the rating still goes through", async () => {
+  test("an email without consent is withheld and asks for consent", async () => {
     const user = userEvent.setup();
     render(<QuizFlow questions={QUESTIONS} />);
     await completeQuiz(user);
 
-    await user.click(screen.getByRole("radio", { name: "5 stelle su 5" }));
     await user.type(emailInput(), "mario@esempio.it");
     await user.click(submitButton());
 
-    expect(await screen.findByText("Grazie per il tuo feedback!")).toBeDefined();
-    expect(trackMock).toHaveBeenCalledWith("quiz_feedback", { rating: 5 });
+    expect(await screen.findByRole("alert")).toHaveProperty("textContent", "Serve il tuo consenso per iscriverti.");
     expect(insertMock).not.toHaveBeenCalled();
     expect(trackMock).not.toHaveBeenCalledWith("email_signup_quiz");
   });
 
-  test("a failed signup shows the error and a retry does not send the rating twice", async () => {
+  test("a failed signup shows the error and a retry goes through", async () => {
     const consoleError = vi.spyOn(console, "error").mockImplementation(() => {});
     insertMock.mockRejectedValueOnce(new Error("network down"));
     const user = userEvent.setup();
     render(<QuizFlow questions={QUESTIONS} />);
     await completeQuiz(user);
 
-    await user.click(screen.getByRole("radio", { name: "3 stelle su 5" }));
     await user.type(emailInput(), "mario@esempio.it");
     await user.click(consentCheckbox());
     await user.click(submitButton());
 
     expect(await screen.findByRole("alert")).toHaveProperty("textContent", "Invio non riuscito. Riprova.");
+    expect(trackMock).not.toHaveBeenCalledWith("email_signup_quiz");
 
     await user.click(submitButton());
 
-    expect(await screen.findByText("Grazie per il tuo feedback!")).toBeDefined();
+    expect(await screen.findByText("Grazie! Ti scriveremo al lancio.")).toBeDefined();
     expect(insertMock).toHaveBeenCalledTimes(2);
-    expect(trackMock.mock.calls.filter(([event]) => event === "quiz_feedback")).toEqual([
-      ["quiz_feedback", { rating: 3 }],
-    ]);
-    expect(trackMock).toHaveBeenCalledWith("email_signup_quiz");
+    expect(trackMock.mock.calls.filter(([event]) => event === "email_signup_quiz")).toHaveLength(1);
     consoleError.mockRestore();
   });
 

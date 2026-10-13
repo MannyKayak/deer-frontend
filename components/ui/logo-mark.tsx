@@ -10,7 +10,7 @@ export function LogoMark({ className = "" }: { className?: string }) {
       width={1302}
       height={1208}
       loading="eager"
-      className={`h-8 w-auto shrink-0 ${className}`}
+      className={`h-8 w-auto shrink-0 md:h-12 ${className}`}
     />
   );
 }

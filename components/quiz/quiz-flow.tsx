@@ -14,8 +14,8 @@ import type { QuizQuestion } from "@/lib/data/types";
 export type QuizAnswer = { questionId: string; optionId: string };
 
 /**
- * In-memory quiz (AD-7): a pick locks on tap, nothing is revealed until the
- * results screen, "Avanti" advances. Question count comes from the data.
+ * In-memory quiz (AD-7): a pick can be changed until "Avanti" advances, nothing
+ * is revealed until the results screen. Question count comes from the data.
  */
 export function QuizFlow({ questions: initialQuestions }: { questions: QuizQuestion[] }) {
   const [questions, setQuestions] = useState(initialQuestions);
@@ -44,13 +44,11 @@ export function QuizFlow({ questions: initialQuestions }: { questions: QuizQuest
   const isLast = currentIndex === questions.length - 1;
 
   function handleSelect(optionId: string) {
-    if (selectedOptionId !== null) return;
-    // Dedupe in the updater: two taps can land before the re-render disables the options.
-    setAnswers((prev) =>
-      prev.some((answer) => answer.questionId === question.id)
-        ? prev
-        : [...prev, { questionId: question.id, optionId }],
-    );
+    // Replace in the updater: one answer per question, the latest tap wins.
+    setAnswers((prev) => [
+      ...prev.filter((answer) => answer.questionId !== question.id),
+      { questionId: question.id, optionId },
+    ]);
   }
 
   function handleNext() {
@@ -77,7 +75,6 @@ export function QuizFlow({ questions: initialQuestions }: { questions: QuizQuest
           <AnswerOption
             key={option.id}
             state={option.id === selectedOptionId ? "selected" : "default"}
-            disabled={selectedOptionId !== null}
             onClick={() => handleSelect(option.id)}
           >
             {option.text}

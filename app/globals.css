@@ -26,6 +26,9 @@
   --color-footer-bg: #221812;
   --color-footer-text: #d3cdbf;
 
+  /* Page container — every landing band (header, sections, footer) shares this content width */
+  --container-page: 1168px;
+
   /* Radii — DESIGN.md uses exactly two radii for cards/inner elements, plus full-pill; override the default scale */
   --radius-sm: 10px;
   --radius-md: 20px;
