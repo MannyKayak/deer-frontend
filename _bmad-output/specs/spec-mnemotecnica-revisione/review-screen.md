@@ -8,20 +8,21 @@ Companion to `SPEC.md` (CAP-4 … CAP-11, CAP-15). UI copy is verbatim Italian.
 |---|---------|------|
 | 1 | Category chip | Always. |
 | 2 | Question text | Always. |
-| 3 | Answer given | Marked wrong: wrong color **plus** icon or text. |
+| 3 | Answer given | Marked wrong: wrong color **plus** icon or text. Unanswered question: "Non hai risposto" instead, no wrong mark. |
 | 4 | Correct answer | Marked correct: correct color **plus** icon or text. |
-| 5 | Ministerial-correction indicator | Only if the question had ministerial corrections (content: OQ-12). |
-| 6 | MnemoCard | Only if a `pubblicata` mnemonic exists; visible with no tap. |
-| 6′ | "Mnemotecnica in arrivo" | Replaces 6 when no published mnemonic; one discreet line at most, never an empty box. |
-| 7 | "Mi aiuta" / "Non mi aiuta" | Below the card, one tap. Absent with 6′ (assumption). |
+| 5 | MnemoCard | Only if a `pubblicata` mnemonic exists; visible with no tap. |
+| 5′ | "Mnemotecnica in arrivo" | Replaces 5 when no published mnemonic; one discreet line at most, never an empty box. |
+| 6 | "Mi aiuta" / "Non mi aiuta" | Below the card, one tap; tapping the lit button withdraws the vote. Absent with 5′. |
 
 ## Flow
 
-- **Entry:** result screen → CTA "Rivedi i N errori".
+- **Entry:** result screen → CTA "Rivedi i N errori"; N = wrong + unanswered.
+- **Filter:** all errors / only wrong / only unanswered.
+- **Switch "Mostra tutte le mnemotecniche":** off by default (errors only); on, the review covers every question of the attempt, correct ones included.
 - **Navigation:** previous / next; indicator "Errore 3 di 24"; left/right arrow keys on desktop.
 - **Resume:** exit, re-entry, or refresh reopens the last error seen; position stored locally only.
-- **End:** summary + CTA "Ripeti la stessa prova" → new attempt on the same test.
-- **Paywall card (free tier only):** "Altre N domande, tutte con la loro mnemotecnica". Shown at end of review or after a configurable number of errors seen. Never interrupts the review, never hides content already shown. Placement: OQ-15.
+- **End:** summary + CTA "Ripeti la stessa prova" → new attempt on the same questions; question order and option order both reshuffled.
+- **Paywall card:** parked until payments are implemented (CAP-15); nothing rendered.
 
 ## MnemoCard
 
