@@ -26,3 +26,22 @@ export type AnswerCheck = {
   isCorrect: boolean;
   correctOptionId: string;
 };
+
+export type HomeStat = {
+  value: string;
+  label: string;
+};
+
+/**
+ * Hero content of the home page, always complete: every field missing or
+ * invalid in the backoffice has already been replaced by its default.
+ * `image.remote` tells the hero whether `src` is the static mascot (known
+ * size) or a file in the public `page-images` bucket (unknown size).
+ */
+export type HomeContent = {
+  title: string;
+  subtitle: string;
+  cta: { label: string; note: string };
+  stats: HomeStat[];
+  image: { src: string; alt: string; remote: boolean };
+};
